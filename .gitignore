@@ -44,3 +44,4 @@ app-example
 
 # environment settings
 .vscode/
+.idea/
