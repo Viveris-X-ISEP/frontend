@@ -45,3 +45,6 @@ app-example
 # environment settings
 .vscode/
 .idea/
+ 
+# Ignore System.CommandLine sentinel logs (created by some .NET helpers when invoked)
+system-commandline-sentinel-files/
