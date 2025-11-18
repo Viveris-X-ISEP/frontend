@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+node-compile-cache/
 
 # Expo
 .expo/
@@ -45,6 +46,7 @@ app-example
 # environment settings
 .vscode/
 .idea/
- 
-# Ignore System.CommandLine sentinel logs (created by some .NET helpers when invoked)
-system-commandline-sentinel-files/
+
+# miscellaneous
+metro-cache/
+metro-file-map-**
