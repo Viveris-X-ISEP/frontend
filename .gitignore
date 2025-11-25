@@ -50,3 +50,4 @@ app-example
 # miscellaneous
 metro-cache/
 metro-file-map-**
+system-commandline-sentinel-files/
