@@ -46,7 +46,9 @@ app-example
 # environment settings
 .vscode/
 .idea/
+.github/instructions/
 
 # miscellaneous
 metro-cache/
 metro-file-map-**
+system-commandline-sentinel-files/
