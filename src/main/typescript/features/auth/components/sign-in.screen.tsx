@@ -5,8 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
 import { Link } from "expo-router";
 import { useSignIn } from "../hooks";
@@ -25,10 +23,7 @@ export default function SignInScreen() {
   const styles = createStyles(theme);
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <View style={styles.container}>
       <Text style={styles.title}>Content de vous revoir !</Text>
 
       {error && <Text style={styles.error}>{error}</Text>}
@@ -81,7 +76,7 @@ export default function SignInScreen() {
           </Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
