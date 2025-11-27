@@ -20,9 +20,10 @@ export default function RootLayout() {
       {/* Protected: Only show if Logged In */}
       <Stack.Protected guard={isLoggedIn}>
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="mission" />
-        <Stack.Screen name="user" />
-        <Stack.Screen name="questionnaire" />
+        <Stack.Screen name="mission/detail/[id]" />
+        <Stack.Screen name="mission/update/[id]" />
+        <Stack.Screen name="user/[id]" />
+        <Stack.Screen name="questionnaire/index" />
       </Stack.Protected>
 
       {/* Protected: Only show if Logged OUT */}
