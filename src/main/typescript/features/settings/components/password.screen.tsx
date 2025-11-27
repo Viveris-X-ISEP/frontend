@@ -111,7 +111,7 @@ const createStyles = (theme: Theme) =>
     button: {
       backgroundColor: theme.colors.primary,
       height: 56,
-      borderRadius: theme.borderRadius.lg,
+      borderRadius: theme.borderRadius.full,
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: theme.spacing.lg,
@@ -120,7 +120,7 @@ const createStyles = (theme: Theme) =>
       opacity: 0.6,
     },
     buttonText: {
-      color: '#FFFFFF',
+      color: theme.colors.text,
       fontSize: theme.fontSizes.lg,
       fontWeight: '600',
     },

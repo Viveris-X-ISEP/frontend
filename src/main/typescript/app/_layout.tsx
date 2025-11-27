@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { useAuthStore } from '../store';
+import { useTheme } from '../shared/theme';
 
 export default function RootLayout() {
   const { isLoggedIn } = useAuthStore();
+  const { isDark } = useTheme();
 
   // Handle rehydration state (wait for SecureStore to read data)
   const [isReady, setIsReady] = useState(false);
@@ -16,23 +19,26 @@ export default function RootLayout() {
   if (!isReady) return null; // Or a Splash Screen
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {/* Protected: Only show if Logged In */}
-      <Stack.Protected guard={isLoggedIn}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="mission/detail/[id]" />
-        <Stack.Screen name="mission/update/[id]" />
-        <Stack.Screen name="user/[id]" />
-        <Stack.Screen name="questionnaire/index" />
-      </Stack.Protected>
+    <>
+      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* Protected: Only show if Logged In */}
+        <Stack.Protected guard={isLoggedIn}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="mission/detail/[id]" />
+          <Stack.Screen name="mission/update/[id]" />
+          <Stack.Screen name="user/[id]" />
+          <Stack.Screen name="questionnaire/index" />
+        </Stack.Protected>
 
-      {/* Protected: Only show if Logged OUT */}
-      <Stack.Protected guard={!isLoggedIn}>
-        <Stack.Screen name="auth" />
-      </Stack.Protected>
+        {/* Protected: Only show if Logged OUT */}
+        <Stack.Protected guard={!isLoggedIn}>
+          <Stack.Screen name="auth" />
+        </Stack.Protected>
 
-      {/* Public: Always accessible */}
-      <Stack.Screen name="+not-found" />
-    </Stack>
+        {/* Public: Always accessible */}
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </>
   );
 }
