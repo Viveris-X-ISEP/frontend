@@ -44,6 +44,7 @@ app-example
 /android
 
 # environment settings
+.env
 .vscode/
 .idea/
 .github/instructions/
