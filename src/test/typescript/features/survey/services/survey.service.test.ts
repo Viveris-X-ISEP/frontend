@@ -36,8 +36,9 @@ describe('SurveyService', () => {
         useFrequency: 'MEDIUM',
       },
       airTransport: {
-        shortHaulFlightsPerYear: 2,
-        longHaulFlightsPerYear: 1,
+        shortFlightsFrequencyPerYear: 2,
+        mediumFlightsFrequencyPerYear: 1,
+        longFlightsFrequencyPerYear: 0,
       },
       bikeUsePerWeek: 3,
     },
@@ -54,8 +55,8 @@ describe('SurveyService', () => {
     },
     digital: {
       digitalConsumption: {
-        streamingHoursPerWeek: 10,
-        emailsPerDay: 20,
+        hoursOfStreamingPerWeek: 10,
+        chargingFrequencyPerDay: 2,
       },
       numberOfDevicesOwned: 5,
     },

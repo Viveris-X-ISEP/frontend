@@ -3,13 +3,16 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   ActivityIndicator,
+  Image,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 import { useTheme, type Theme } from "../../../shared/theme";
 import { useSurveyStatus } from "../../survey/hooks";
+
+// Placeholder avatar - in production this would come from user profile
+const AVATAR_PLACEHOLDER = "https://api.dicebear.com/7.x/avataaars/png?seed=EcoWarrior&backgroundColor=f0f0f0";
 
 export default function HomeScreen() {
   const { theme } = useTheme();
@@ -36,15 +39,12 @@ export default function HomeScreen() {
       <SafeAreaView style={styles.container}>
         <Text style={styles.title}>Accueil</Text>
 
-        {/* User Profile Card */}
+        {/* User Profile Card - Figma Style */}
         <View style={styles.profileCard}>
-          <View style={styles.avatarPlaceholder}>
-            <Ionicons
-              name="person"
-              size={theme.fontSizes.xxl}
-              color={theme.colors.primary}
-            />
-          </View>
+          <Image
+            source={{ uri: AVATAR_PLACEHOLDER }}
+            style={styles.avatar}
+          />
           <View style={styles.profileInfo}>
             <Text style={styles.username}>EcoWarrior</Text>
             <Text style={styles.level}>Niveau 1</Text>
@@ -52,21 +52,21 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* No Data Message */}
+        {/* No Data Message with Survey Button */}
         <View style={styles.noDataContainer}>
           <Text style={styles.noDataTitle}>Pas de données !</Text>
           <Text style={styles.noDataSubtitle}>
             Calculons votre empreinte carbone.
           </Text>
-        </View>
 
-        {/* Survey Button */}
-        <TouchableOpacity
-          style={styles.surveyButton}
-          onPress={handleStartSurvey}
-        >
-          <Text style={styles.surveyButtonText}>Répondre au questionnaire</Text>
-        </TouchableOpacity>
+          {/* Survey Button - Inside content area per Figma */}
+          <TouchableOpacity
+            style={styles.surveyButton}
+            onPress={handleStartSurvey}
+          >
+            <Text style={styles.surveyButtonText}>Répondre au questionnaire</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
@@ -77,15 +77,12 @@ export default function HomeScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Accueil</Text>
 
-      {/* User Profile Card */}
+      {/* User Profile Card - Figma Style */}
       <View style={styles.profileCard}>
-        <View style={styles.avatarPlaceholder}>
-          <Ionicons
-            name="person"
-            size={theme.fontSizes.xxl}
-            color={theme.colors.primary}
-          />
-        </View>
+        <Image
+          source={{ uri: AVATAR_PLACEHOLDER }}
+          style={styles.avatar}
+        />
         <View style={styles.profileInfo}>
           <Text style={styles.username}>EcoWarrior</Text>
           <Text style={styles.level}>Niveau 3</Text>
@@ -122,20 +119,18 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       marginBottom: theme.spacing.xl,
     },
-    avatarPlaceholder: {
-      width: 60,
-      height: 60,
+    avatar: {
+      width: 100,
+      height: 100,
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.inputBackground,
-      alignItems: "center",
-      justifyContent: "center",
       marginRight: theme.spacing.md,
     },
     profileInfo: {
       flex: 1,
     },
     username: {
-      fontSize: theme.fontSizes.lg,
+      fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       color: theme.colors.text,
     },
@@ -144,7 +139,7 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.primary,
     },
     points: {
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.md,
       color: theme.colors.primary,
     },
     noDataContainer: {
@@ -162,16 +157,18 @@ const createStyles = (theme: Theme) =>
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       opacity: 0.7,
+      marginBottom: theme.spacing.lg,
     },
     surveyButton: {
-      backgroundColor: theme.colors.text,
+      backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.lg,
       paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.xl,
       alignItems: "center",
-      marginBottom: theme.spacing.xl,
+      marginTop: theme.spacing.md,
     },
     surveyButtonText: {
-      color: theme.colors.background,
+      color: theme.colors.primary,
       fontSize: theme.fontSizes.md,
       fontWeight: "600",
     },

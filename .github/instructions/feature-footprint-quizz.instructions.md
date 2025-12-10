@@ -6,55 +6,132 @@ Refer to [AGENTS.md](../../AGENTS.md) for general instructions regarding the rep
 
 ---
 
-## Implementation ToDo List
+## Implementation Status
 
-- [ ] **1. Implement API Calls**
-    - **Location**: `src/main/typescript/features/survey/services/`
-    - **Reference**: The API endpoints for the quizz are found in:  
-      `C:\Users\joaqu\Documents\School\ISEP\A3\Projet_de_fin_parcours\Projet Viveris\projet-industriel-back\src\main\java\com\spring\ProjetIndustrielBack\controller\UserEmissionsController.java`
-    - Create `survey.service.ts` following the pattern in `auth.service.ts`
-    - Export via `index.ts`
+- [x] **1. Implement API Calls** - `survey.service.ts`
+- [x] **2. Test API Calls** - `survey.service.test.ts` (22 tests)
+- [x] **3. Create API Types** - `types/index.ts` (matches backend DTOs)
+- [x] **4. Implement Hooks** - `useSurvey.ts`, `useSubmitSurvey.ts`, `useSurveyStatus.ts`
+- [x] **5. Implement Components** - Survey screens and answer options
+- [x] **6. Update Home Screen** - Shows survey prompt when not completed
+- [x] **7. Add All Survey Questions** - 19 questions matching backend requirements
 
-- [ ] **2. Test API Calls**
-    - Verify that the implemented service methods correctly communicate with the backend.
-    - Test with actual backend responses to validate data flow.
+---
 
-- [ ] **3. Create API Types**
-    - **Location**: `src/main/typescript/features/survey/types/`
-    - Create TypeScript interfaces/types based on the backend DTOs and API responses.
-    - Separate request payloads from response payloads (follow `auth/types/index.ts` pattern).
-    - Export via `index.ts`
+## FootprintQuizzDto Data Fields
 
-- [ ] **4. Implement Hooks**
-    - **Location**: `src/main/typescript/features/survey/hooks/`
-    - Create custom hooks to manage the quizz state and API interactions.
-    - Follow the pattern in `auth/hooks/` (e.g., `useSignIn.ts`).
-    - Suggested hooks:
-        - `useSurvey.ts` – Manages survey state, current question, and answers.
-        - `useSubmitSurvey.ts` – Handles API submission of survey results.
-    - Export via `index.ts`
+The backend requires the following data structure for calculating carbon emissions. **Total: 19 input fields across 4 categories**.
 
-- [ ] **5. Implement Components and Screens**
-    - Follow the Figma mockup (refer to provided images).
-    - **Location**: `src/main/typescript/features/survey/components/`
-    - Use the app theme located in `src/main/typescript/shared/theme/`.
-    - **Constraint**: No magic numbers. Use theme variables for spacing, font sizes, colors, etc.
-    - Use dynamic styles with `createStyles(theme)` pattern (see `sign-in.screen.tsx`).
+### 1. TRANSPORT Category (9 fields)
 
-- [ ] **6. Follow Auth Feature Implementation Style**
-    - Reference `src/main/typescript/features/auth/` for code style, folder structure, and patterns.
-    - Pattern: **Service → Hook → Component**
-    - Services handle API calls, hooks manage state/logic, components handle UI.
+#### Car
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `fuelType` | FuelType enum | Type of fuel | "Quel type de carburant utilise votre voiture ?" |
+| `kilometersPerYear` | int | Annual km driven | "Combien de kilomètres parcourez-vous en voiture par an ?" |
+| `passengers` | int | Average passengers | "En moyenne, combien de passagers voyagent avec vous ?" |
 
-- [ ] **7. Update Home Screen**
-    - Modify `src/main/typescript/features/home/components/index.screen.tsx` to:
-        - Display "Répondre au questionnaire" button when survey not completed.
-        - Navigate to survey on button press.
-    - *(Full home screen update deferred for now)*
+**FuelType enum**: `ELECTRIC`, `GASOLINE`, `DIESEL`, `HYBRID`
 
-- [ ] **8. Conditionally Disable Missions Tab**
-    - Modify `src/main/typescript/app/(tabs)/_layout.tsx` to disable "missions" tab when survey is not completed.
-    - TODO: Determine how survey completion status is tracked (see notes below).
+#### PublicTransport
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `type` | PublicTransportType enum | Primary type | "Quel type de transport en commun utilisez-vous principalement ?" |
+| `useFrequency` | LowMediumHigh enum | Frequency | "À quelle fréquence utilisez-vous les transports en commun ?" |
+
+**PublicTransportType enum**: `BUS`, `TRAMWAY`, `METRO`, `TRAIN`
+**LowMediumHigh enum**: `LOW`, `MEDIUM`, `HIGH`
+
+#### AirTransport
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `shortFlightsFrequencyPerYear` | int | Flights <3h | "Combien de vols courts (<3h) prenez-vous par an ?" |
+| `mediumFlightsFrequencyPerYear` | int | Flights 3-6h | "Combien de vols moyens (3-6h) prenez-vous par an ?" |
+| `longFlightsFrequencyPerYear` | int | Flights >6h | "Combien de vols longs (>6h) prenez-vous par an ?" |
+
+#### Other
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `bikeUsePerWeek` | int | Times per week | "Combien de fois par semaine utilisez-vous le vélo ?" |
+
+---
+
+### 2. FOOD Category (4 fields)
+
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `redMeatConsumptionPerWeek` | int | Meals/week | "Combien de repas à base de viande rouge consommez-vous par semaine ?" |
+| `whiteMeatConsumptionPerWeek` | int | Meals/week | "Combien de repas à base de volaille consommez-vous par semaine ?" |
+| `fishConsumptionPerWeek` | int | Meals/week | "Combien de repas à base de poisson consommez-vous par semaine ?" |
+| `dairyConsumptionPerWeek` | int | Portions/week | "Combien de portions de produits laitiers consommez-vous par semaine ?" |
+
+---
+
+### 3. HOUSING Category (3 fields)
+
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `housingType` | HousingType enum | Residence type | "Quel est votre type de logement ?" |
+| `surfaceArea` | int | m² | "Quelle est la superficie de votre logement ?" |
+| `heatingEnergySource` | EnergySource enum | Main heating | "Quelle est votre source d'énergie principale pour le chauffage ?" |
+
+**HousingType enum**: `APARTMENT`, `HOUSE`, `COLOCATION`, `VILLA`
+**EnergySource enum**: `GAZ`, `FUEL_OIL`, `ELECTRICITY`, `HEAT_PUMP`, `WOOD`, `CHIPS`, `HEAT_NETWORK`
+
+---
+
+### 4. DIGITAL Category (3 fields)
+
+| Field | Type | Description | Survey Question |
+|-------|------|-------------|-----------------|
+| `hoursOfStreamingPerWeek` | int | Hours/week | "Combien d'heures de streaming vidéo regardez-vous par semaine ?" |
+| `chargingFrequencyPerDay` | int | Times/day | "Combien de fois par jour rechargez-vous vos appareils électroniques ?" |
+| `numberOfDevicesOwned` | int | Total devices | "Combien d'appareils électroniques possédez-vous ?" |
+
+---
+
+## Example API Payload
+
+```json
+{
+  "userId": 1,
+  "food": {
+    "redMeatConsumptionPerWeek": 3,
+    "whiteMeatConsumptionPerWeek": 4,
+    "fishConsumptionPerWeek": 2,
+    "dairyConsumptionPerWeek": 7
+  },
+  "transport": {
+    "car": {
+      "fuelType": "GASOLINE",
+      "kilometersPerYear": 15000,
+      "passengers": 1
+    },
+    "publicTransport": {
+      "type": "METRO",
+      "useFrequency": "HIGH"
+    },
+    "airTransport": {
+      "shortFlightsFrequencyPerYear": 2,
+      "mediumFlightsFrequencyPerYear": 1,
+      "longFlightsFrequencyPerYear": 0
+    },
+    "bikeUsePerWeek": 3
+  },
+  "housing": {
+    "housingType": "APARTMENT",
+    "surfaceArea": 50,
+    "heatingEnergySource": "ELECTRICITY"
+  },
+  "digital": {
+    "digitalConsumption": {
+      "hoursOfStreamingPerWeek": 10,
+      "chargingFrequencyPerDay": 2
+    },
+    "numberOfDevicesOwned": 4
+  }
+}
+```
 
 ---
 
@@ -70,7 +147,7 @@ Refer to [AGENTS.md](../../AGENTS.md) for general instructions regarding the rep
 - **Missions Tab**: Inaccessible/disabled.
 
 ### Screen 2: Survey Introduction Screen
-- **Route**: `/questionnaire` or `/survey`
+- **Route**: `/survey`
 - **Display**:
     - Close button (X) in top-right corner.
     - Title: "Il est temps pour un nouveau départ !"
@@ -79,11 +156,11 @@ Refer to [AGENTS.md](../../AGENTS.md) for general instructions regarding the rep
     - **"Démarrer le questionnaire"** button.
 - **Action**: Clicking "Démarrer" navigates to the questions screen.
 
-### Screen 3: Survey Questions Screen
+### Screen 3: Survey Questions Screen (19 questions)
 - **Navigation**: Expo Stack layout for question navigation.
 - **Display**:
     - Close button (X) in top-right corner.
-    - Progress indicator: "Question X sur Y" with progress bar.
+    - Progress indicator: "Question X sur 19" with progress bar.
     - Question text (bold, large).
     - Answer options as radio-button cards (single select).
     - **"Retour"** button (secondary, left).
@@ -96,46 +173,40 @@ Refer to [AGENTS.md](../../AGENTS.md) for general instructions regarding the rep
 
 ### Screen 4: Post-Survey
 - **After submission**:
-    - Survey completion status is saved.
-    - User is redirected to the updated Home screen (deferred).
+    - Survey completion status is saved via backend.
+    - User is redirected to the Home screen.
     - Missions tab becomes accessible.
 
 ---
 
 ## Survey Completion Tracking
 
-> **TODO**: Investigate where the app tracks whether the user has completed the survey.
-
-### Potential Locations:
-1. **Backend User Profile**: The backend may include a `hasCompletedSurvey` or `emissionsCalculated` field in the user profile or auth response.
-2. **Dedicated Endpoint**: There may be a `GET /user/emissions` or similar endpoint that returns `null`/empty if no survey has been submitted.
-3. **Local State**: If not tracked by backend, consider adding a `hasSurveyCompleted` field to `auth-store.ts` or creating a dedicated `survey-store.ts`.
-
-### Recommended Actions:
-- [ ] Check `UserEmissionsController.java` for a "get emissions" endpoint.
-- [ ] Check if the auth response includes survey/emissions status.
-- [ ] If no backend tracking exists, add TODO comments in code and create a local store solution.
+Survey completion is tracked by checking if the user has emission data:
+- **Endpoint**: `GET /emissions/user/:userId`
+- **Logic**: If endpoint returns data with `totalEmissions > 0`, survey is complete.
+- **Hook**: `useSurveyStatus()` handles this check.
 
 ---
 
-## File Structure (Target)
+## File Structure
 
 ```
 src/main/typescript/features/survey/
-├── index.tsx                  # Exports
+├── index.tsx                      # Exports
 ├── components/
 │   ├── survey-intro.screen.tsx    # Introduction screen
-│   ├── survey-question.screen.tsx # Question screen
+│   ├── survey-questions.screen.tsx # Questions screen
 │   └── answer-option.component.tsx # Reusable answer card
 ├── hooks/
 │   ├── index.ts
-│   ├── useSurvey.ts           # Survey state management
-│   └── useSubmitSurvey.ts     # API submission hook
+│   ├── useSurvey.ts              # Survey state (19 questions)
+│   ├── useSubmitSurvey.ts        # API submission
+│   └── useSurveyStatus.ts        # Check completion status
 ├── services/
 │   ├── index.ts
-│   └── survey.service.ts      # API calls
+│   └── survey.service.ts         # API calls
 └── types/
-    └── index.ts               # TypeScript interfaces
+    └── index.ts                  # TypeScript interfaces
 ```
 
 ---

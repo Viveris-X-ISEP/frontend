@@ -17,7 +17,12 @@ export interface SurveyAnswerOption {
 export interface SurveyQuestion {
   id: string;
   text: string;
-  options: SurveyAnswerOption[];
+  category: 'transport' | 'food' | 'housing' | 'digital';
+  inputType: 'radio' | 'number';
+  options?: SurveyAnswerOption[];
+  min?: number;
+  max?: number;
+  unit?: string;
 }
 
 /**
@@ -25,8 +30,8 @@ export interface SurveyQuestion {
  */
 export interface SurveyAnswer {
   questionId: string;
-  answerId: string;
-  value: string;
+  answerId?: string;
+  value: string | number;
 }
 
 // ===========================================
@@ -35,7 +40,7 @@ export interface SurveyAnswer {
 
 export type FuelType = 'ELECTRIC' | 'GASOLINE' | 'DIESEL' | 'HYBRID';
 export type LowMediumHigh = 'LOW' | 'MEDIUM' | 'HIGH';
-export type PublicTransportType = 'BUS' | 'METRO' | 'TRAIN' | 'TRAM';
+export type PublicTransportType = 'BUS' | 'TRAMWAY' | 'METRO' | 'TRAIN';
 export type EnergySource =
   | 'GAZ'
   | 'FUEL_OIL'
@@ -44,7 +49,7 @@ export type EnergySource =
   | 'WOOD'
   | 'CHIPS'
   | 'HEAT_NETWORK';
-export type HousingType = 'APARTMENT' | 'HOUSE';
+export type HousingType = 'APARTMENT' | 'HOUSE' | 'COLOCATION' | 'VILLA';
 export type EstimateOrigin = 'QUIZZ' | 'API' | 'MISSION';
 
 // ===========================================
@@ -64,8 +69,12 @@ export interface PublicTransport {
 }
 
 export interface AirTransport {
-  shortHaulFlightsPerYear: number;
-  longHaulFlightsPerYear: number;
+  /** Number of short-haul flights per year (<3h) */
+  shortFlightsFrequencyPerYear: number;
+  /** Number of medium-haul flights per year (3-6h) */
+  mediumFlightsFrequencyPerYear: number;
+  /** Number of long-haul flights per year (>6h) */
+  longFlightsFrequencyPerYear: number;
 }
 
 export interface Transport {
@@ -89,8 +98,10 @@ export interface Housing {
 }
 
 export interface DigitalConsumption {
-  streamingHoursPerWeek: number;
-  emailsPerDay: number;
+  /** Hours of video streaming per week */
+  hoursOfStreamingPerWeek: number;
+  /** Number of device charges per day */
+  chargingFrequencyPerDay: number;
 }
 
 export interface Digital {

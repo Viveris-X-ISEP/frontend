@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { SurveyService } from "../services";
 
 // TODO: Get userId from auth store once it's implemented
@@ -14,7 +14,7 @@ export function useSurveyStatus(userId: number = MOCK_USER_ID) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const checkSurveyStatus = async () => {
+  const checkSurveyStatus = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -35,11 +35,11 @@ export function useSurveyStatus(userId: number = MOCK_USER_ID) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userId]);
 
   useEffect(() => {
     checkSurveyStatus();
-  }, [userId]);
+  }, [checkSurveyStatus]);
 
   return {
     hasCompleted,

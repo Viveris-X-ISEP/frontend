@@ -18,84 +18,80 @@ export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
   const transformAnswersToPayload = (
     answers: SurveyAnswer[],
   ): FootprintQuizzPayload => {
-    const getAnswerValue = (questionId: string): string => {
+    const getAnswerValue = (questionId: string): string | number => {
       return answers.find((a) => a.questionId === questionId)?.value ?? "";
     };
 
-    // Map survey answers to backend DTO structure
-    const transportAnswer = getAnswerValue("transport");
-    const carAnswer = getAnswerValue("car");
-    const dietAnswer = getAnswerValue("diet");
-    const heatingAnswer = getAnswerValue("heating");
-    const wasteAnswer = getAnswerValue("waste");
+    const getNumericAnswer = (questionId: string, defaultValue: number): number => {
+      const value = getAnswerValue(questionId);
+      if (typeof value === 'number') return value;
+      const parsed = parseInt(value as string, 10);
+      return isNaN(parsed) ? defaultValue : parsed;
+    };
+
+    // Transport answers
+    const fuelType = getAnswerValue("car_fuel_type") as string || "GASOLINE";
+    const kmPerYear = getNumericAnswer("car_km_per_year", 10000);
+    const carPassengers = getNumericAnswer("car_passengers", 1);
+    const publicTransportType = getAnswerValue("public_transport_type") as string || "BUS";
+    const publicTransportFreq = getAnswerValue("public_transport_frequency") as string || "MEDIUM";
+    const shortFlights = getNumericAnswer("air_short_flights", 0);
+    const mediumFlights = getNumericAnswer("air_medium_flights", 0);
+    const longFlights = getNumericAnswer("air_long_flights", 0);
+    const bikeUse = getNumericAnswer("bike_use_per_week", 0);
+
+    // Food answers
+    const redMeat = getNumericAnswer("red_meat_per_week", 3);
+    const whiteMeat = getNumericAnswer("white_meat_per_week", 3);
+    const fish = getNumericAnswer("fish_per_week", 2);
+    const dairy = getNumericAnswer("dairy_per_week", 7);
+
+    // Housing answers
+    const housingType = getAnswerValue("housing_type") as string || "APARTMENT";
+    const surfaceArea = getNumericAnswer("surface_area", 50);
+    const heatingSource = getAnswerValue("heating_energy_source") as string || "GAZ";
+
+    // Digital answers
+    const streamingHours = getNumericAnswer("streaming_hours_per_week", 10);
+    const chargingFrequency = getNumericAnswer("charging_frequency_per_day", 2);
+    const devicesOwned = getNumericAnswer("devices_owned", 4);
 
     return {
       userId,
       transport: {
         car: {
-          fuelType: carAnswer === "yes_daily" ? "GASOLINE" : "ELECTRIC",
-          kilometersPerYear:
-            carAnswer === "yes_daily"
-              ? 15000
-              : carAnswer === "yes_occasionally"
-                ? 5000
-                : 0,
-          passengers: 1,
+          fuelType: fuelType as FootprintQuizzPayload['transport']['car']['fuelType'],
+          kilometersPerYear: kmPerYear,
+          passengers: carPassengers,
         },
         publicTransport: {
-          type: "BUS",
-          useFrequency:
-            transportAnswer === "daily"
-              ? "HIGH"
-              : transportAnswer === "weekly"
-                ? "MEDIUM"
-                : "LOW",
+          type: publicTransportType as FootprintQuizzPayload['transport']['publicTransport']['type'],
+          useFrequency: publicTransportFreq as FootprintQuizzPayload['transport']['publicTransport']['useFrequency'],
         },
         airTransport: {
-          shortHaulFlightsPerYear: 2,
-          longHaulFlightsPerYear: 1,
+          shortFlightsFrequencyPerYear: shortFlights,
+          mediumFlightsFrequencyPerYear: mediumFlights,
+          longFlightsFrequencyPerYear: longFlights,
         },
-        bikeUsePerWeek: transportAnswer === "never" ? 0 : 3,
+        bikeUsePerWeek: bikeUse,
       },
       food: {
-        redMeatConsumptionPerWeek:
-          dietAnswer === "vegan"
-            ? 0
-            : dietAnswer === "vegetarian"
-              ? 0
-              : dietAnswer === "flexitarian"
-                ? 2
-                : 5,
-        whiteMeatConsumptionPerWeek:
-          dietAnswer === "vegan"
-            ? 0
-            : dietAnswer === "vegetarian"
-              ? 0
-              : dietAnswer === "flexitarian"
-                ? 3
-                : 4,
-        fishConsumptionPerWeek:
-          dietAnswer === "vegan" ? 0 : dietAnswer === "vegetarian" ? 0 : 2,
-        dairyConsumptionPerWeek: dietAnswer === "vegan" ? 0 : 7,
+        redMeatConsumptionPerWeek: redMeat,
+        whiteMeatConsumptionPerWeek: whiteMeat,
+        fishConsumptionPerWeek: fish,
+        dairyConsumptionPerWeek: dairy,
       },
       housing: {
-        housingType: "APARTMENT",
-        surfaceArea: 60,
-        heatingEnergySource:
-          heatingAnswer === "electric"
-            ? "ELECTRICITY"
-            : heatingAnswer === "gas"
-              ? "GAZ"
-              : heatingAnswer === "wood"
-                ? "WOOD"
-                : "HEAT_PUMP",
+        housingType: housingType as FootprintQuizzPayload['housing']['housingType'],
+        surfaceArea: surfaceArea,
+        heatingEnergySource: heatingSource as FootprintQuizzPayload['housing']['heatingEnergySource'],
       },
       digital: {
         digitalConsumption: {
-          streamingHoursPerWeek: 10,
-          emailsPerDay: 20,
+          hoursOfStreamingPerWeek: streamingHours,
+          chargingFrequencyPerDay: chargingFrequency,
         },
-        numberOfDevicesOwned: 5,
+        numberOfDevicesOwned: devicesOwned,
       },
     };
   };

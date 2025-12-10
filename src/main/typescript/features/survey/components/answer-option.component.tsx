@@ -6,7 +6,7 @@ import type { SurveyAnswerOption } from "../types";
 interface AnswerOptionProps {
   option: SurveyAnswerOption;
   isSelected: boolean;
-  onSelect: (id: string, value: string) => void;
+  onSelect: (id: string, value: string | number) => void;
 }
 
 export default function AnswerOption({

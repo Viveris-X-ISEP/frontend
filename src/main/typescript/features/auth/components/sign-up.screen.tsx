@@ -96,7 +96,7 @@ export default function SignUpScreen() {
 
           <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
             <Text style={styles.secondaryButtonText}>
-              S'inscrire avec Google
+              S&apos;inscrire avec Google
             </Text>
           </TouchableOpacity>
         </View>
