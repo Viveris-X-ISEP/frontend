@@ -1,18 +1,12 @@
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  Image,
-} from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme, type Theme } from "../../../shared/theme";
 import { useSurveyStatus } from "../../survey/hooks";
 
 // Placeholder avatar - in production this would come from user profile
-const AVATAR_PLACEHOLDER = "https://api.dicebear.com/7.x/avataaars/png?seed=EcoWarrior&backgroundColor=f0f0f0";
+const AVATAR_PLACEHOLDER =
+  "https://api.dicebear.com/7.x/avataaars/png?seed=EcoWarrior&backgroundColor=f0f0f0";
 
 export default function HomeScreen() {
   const { theme } = useTheme();
@@ -41,10 +35,7 @@ export default function HomeScreen() {
 
         {/* User Profile Card - Figma Style */}
         <View style={styles.profileCard}>
-          <Image
-            source={{ uri: AVATAR_PLACEHOLDER }}
-            style={styles.avatar}
-          />
+          <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
           <View style={styles.profileInfo}>
             <Text style={styles.username}>EcoWarrior</Text>
             <Text style={styles.level}>Niveau 1</Text>
@@ -55,15 +46,10 @@ export default function HomeScreen() {
         {/* No Data Message with Survey Button */}
         <View style={styles.noDataContainer}>
           <Text style={styles.noDataTitle}>Pas de données !</Text>
-          <Text style={styles.noDataSubtitle}>
-            Calculons votre empreinte carbone.
-          </Text>
+          <Text style={styles.noDataSubtitle}>Calculons votre empreinte carbone.</Text>
 
           {/* Survey Button - Inside content area per Figma */}
-          <TouchableOpacity
-            style={styles.surveyButton}
-            onPress={handleStartSurvey}
-          >
+          <TouchableOpacity style={styles.surveyButton} onPress={handleStartSurvey}>
             <Text style={styles.surveyButtonText}>Répondre au questionnaire</Text>
           </TouchableOpacity>
         </View>
@@ -79,10 +65,7 @@ export default function HomeScreen() {
 
       {/* User Profile Card - Figma Style */}
       <View style={styles.profileCard}>
-        <Image
-          source={{ uri: AVATAR_PLACEHOLDER }}
-          style={styles.avatar}
-        />
+        <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
         <View style={styles.profileInfo}>
           <Text style={styles.username}>EcoWarrior</Text>
           <Text style={styles.level}>Niveau 3</Text>
@@ -92,9 +75,7 @@ export default function HomeScreen() {
 
       {/* TODO: Add mission card, emissions chart, etc. */}
       <View style={styles.placeholder}>
-        <Text style={styles.placeholderText}>
-          Empreinte carbone et missions à implémenter
-        </Text>
+        <Text style={styles.placeholderText}>Empreinte carbone et missions à implémenter</Text>
       </View>
     </SafeAreaView>
   );

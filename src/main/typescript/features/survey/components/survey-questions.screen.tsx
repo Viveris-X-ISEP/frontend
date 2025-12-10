@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -48,19 +42,14 @@ export default function SurveyQuestionsScreen() {
     goToPreviousQuestion();
   };
 
-  const progressPercentage =
-    ((currentQuestionIndex + 1) / totalQuestions) * 100;
+  const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
   const canProceed = currentAnswer !== undefined;
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Close Button */}
       <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-        <Ionicons
-          name="close"
-          size={theme.fontSizes.xxl}
-          color={theme.colors.text}
-        />
+        <Ionicons name="close" size={theme.fontSizes.xxl} color={theme.colors.text} />
       </TouchableOpacity>
 
       {/* Progress Section */}
@@ -70,12 +59,7 @@ export default function SurveyQuestionsScreen() {
         </Text>
         <View style={styles.progressBarContainer}>
           <View style={styles.progressBarBackground}>
-            <View
-              style={[
-                styles.progressBarFill,
-                { width: `${progressPercentage}%` },
-              ]}
-            />
+            <View style={[styles.progressBarFill, { width: `${progressPercentage}%` }]} />
           </View>
         </View>
       </View>
@@ -90,7 +74,7 @@ export default function SurveyQuestionsScreen() {
 
         {/* Answer Options */}
         <View style={styles.optionsContainer}>
-          {currentQuestion?.options.map((option) => (
+          {currentQuestion?.options?.map((option) => (
             <AnswerOption
               key={option.id}
               option={option}
@@ -111,12 +95,7 @@ export default function SurveyQuestionsScreen() {
           onPress={handlePrevious}
           disabled={isFirstQuestion}
         >
-          <Text
-            style={[
-              styles.secondaryButtonText,
-              isFirstQuestion && styles.disabledText,
-            ]}
-          >
+          <Text style={[styles.secondaryButtonText, isFirstQuestion && styles.disabledText]}>
             Retour
           </Text>
         </TouchableOpacity>
@@ -131,11 +110,7 @@ export default function SurveyQuestionsScreen() {
           disabled={!canProceed || isSubmitting}
         >
           <Text style={styles.primaryButtonText}>
-            {isSubmitting
-              ? "Envoi..."
-              : isLastQuestion
-                ? "Terminer"
-                : "Suivant"}
+            {isSubmitting ? "Envoi..." : isLastQuestion ? "Terminer" : "Suivant"}
           </Text>
         </TouchableOpacity>
       </View>

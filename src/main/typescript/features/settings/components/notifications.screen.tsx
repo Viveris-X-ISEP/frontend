@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
-import { useTheme, type Theme } from '../../../shared/theme';
+import { useState } from "react";
+import { View, Text, Switch, StyleSheet } from "react-native";
+import { useTheme, type Theme } from "../../../shared/theme";
 
 interface NotificationSetting {
   id: string;
@@ -10,20 +10,19 @@ interface NotificationSetting {
 
 const notificationSettings: NotificationSetting[] = [
   {
-    id: 'missions',
-    label: 'Nouvelles missions',
-    description:
-      'Recevoir une notification quand de nouvelles missions sont disponibles',
+    id: "missions",
+    label: "Nouvelles missions",
+    description: "Recevoir une notification quand de nouvelles missions sont disponibles",
   },
   {
-    id: 'reminders',
-    label: 'Rappels',
-    description: 'Recevoir des rappels pour les missions en cours',
+    id: "reminders",
+    label: "Rappels",
+    description: "Recevoir des rappels pour les missions en cours",
   },
   {
-    id: 'community',
-    label: 'Communauté',
-    description: 'Notifications liées à la communauté',
+    id: "community",
+    label: "Communauté",
+    description: "Notifications liées à la communauté",
   },
 ];
 
@@ -51,9 +50,7 @@ export default function NotificationsScreen() {
         <View key={setting.id} style={styles.row}>
           <View style={styles.textContainer}>
             <Text style={styles.label}>{setting.label}</Text>
-            {setting.description && (
-              <Text style={styles.description}>{setting.description}</Text>
-            )}
+            {setting.description && <Text style={styles.description}>{setting.description}</Text>}
           </View>
           <Switch
             value={settings[setting.id]}
@@ -79,9 +76,9 @@ const createStyles = (theme: Theme) =>
       paddingTop: theme.spacing.lg,
     },
     row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       paddingVertical: theme.spacing.md,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.outline,
@@ -93,7 +90,7 @@ const createStyles = (theme: Theme) =>
     label: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      fontWeight: '500',
+      fontWeight: "500",
     },
     description: {
       fontSize: theme.fontSizes.sm,

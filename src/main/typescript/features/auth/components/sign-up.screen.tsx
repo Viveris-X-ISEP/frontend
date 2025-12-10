@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,16 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-} from 'react-native';
-import { Link } from 'expo-router';
-import { useSignUp } from '../hooks';
-import { useTheme, type Theme } from '../../../shared/theme';
+} from "react-native";
+import { Link } from "expo-router";
+import { useSignUp } from "../hooks";
+import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function SignUpScreen() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const { handleSignUp, isLoading, error } = useSignUp();
   const { theme } = useTheme();
 
@@ -30,12 +30,9 @@ export default function SignUpScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Rejoignez la Green Team !</Text>
 
         {error && <Text style={styles.error}>{error}</Text>}
@@ -90,14 +87,12 @@ export default function SignUpScreen() {
             disabled={isLoading}
           >
             <Text style={styles.primaryButtonText}>
-              {isLoading ? 'Inscription...' : "S'inscrire"}
+              {isLoading ? "Inscription..." : "S'inscrire"}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
-            <Text style={styles.secondaryButtonText}>
-              S&apos;inscrire avec Google
-            </Text>
+            <Text style={styles.secondaryButtonText}>S&apos;inscrire avec Google</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -117,7 +112,7 @@ const createStyles = (theme: Theme) =>
     },
     title: {
       fontSize: theme.fontSizes.xxl,
-      fontWeight: 'bold',
+      fontWeight: "bold",
       color: theme.colors.text,
       marginTop: theme.spacing.xl,
       marginBottom: theme.spacing.xl,
@@ -134,25 +129,25 @@ const createStyles = (theme: Theme) =>
     link: {
       color: theme.colors.primary,
       fontSize: theme.fontSizes.md,
-      textAlign: 'center',
+      textAlign: "center",
       marginVertical: theme.spacing.sm,
     },
     error: {
       color: theme.colors.error,
       marginBottom: theme.spacing.md,
-      textAlign: 'center',
+      textAlign: "center",
     },
     bottomContainer: {
       flex: 1,
-      justifyContent: 'flex-end',
+      justifyContent: "flex-end",
       marginTop: theme.spacing.xl,
       marginBottom: theme.spacing.xl,
     },
     button: {
       height: 56,
       borderRadius: theme.borderRadius.lg,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
       marginTop: theme.spacing.md,
     },
     primaryButton: {
@@ -161,7 +156,7 @@ const createStyles = (theme: Theme) =>
     primaryButtonText: {
       color: theme.button.primary.text,
       fontSize: theme.fontSizes.lg,
-      fontWeight: '600',
+      fontWeight: "600",
     },
     secondaryButton: {
       backgroundColor: theme.button.secondary.background,
@@ -169,6 +164,6 @@ const createStyles = (theme: Theme) =>
     secondaryButtonText: {
       color: theme.button.secondary.text,
       fontSize: theme.fontSizes.lg,
-      fontWeight: '600',
+      fontWeight: "600",
     },
   });

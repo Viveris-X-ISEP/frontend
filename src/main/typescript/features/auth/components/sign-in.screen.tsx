@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { Link } from "expo-router";
 import { useSignIn } from "../hooks";
 import { useTheme, type Theme } from "../../../shared/theme";
@@ -71,9 +65,7 @@ export default function SignInScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
-          <Text style={styles.secondaryButtonText}>
-            Se connecter avec Google
-          </Text>
+          <Text style={styles.secondaryButtonText}>Se connecter avec Google</Text>
         </TouchableOpacity>
       </View>
     </View>

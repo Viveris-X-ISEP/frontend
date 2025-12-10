@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import { useAuthStore } from '../../../store';
-import { AuthService } from '../services';
-import type { SignUpCredentials } from '../types';
+import { useState } from "react";
+import { useRouter } from "expo-router";
+import { useAuthStore } from "../../../store";
+import { AuthService } from "../services";
+import type { SignUpCredentials } from "../types";
 
 export function useSignUp() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,12 +14,12 @@ export function useSignUp() {
   const handleSignUp = async (credentials: SignUpCredentials) => {
     // Client-side validation
     if (credentials.password !== credentials.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setError("Les mots de passe ne correspondent pas");
       return;
     }
 
     if (credentials.password.length < 12) {
-      setError('Le mot de passe doit contenir au moins 12 caractères');
+      setError("Le mot de passe doit contenir au moins 12 caractères");
       return;
     }
 
@@ -29,13 +29,11 @@ export function useSignUp() {
     try {
       const response = await AuthService.signUp(credentials);
       await signIn(response.token, response.refreshToken);
-      router.replace('/(tabs)/(home)');
+      router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string; error?: string } } };
       const message =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        "Échec de l'inscription";
+        error.response?.data?.message || error.response?.data?.error || "Échec de l'inscription";
       setError(message);
     } finally {
       setIsLoading(false);

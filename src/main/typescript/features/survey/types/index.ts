@@ -17,8 +17,8 @@ export interface SurveyAnswerOption {
 export interface SurveyQuestion {
   id: string;
   text: string;
-  category: 'transport' | 'food' | 'housing' | 'digital';
-  inputType: 'radio' | 'number';
+  category: "transport" | "food" | "housing" | "digital";
+  inputType: "radio" | "number";
   options?: SurveyAnswerOption[];
   min?: number;
   max?: number;
@@ -38,19 +38,19 @@ export interface SurveyAnswer {
 // ENUM TYPES (matching backend enums)
 // ===========================================
 
-export type FuelType = 'ELECTRIC' | 'GASOLINE' | 'DIESEL' | 'HYBRID';
-export type LowMediumHigh = 'LOW' | 'MEDIUM' | 'HIGH';
-export type PublicTransportType = 'BUS' | 'TRAMWAY' | 'METRO' | 'TRAIN';
+export type FuelType = "ELECTRIC" | "GASOLINE" | "DIESEL" | "HYBRID";
+export type LowMediumHigh = "LOW" | "MEDIUM" | "HIGH";
+export type PublicTransportType = "BUS" | "TRAMWAY" | "METRO" | "TRAIN";
 export type EnergySource =
-  | 'GAZ'
-  | 'FUEL_OIL'
-  | 'ELECTRICITY'
-  | 'HEAT_PUMP'
-  | 'WOOD'
-  | 'CHIPS'
-  | 'HEAT_NETWORK';
-export type HousingType = 'APARTMENT' | 'HOUSE' | 'COLOCATION' | 'VILLA';
-export type EstimateOrigin = 'QUIZZ' | 'API' | 'MISSION';
+  | "GAZ"
+  | "FUEL_OIL"
+  | "ELECTRICITY"
+  | "HEAT_PUMP"
+  | "WOOD"
+  | "CHIPS"
+  | "HEAT_NETWORK";
+export type HousingType = "APARTMENT" | "HOUSE" | "COLOCATION" | "VILLA";
+export type EstimateOrigin = "QUIZZ" | "API" | "MISSION";
 
 // ===========================================
 // REQUEST PAYLOADS (sent to backend)
@@ -157,4 +157,3 @@ export interface SurveyFormState {
   isSubmitting: boolean;
   error: string | null;
 }
-

@@ -266,16 +266,12 @@ export function useSurvey() {
   const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
   // Get the current answer for the current question
-  const currentAnswer = answers.find(
-    (a) => a.questionId === currentQuestion?.id,
-  );
+  const currentAnswer = answers.find((a) => a.questionId === currentQuestion?.id);
 
   const selectAnswer = useCallback(
     (answerId: string, value: string | number) => {
       setAnswers((prev) => {
-        const existingIndex = prev.findIndex(
-          (a) => a.questionId === currentQuestion.id,
-        );
+        const existingIndex = prev.findIndex((a) => a.questionId === currentQuestion.id);
         const newAnswer: SurveyAnswer = {
           questionId: currentQuestion.id,
           answerId,
@@ -290,7 +286,7 @@ export function useSurvey() {
         return [...prev, newAnswer];
       });
     },
-    [currentQuestion?.id],
+    [currentQuestion?.id]
   );
 
   const goToNextQuestion = useCallback(() => {

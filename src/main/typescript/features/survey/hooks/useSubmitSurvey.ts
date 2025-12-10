@@ -15,26 +15,25 @@ export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
    * Transform survey answers into API payload
    * Maps simplified survey answers to full FootprintQuizzDto structure
    */
-  const transformAnswersToPayload = (
-    answers: SurveyAnswer[],
-  ): FootprintQuizzPayload => {
+  const transformAnswersToPayload = (answers: SurveyAnswer[]): FootprintQuizzPayload => {
     const getAnswerValue = (questionId: string): string | number => {
       return answers.find((a) => a.questionId === questionId)?.value ?? "";
     };
 
     const getNumericAnswer = (questionId: string, defaultValue: number): number => {
       const value = getAnswerValue(questionId);
-      if (typeof value === 'number') return value;
+      if (typeof value === "number") return value;
       const parsed = parseInt(value as string, 10);
       return isNaN(parsed) ? defaultValue : parsed;
     };
 
     // Transport answers
-    const fuelType = getAnswerValue("car_fuel_type") as string || "GASOLINE";
+    const fuelType = (getAnswerValue("car_fuel_type") as string) || "GASOLINE";
     const kmPerYear = getNumericAnswer("car_km_per_year", 10000);
     const carPassengers = getNumericAnswer("car_passengers", 1);
-    const publicTransportType = getAnswerValue("public_transport_type") as string || "BUS";
-    const publicTransportFreq = getAnswerValue("public_transport_frequency") as string || "MEDIUM";
+    const publicTransportType = (getAnswerValue("public_transport_type") as string) || "BUS";
+    const publicTransportFreq =
+      (getAnswerValue("public_transport_frequency") as string) || "MEDIUM";
     const shortFlights = getNumericAnswer("air_short_flights", 0);
     const mediumFlights = getNumericAnswer("air_medium_flights", 0);
     const longFlights = getNumericAnswer("air_long_flights", 0);
@@ -47,9 +46,9 @@ export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
     const dairy = getNumericAnswer("dairy_per_week", 7);
 
     // Housing answers
-    const housingType = getAnswerValue("housing_type") as string || "APARTMENT";
+    const housingType = (getAnswerValue("housing_type") as string) || "APARTMENT";
     const surfaceArea = getNumericAnswer("surface_area", 50);
-    const heatingSource = getAnswerValue("heating_energy_source") as string || "GAZ";
+    const heatingSource = (getAnswerValue("heating_energy_source") as string) || "GAZ";
 
     // Digital answers
     const streamingHours = getNumericAnswer("streaming_hours_per_week", 10);
@@ -60,13 +59,14 @@ export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
       userId,
       transport: {
         car: {
-          fuelType: fuelType as FootprintQuizzPayload['transport']['car']['fuelType'],
+          fuelType: fuelType as FootprintQuizzPayload["transport"]["car"]["fuelType"],
           kilometersPerYear: kmPerYear,
           passengers: carPassengers,
         },
         publicTransport: {
-          type: publicTransportType as FootprintQuizzPayload['transport']['publicTransport']['type'],
-          useFrequency: publicTransportFreq as FootprintQuizzPayload['transport']['publicTransport']['useFrequency'],
+          type: publicTransportType as FootprintQuizzPayload["transport"]["publicTransport"]["type"],
+          useFrequency:
+            publicTransportFreq as FootprintQuizzPayload["transport"]["publicTransport"]["useFrequency"],
         },
         airTransport: {
           shortFlightsFrequencyPerYear: shortFlights,
@@ -82,9 +82,10 @@ export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
         dairyConsumptionPerWeek: dairy,
       },
       housing: {
-        housingType: housingType as FootprintQuizzPayload['housing']['housingType'],
+        housingType: housingType as FootprintQuizzPayload["housing"]["housingType"],
         surfaceArea: surfaceArea,
-        heatingEnergySource: heatingSource as FootprintQuizzPayload['housing']['heatingEnergySource'],
+        heatingEnergySource:
+          heatingSource as FootprintQuizzPayload["housing"]["heatingEnergySource"],
       },
       digital: {
         digitalConsumption: {

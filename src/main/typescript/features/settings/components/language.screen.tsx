@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTheme, type Theme } from '../../../shared/theme';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useTheme, type Theme } from "../../../shared/theme";
 
 interface LanguageOption {
   value: string;
@@ -7,8 +7,8 @@ interface LanguageOption {
 }
 
 const languageOptions: LanguageOption[] = [
-  { value: 'fr', label: 'Français' },
-  { value: 'en', label: 'English' },
+  { value: "fr", label: "Français" },
+  { value: "en", label: "English" },
 ];
 
 export default function LanguageScreen() {
@@ -16,11 +16,11 @@ export default function LanguageScreen() {
   const styles = createStyles(theme);
 
   // TODO: Implement language store
-  const currentLanguage = 'fr';
+  const currentLanguage = "fr";
 
   const handleLanguageSelect = (languageCode: string) => {
     // TODO: Implement language switching
-    console.log('Language selected:', languageCode);
+    console.log("Language selected:", languageCode);
   };
 
   return (
@@ -32,9 +32,7 @@ export default function LanguageScreen() {
           onPress={() => handleLanguageSelect(option.value)}
         >
           <Text style={styles.rowText}>{option.label}</Text>
-          {currentLanguage === option.value && (
-            <Text style={styles.checkmark}>✓</Text>
-          )}
+          {currentLanguage === option.value && <Text style={styles.checkmark}>✓</Text>}
         </TouchableOpacity>
       ))}
     </View>
@@ -50,9 +48,9 @@ const createStyles = (theme: Theme) =>
       paddingTop: theme.spacing.lg,
     },
     row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       paddingVertical: theme.spacing.md,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.outline,
@@ -64,6 +62,6 @@ const createStyles = (theme: Theme) =>
     checkmark: {
       fontSize: theme.fontSizes.lg,
       color: theme.colors.primary,
-      fontWeight: 'bold',
+      fontWeight: "bold",
     },
   });

@@ -1,3 +1,3 @@
-import SignInScreen from '../../features/auth/components/sign-in.screen';
+import SignInScreen from "../../features/auth/components/sign-in.screen";
 
 export default SignInScreen;

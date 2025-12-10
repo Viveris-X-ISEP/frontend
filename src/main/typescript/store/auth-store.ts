@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import * as SecureStore from 'expo-secure-store';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import * as SecureStore from "expo-secure-store";
 
 // Custom SecureStore adapter for Zustand persist
 const secureStorage = {
@@ -35,27 +35,27 @@ export const useAuthStore = create<AuthState>()(
 
       signIn: async (token, refreshToken) => {
         // Store tokens in SecureStore (separate from Zustand persistence for security)
-        await SecureStore.setItemAsync('auth_token', token);
-        await SecureStore.setItemAsync('refresh_token', refreshToken);
+        await SecureStore.setItemAsync("auth_token", token);
+        await SecureStore.setItemAsync("refresh_token", refreshToken);
         set({ isLoggedIn: true, token, refreshToken });
       },
 
       signOut: async () => {
         // Clear tokens from SecureStore
-        await SecureStore.deleteItemAsync('auth_token');
-        await SecureStore.deleteItemAsync('refresh_token');
+        await SecureStore.deleteItemAsync("auth_token");
+        await SecureStore.deleteItemAsync("refresh_token");
         set({ isLoggedIn: false, token: null, refreshToken: null });
       },
 
       updateTokens: async (token, refreshToken) => {
         // Update tokens in SecureStore
-        await SecureStore.setItemAsync('auth_token', token);
-        await SecureStore.setItemAsync('refresh_token', refreshToken);
+        await SecureStore.setItemAsync("auth_token", token);
+        await SecureStore.setItemAsync("refresh_token", refreshToken);
         set({ token, refreshToken });
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => secureStorage),
       // Only persist isLoggedIn state; tokens are in SecureStore
       partialize: (state) => ({ isLoggedIn: state.isLoggedIn }),

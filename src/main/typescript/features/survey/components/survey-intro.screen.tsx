@@ -1,9 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -26,20 +21,15 @@ export default function SurveyIntroScreen() {
     <SafeAreaView style={styles.container}>
       {/* Close Button */}
       <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-        <Ionicons
-          name="close"
-          size={theme.fontSizes.xxl}
-          color={theme.colors.text}
-        />
+        <Ionicons name="close" size={theme.fontSizes.xxl} color={theme.colors.text} />
       </TouchableOpacity>
 
       {/* Content */}
       <View style={styles.content}>
         <Text style={styles.title}>Il est temps pour un nouveau départ !</Text>
         <Text style={styles.subtitle}>
-          Cela fait un moment que vous n&apos;avez pas mis à jour votre
-          empreinte carbone. Refaites le sondage pour un suivi plus précis et
-          des défis personnalisés.
+          Cela fait un moment que vous n&apos;avez pas mis à jour votre empreinte carbone. Refaites
+          le sondage pour un suivi plus précis et des défis personnalisés.
         </Text>
 
         {/* Earth Illustration */}

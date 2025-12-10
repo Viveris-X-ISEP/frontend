@@ -76,27 +76,21 @@ export default function TabLayout() {
         name="(home)/index"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => (
-            <Entypo name="home" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Entypo name="home" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="community/index"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="people" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <Ionicons name="people" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="gear" size={28} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome name="gear" size={28} color={color} />,
         }}
       />
     </Tabs>

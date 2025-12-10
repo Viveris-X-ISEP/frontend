@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import { useAuthStore } from '../../../store';
-import { AuthService } from '../services';
-import type { SignInCredentials } from '../types';
+import { useState } from "react";
+import { useRouter } from "expo-router";
+import { useAuthStore } from "../../../store";
+import { AuthService } from "../services";
+import type { SignInCredentials } from "../types";
 
 export function useSignIn() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +18,11 @@ export function useSignIn() {
     try {
       const response = await AuthService.signIn(credentials);
       await signIn(response.token, response.refreshToken);
-      router.replace('/(tabs)/(home)');
+      router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string; error?: string } } };
       const message =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        'Identifiants invalides';
+        error.response?.data?.message || error.response?.data?.error || "Identifiants invalides";
       setError(message);
     } finally {
       setIsLoading(false);

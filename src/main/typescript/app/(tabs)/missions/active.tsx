@@ -1,3 +1,3 @@
-import ActiveScreen from '../../../features/missions/components/active.screen';
+import ActiveScreen from "../../../features/missions/components/active.screen";
 
 export default ActiveScreen;

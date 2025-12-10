@@ -1,5 +1,5 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import * as SecureStore from 'expo-secure-store';
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -7,16 +7,16 @@ export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
 // Flag to prevent multiple refresh attempts
 let isRefreshing = false;
-let failedQueue: Array<{
+let failedQueue: {
   resolve: (token: string) => void;
   reject: (error: unknown) => void;
-}> = [];
+}[] = [];
 
 const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue.forEach((prom) => {
@@ -32,7 +32,7 @@ const processQueue = (error: unknown, token: string | null = null) => {
 // Request interceptor - inject Bearer token
 apiClient.interceptors.request.use(
   async (config) => {
-    const token = await SecureStore.getItemAsync('auth_token');
+    const token = await SecureStore.getItemAsync("auth_token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -65,10 +65,10 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const refreshToken = await SecureStore.getItemAsync('refresh_token');
+        const refreshToken = await SecureStore.getItemAsync("refresh_token");
 
         if (!refreshToken) {
-          throw new Error('No refresh token');
+          throw new Error("No refresh token");
         }
 
         // Call refresh endpoint (without interceptors to avoid loop)
@@ -79,8 +79,8 @@ apiClient.interceptors.response.use(
         const { token, refreshToken: newRefreshToken } = response.data;
 
         // Store new tokens
-        await SecureStore.setItemAsync('auth_token', token);
-        await SecureStore.setItemAsync('refresh_token', newRefreshToken);
+        await SecureStore.setItemAsync("auth_token", token);
+        await SecureStore.setItemAsync("refresh_token", newRefreshToken);
 
         processQueue(null, token);
 
@@ -91,8 +91,8 @@ apiClient.interceptors.response.use(
         processQueue(refreshError, null);
 
         // Clear tokens on refresh failure (user needs to re-login)
-        await SecureStore.deleteItemAsync('auth_token');
-        await SecureStore.deleteItemAsync('refresh_token');
+        await SecureStore.deleteItemAsync("auth_token");
+        await SecureStore.deleteItemAsync("refresh_token");
 
         // Note: The auth store will handle redirect via its listener
         return Promise.reject(refreshError);

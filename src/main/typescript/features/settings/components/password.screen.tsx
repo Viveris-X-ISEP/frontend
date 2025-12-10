@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   View,
   Text,
@@ -7,16 +7,16 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { useTheme, type Theme } from '../../../shared/theme';
+} from "react-native";
+import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function PasswordScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,21 +24,21 @@ export default function PasswordScreen() {
     setError(null);
 
     if (newPassword !== confirmPassword) {
-      setError('Les mots de passe ne correspondent pas');
+      setError("Les mots de passe ne correspondent pas");
       return;
     }
 
     if (newPassword.length < 12) {
-      setError('Le mot de passe doit contenir au moins 12 caractères');
+      setError("Le mot de passe doit contenir au moins 12 caractères");
       return;
     }
 
     setIsLoading(true);
     try {
       // TODO: Implement password change API call
-      console.log('Password change submitted');
+      console.log("Password change submitted");
     } catch (err) {
-      setError('Échec du changement de mot de passe');
+      setError("Échec du changement de mot de passe");
     } finally {
       setIsLoading(false);
     }
@@ -47,7 +47,7 @@ export default function PasswordScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       {error && <Text style={styles.error}>{error}</Text>}
 
@@ -84,7 +84,7 @@ export default function PasswordScreen() {
         disabled={isLoading}
       >
         <Text style={styles.buttonText}>
-          {isLoading ? 'Modification...' : 'Modifier le mot de passe'}
+          {isLoading ? "Modification..." : "Modifier le mot de passe"}
         </Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
@@ -112,8 +112,8 @@ const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.primary,
       height: 56,
       borderRadius: theme.borderRadius.full,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
       marginTop: theme.spacing.lg,
     },
     buttonDisabled: {
@@ -122,11 +122,11 @@ const createStyles = (theme: Theme) =>
     buttonText: {
       color: theme.colors.text,
       fontSize: theme.fontSizes.lg,
-      fontWeight: '600',
+      fontWeight: "600",
     },
     error: {
       color: theme.colors.error,
       marginBottom: theme.spacing.md,
-      textAlign: 'center',
+      textAlign: "center",
     },
   });

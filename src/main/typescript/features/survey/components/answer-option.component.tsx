@@ -9,11 +9,7 @@ interface AnswerOptionProps {
   onSelect: (id: string, value: string | number) => void;
 }
 
-export default function AnswerOption({
-  option,
-  isSelected,
-  onSelect,
-}: AnswerOptionProps) {
+export default function AnswerOption({ option, isSelected, onSelect }: AnswerOptionProps) {
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
@@ -25,11 +21,7 @@ export default function AnswerOption({
     >
       <View style={[styles.radio, isSelected && styles.radioSelected]}>
         {isSelected && (
-          <Ionicons
-            name="checkmark"
-            size={theme.fontSizes.sm}
-            color={theme.colors.background}
-          />
+          <Ionicons name="checkmark" size={theme.fontSizes.sm} color={theme.colors.background} />
         )}
       </View>
       <Text style={styles.label}>{option.label}</Text>

@@ -6,13 +6,8 @@ export const SurveyService = {
    * POST /emissions/calculate
    * Calculate and save user emissions from survey
    */
-  calculateEmissions: async (
-    payload: FootprintQuizzPayload,
-  ): Promise<UserEmissionDto> => {
-    const response = await apiClient.post<UserEmissionDto>(
-      "/emissions/calculate",
-      payload,
-    );
+  calculateEmissions: async (payload: FootprintQuizzPayload): Promise<UserEmissionDto> => {
+    const response = await apiClient.post<UserEmissionDto>("/emissions/calculate", payload);
     return response.data;
   },
 
@@ -21,9 +16,7 @@ export const SurveyService = {
    * Get latest emission for a user
    */
   getLatestEmission: async (userId: number): Promise<UserEmissionDto> => {
-    const response = await apiClient.get<UserEmissionDto>(
-      `/emissions/user/${userId}`,
-    );
+    const response = await apiClient.get<UserEmissionDto>(`/emissions/user/${userId}`);
     return response.data;
   },
 
@@ -32,9 +25,7 @@ export const SurveyService = {
    * Get all emissions history for a user
    */
   getAllEmissions: async (userId: number): Promise<UserEmissionDto[]> => {
-    const response = await apiClient.get<UserEmissionDto[]>(
-      `/emissions/all/user/${userId}`,
-    );
+    const response = await apiClient.get<UserEmissionDto[]>(`/emissions/all/user/${userId}`);
     return response.data;
   },
 
@@ -43,9 +34,7 @@ export const SurveyService = {
    * Get latest API-based emission for a user
    */
   getLatestApiEmission: async (userId: number): Promise<UserEmissionDto> => {
-    const response = await apiClient.get<UserEmissionDto>(
-      `/emissions/api/user/${userId}`,
-    );
+    const response = await apiClient.get<UserEmissionDto>(`/emissions/api/user/${userId}`);
     return response.data;
   },
 
@@ -54,9 +43,7 @@ export const SurveyService = {
    * Get all API-based emissions for a user
    */
   getAllApiEmissions: async (userId: number): Promise<UserEmissionDto[]> => {
-    const response = await apiClient.get<UserEmissionDto[]>(
-      `/emissions/all/api/user/${userId}`,
-    );
+    const response = await apiClient.get<UserEmissionDto[]>(`/emissions/all/api/user/${userId}`);
     return response.data;
   },
 
@@ -64,12 +51,8 @@ export const SurveyService = {
    * GET /emissions/missions/user/:userId
    * Get latest mission-based emission for a user
    */
-  getLatestMissionEmission: async (
-    userId: number,
-  ): Promise<UserEmissionDto> => {
-    const response = await apiClient.get<UserEmissionDto>(
-      `/emissions/missions/user/${userId}`,
-    );
+  getLatestMissionEmission: async (userId: number): Promise<UserEmissionDto> => {
+    const response = await apiClient.get<UserEmissionDto>(`/emissions/missions/user/${userId}`);
     return response.data;
   },
 
@@ -77,11 +60,9 @@ export const SurveyService = {
    * GET /emissions/all/missions/user/:userId
    * Get all mission-based emissions for a user
    */
-  getAllMissionEmissions: async (
-    userId: number,
-  ): Promise<UserEmissionDto[]> => {
+  getAllMissionEmissions: async (userId: number): Promise<UserEmissionDto[]> => {
     const response = await apiClient.get<UserEmissionDto[]>(
-      `/emissions/all/missions/user/${userId}`,
+      `/emissions/all/missions/user/${userId}`
     );
     return response.data;
   },
@@ -91,9 +72,7 @@ export const SurveyService = {
    */
   hasCompletedSurvey: async (userId: number): Promise<boolean> => {
     try {
-      const response = await apiClient.get<UserEmissionDto>(
-        `/emissions/user/${userId}`,
-      );
+      const response = await apiClient.get<UserEmissionDto>(`/emissions/user/${userId}`);
       return response.data !== null && response.data.totalEmissions > 0;
     } catch {
       // If no emissions data exists, survey hasn't been completed

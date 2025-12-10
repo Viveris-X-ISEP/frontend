@@ -4,27 +4,27 @@
 
 // Shared colors (same in both themes)
 const sharedColors = {
-  primary: '#4D996B',       // Primary green (buttons, links)
-  error: '#E82908',         // Error/Cancel/Logout
-  reward: '#DDC35C',        // Reward/Achievement
+  primary: "#4D996B", // Primary green (buttons, links)
+  error: "#E82908", // Error/Cancel/Logout
+  reward: "#DDC35C", // Reward/Achievement
 };
 
 // Light Theme Colors
 export const lightColors = {
   ...sharedColors,
-  text: '#000000',                    // Text/Icons/Active-Tab-Icon
-  inputBackground: '#E8F2ED',         // Input fields, secondary buttons, slider bg
-  outline: '#CFE8D9',                 // Borders, outlines
-  background: '#FFFFFF',              // Screen background
+  text: "#000000", // Text/Icons/Active-Tab-Icon
+  inputBackground: "#E8F2ED", // Input fields, secondary buttons, slider bg
+  outline: "#CFE8D9", // Borders, outlines
+  background: "#FFFFFF", // Screen background
 };
 
 // Dark Theme Colors
 export const darkColors = {
   ...sharedColors,
-  text: '#FFFFFF',                    // Text/Icons/Active-Tab-Icon
-  inputBackground: '#3C4540',         // Input fields, secondary buttons, slider bg
-  outline: '#5B6B61',                 // Borders, outlines
-  background: '#373737',              // Screen background
+  text: "#FFFFFF", // Text/Icons/Active-Tab-Icon
+  inputBackground: "#3C4540", // Input fields, secondary buttons, slider bg
+  outline: "#5B6B61", // Borders, outlines
+  background: "#373737", // Screen background
 };
 
 // ===========================================
