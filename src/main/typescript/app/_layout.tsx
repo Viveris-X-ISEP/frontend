@@ -5,6 +5,7 @@ import { useAuthStore } from "../store";
 import { useTheme } from "../shared/theme";
 
 export default function RootLayout() {
+  // TODO: Check if the user has completed the survey based on the origin label
   const { isLoggedIn } = useAuthStore();
   const { isDark } = useTheme();
 
