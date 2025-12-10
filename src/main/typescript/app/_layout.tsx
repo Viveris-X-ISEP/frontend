@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { useAuthStore } from '../store';
-import { useTheme } from '../shared/theme';
+import { useEffect, useState } from "react";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useAuthStore } from "../store";
+import { useTheme } from "../shared/theme";
 
 export default function RootLayout() {
   const { isLoggedIn } = useAuthStore();
@@ -20,7 +20,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
+      <StatusBar style={isDark ? "light" : "dark"} />
       <Stack screenOptions={{ headerShown: false }}>
         {/* Protected: Only show if Logged In */}
         <Stack.Protected guard={isLoggedIn}>
@@ -28,7 +28,7 @@ export default function RootLayout() {
           <Stack.Screen name="mission/detail/[id]" />
           <Stack.Screen name="mission/update/[id]" />
           <Stack.Screen name="user/[id]" />
-          <Stack.Screen name="questionnaire/index" />
+          <Stack.Screen name="survey" />
         </Stack.Protected>
 
         {/* Protected: Only show if Logged OUT */}
