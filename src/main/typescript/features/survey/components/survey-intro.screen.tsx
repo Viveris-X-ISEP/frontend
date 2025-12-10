@@ -85,8 +85,8 @@ const createStyles = (theme: Theme) =>
       marginBottom: theme.spacing.xl,
     },
     imagePlaceholder: {
-      width: 250,
-      height: 250,
+      width: 200,
+      height: 200,
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.inputBackground,
       alignItems: "center",
@@ -94,7 +94,7 @@ const createStyles = (theme: Theme) =>
     },
     startButton: {
       backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.lg,
+      borderRadius: theme.borderRadius.full,
       paddingVertical: theme.spacing.md,
       alignItems: "center",
       marginBottom: theme.spacing.lg,

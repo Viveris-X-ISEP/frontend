@@ -35,7 +35,7 @@ const createStyles = (theme: Theme) =>
       flexDirection: "row",
       alignItems: "center",
       backgroundColor: theme.colors.inputBackground,
-      borderRadius: theme.borderRadius.md,
+      borderRadius: theme.borderRadius.full,
       padding: theme.spacing.md,
       marginBottom: theme.spacing.sm,
       borderWidth: 2,

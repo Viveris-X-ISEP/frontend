@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  View,
   Text,
   TextInput,
   TouchableOpacity,
@@ -37,7 +36,7 @@ export default function PasswordScreen() {
     try {
       // TODO: Implement password change API call
       console.log("Password change submitted");
-    } catch (err) {
+    } catch {
       setError("Échec du changement de mot de passe");
     } finally {
       setIsLoading(false);

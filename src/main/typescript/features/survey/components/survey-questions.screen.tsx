@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -109,9 +116,14 @@ export default function SurveyQuestionsScreen() {
           onPress={handleNext}
           disabled={!canProceed || isSubmitting}
         >
-          <Text style={styles.primaryButtonText}>
-            {isSubmitting ? "Envoi..." : isLastQuestion ? "Terminer" : "Suivant"}
-          </Text>
+          {isSubmitting ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color={theme.colors.background} />
+              <Text style={[styles.primaryButtonText, styles.loadingText]}>Calcul en cours...</Text>
+            </View>
+          ) : (
+            <Text style={styles.primaryButtonText}>{isLastQuestion ? "Terminer" : "Suivant"}</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -181,7 +193,7 @@ const createStyles = (theme: Theme) =>
     button: {
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.lg,
-      borderRadius: theme.borderRadius.lg,
+      borderRadius: theme.borderRadius.full,
       minWidth: 120,
       alignItems: "center",
     },
@@ -206,5 +218,13 @@ const createStyles = (theme: Theme) =>
     },
     disabledText: {
       opacity: 0.5,
+    },
+    loadingContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: theme.spacing.sm,
+    },
+    loadingText: {
+      marginLeft: theme.spacing.sm,
     },
   });

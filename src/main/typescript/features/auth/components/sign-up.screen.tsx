@@ -145,7 +145,7 @@ const createStyles = (theme: Theme) =>
     },
     button: {
       height: 56,
-      borderRadius: theme.borderRadius.lg,
+      borderRadius: theme.borderRadius.full,
       justifyContent: "center",
       alignItems: "center",
       marginTop: theme.spacing.md,

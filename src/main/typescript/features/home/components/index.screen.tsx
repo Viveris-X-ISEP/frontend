@@ -142,7 +142,7 @@ const createStyles = (theme: Theme) =>
     },
     surveyButton: {
       backgroundColor: theme.colors.inputBackground,
-      borderRadius: theme.borderRadius.lg,
+      borderRadius: theme.borderRadius.full,
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.xl,
       alignItems: "center",

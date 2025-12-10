@@ -17,8 +17,8 @@
     ```
 
 - **Pre-commit Checks**: Before committing, ensure the following checks are performed:
+    - **Formatting**: Format the code using `prettier` by running `npm run format`.
     - **Linting**: Check for linting errors using `eslint`.
-    - **Formatting**: Format the code using `prettier`.
     - **Testing**: Run tests to ensure functionality.
 
 ## API Calls
