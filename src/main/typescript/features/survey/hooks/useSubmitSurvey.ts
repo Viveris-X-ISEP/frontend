@@ -1,30 +1,102 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { SurveyService } from "../services";
-import type { SurveyAnswer, SubmitEmissionsPayload } from "../types";
+import type { SurveyAnswer, FootprintQuizzPayload } from "../types";
 
-export function useSubmitSurvey() {
+// TODO: Get userId from auth store once it's implemented
+const MOCK_USER_ID = 1;
+
+export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   /**
    * Transform survey answers into API payload
-   * TODO: Adjust mapping based on actual backend DTO structure
+   * Maps simplified survey answers to full FootprintQuizzDto structure
    */
   const transformAnswersToPayload = (
     answers: SurveyAnswer[],
-  ): SubmitEmissionsPayload => {
+  ): FootprintQuizzPayload => {
     const getAnswerValue = (questionId: string): string => {
       return answers.find((a) => a.questionId === questionId)?.value ?? "";
     };
 
+    // Map survey answers to backend DTO structure
+    const transportAnswer = getAnswerValue("transport");
+    const carAnswer = getAnswerValue("car");
+    const dietAnswer = getAnswerValue("diet");
+    const heatingAnswer = getAnswerValue("heating");
+    const wasteAnswer = getAnswerValue("waste");
+
     return {
-      transportFrequency: getAnswerValue("transport"),
-      publicTransportUsage: getAnswerValue("car"),
-      dietType: getAnswerValue("diet"),
-      homeHeating: getAnswerValue("heating"),
-      wasteRecycling: getAnswerValue("waste"),
+      userId,
+      transport: {
+        car: {
+          fuelType: carAnswer === "yes_daily" ? "GASOLINE" : "ELECTRIC",
+          kilometersPerYear:
+            carAnswer === "yes_daily"
+              ? 15000
+              : carAnswer === "yes_occasionally"
+                ? 5000
+                : 0,
+          passengers: 1,
+        },
+        publicTransport: {
+          type: "BUS",
+          useFrequency:
+            transportAnswer === "daily"
+              ? "HIGH"
+              : transportAnswer === "weekly"
+                ? "MEDIUM"
+                : "LOW",
+        },
+        airTransport: {
+          shortHaulFlightsPerYear: 2,
+          longHaulFlightsPerYear: 1,
+        },
+        bikeUsePerWeek: transportAnswer === "never" ? 0 : 3,
+      },
+      food: {
+        redMeatConsumptionPerWeek:
+          dietAnswer === "vegan"
+            ? 0
+            : dietAnswer === "vegetarian"
+              ? 0
+              : dietAnswer === "flexitarian"
+                ? 2
+                : 5,
+        whiteMeatConsumptionPerWeek:
+          dietAnswer === "vegan"
+            ? 0
+            : dietAnswer === "vegetarian"
+              ? 0
+              : dietAnswer === "flexitarian"
+                ? 3
+                : 4,
+        fishConsumptionPerWeek:
+          dietAnswer === "vegan" ? 0 : dietAnswer === "vegetarian" ? 0 : 2,
+        dairyConsumptionPerWeek: dietAnswer === "vegan" ? 0 : 7,
+      },
+      housing: {
+        housingType: "APARTMENT",
+        surfaceArea: 60,
+        heatingEnergySource:
+          heatingAnswer === "electric"
+            ? "ELECTRICITY"
+            : heatingAnswer === "gas"
+              ? "GAZ"
+              : heatingAnswer === "wood"
+                ? "WOOD"
+                : "HEAT_PUMP",
+      },
+      digital: {
+        digitalConsumption: {
+          streamingHoursPerWeek: 10,
+          emailsPerDay: 20,
+        },
+        numberOfDevicesOwned: 5,
+      },
     };
   };
 
@@ -34,7 +106,7 @@ export function useSubmitSurvey() {
 
     try {
       const payload = transformAnswersToPayload(answers);
-      await SurveyService.submitEmissions(payload);
+      await SurveyService.calculateEmissions(payload);
 
       // Navigate back to home after successful submission
       router.replace("/(tabs)/(home)");

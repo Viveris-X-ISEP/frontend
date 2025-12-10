@@ -30,55 +30,105 @@ export interface SurveyAnswer {
 }
 
 // ===========================================
-// REQUEST PAYLOADS (sent to backend)
+// ENUM TYPES (matching backend enums)
 // ===========================================
+
+export type FuelType = 'ELECTRIC' | 'GASOLINE' | 'DIESEL' | 'HYBRID';
+export type LowMediumHigh = 'LOW' | 'MEDIUM' | 'HIGH';
+export type PublicTransportType = 'BUS' | 'METRO' | 'TRAIN' | 'TRAM';
+export type EnergySource =
+  | 'GAZ'
+  | 'FUEL_OIL'
+  | 'ELECTRICITY'
+  | 'HEAT_PUMP'
+  | 'WOOD'
+  | 'CHIPS'
+  | 'HEAT_NETWORK';
+export type HousingType = 'APARTMENT' | 'HOUSE';
+export type EstimateOrigin = 'QUIZZ' | 'API' | 'MISSION';
+
+// ===========================================
+// REQUEST PAYLOADS (sent to backend)
+// Matches: FootprintQuizzDto
+// ===========================================
+
+export interface Car {
+  fuelType: FuelType;
+  kilometersPerYear: number;
+  passengers: number;
+}
+
+export interface PublicTransport {
+  type: PublicTransportType;
+  useFrequency: LowMediumHigh;
+}
+
+export interface AirTransport {
+  shortHaulFlightsPerYear: number;
+  longHaulFlightsPerYear: number;
+}
+
+export interface Transport {
+  car: Car;
+  publicTransport: PublicTransport;
+  airTransport: AirTransport;
+  bikeUsePerWeek: number;
+}
+
+export interface Food {
+  redMeatConsumptionPerWeek: number;
+  whiteMeatConsumptionPerWeek: number;
+  fishConsumptionPerWeek: number;
+  dairyConsumptionPerWeek: number;
+}
+
+export interface Housing {
+  housingType: HousingType;
+  surfaceArea: number;
+  heatingEnergySource: EnergySource;
+}
+
+export interface DigitalConsumption {
+  streamingHoursPerWeek: number;
+  emailsPerDay: number;
+}
+
+export interface Digital {
+  digitalConsumption: DigitalConsumption;
+  numberOfDevicesOwned: number;
+}
 
 /**
  * Payload for submitting user emissions data
- * TODO: Update fields based on actual backend DTO from UserEmissionsController
+ * Matches backend: FootprintQuizzDto
+ * POST /emissions/calculate
  */
-export interface SubmitEmissionsPayload {
-  transportFrequency: string;
-  publicTransportUsage: string;
-  dietType: string;
-  homeHeating: string;
-  wasteRecycling: string;
-  // Add more fields as needed based on backend requirements
+export interface FootprintQuizzPayload {
+  userId: number;
+  food: Food;
+  transport: Transport;
+  housing: Housing;
+  digital: Digital;
 }
 
 // ===========================================
 // RESPONSE PAYLOADS (received from backend)
+// Matches: UserEmissionDto
 // ===========================================
 
 /**
- * Response after submitting emissions
- * TODO: Update based on actual backend response
+ * Response from emissions endpoints
+ * Matches backend: UserEmissionDto
  */
-export interface EmissionsResponse {
-  id: number;
+export interface UserEmissionDto {
   userId: number;
-  totalEmissions: number;
+  housingEmissions: number;
   transportEmissions: number;
   foodEmissions: number;
-  housingEmissions: number;
-  wasteEmissions: number;
-  createdAt: string;
-}
-
-/**
- * User emissions summary (for home screen)
- * TODO: Update based on actual backend response
- */
-export interface UserEmissionsSummary {
+  digitalEmissions: number;
   totalEmissions: number;
-  percentageChange: number;
-  breakdown: {
-    transport: number;
-    food: number;
-    housing: number;
-    waste: number;
-  };
-  hasCompletedSurvey: boolean;
+  periodStart: string;
+  origin: EstimateOrigin;
 }
 
 // ===========================================
@@ -96,3 +146,4 @@ export interface SurveyFormState {
   isSubmitting: boolean;
   error: string | null;
 }
+
