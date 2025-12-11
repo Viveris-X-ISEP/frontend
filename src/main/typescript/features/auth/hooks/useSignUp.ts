@@ -28,8 +28,11 @@ export function useSignUp() {
 
     try {
       const response = await AuthService.signUp(credentials);
-      // Backend doesn't return userId, so we need to fetch it from /users/me
+      // Store tokens first so the Authorization header is set for /users/me request
+      await signIn(response.token, response.refreshToken, 0); // Temporary userId
+      // Now fetch the actual userId from /users/me
       const userInfo = await AuthService.getUserInfo();
+      // Update the userId in the store
       await signIn(response.token, response.refreshToken, userInfo.id);
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
