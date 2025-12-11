@@ -1,3 +1,5 @@
+// TODO: Fix signUp api call
+
 import { apiClient } from "../../../shared/api";
 import type {
   SignInCredentials,
@@ -39,6 +41,15 @@ export const AuthService = {
   refreshToken: async (refreshToken: string): Promise<AuthResponse> => {
     const payload: RefreshTokenPayload = { refreshToken };
     const response = await apiClient.post<AuthResponse>("/auth/refresh", payload);
+    return response.data;
+  },
+
+  /**
+   * GET /users/me
+   * Get current authenticated user information
+   */
+  getUserInfo: async (): Promise<import("../types").UserDto> => {
+    const response = await apiClient.get<import("../types").UserDto>("/users/me");
     return response.data;
   },
 

@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useTheme, type Theme } from "../../../shared/theme";
 import { useSurveyStatus } from "../../survey/hooks";
 
-// Placeholder avatar - in production this would come from user profile
+// TODO: Replace with actual user data from store or API
 const AVATAR_PLACEHOLDER =
   "https://api.dicebear.com/7.x/avataaars/png?seed=EcoWarrior&backgroundColor=f0f0f0";
 

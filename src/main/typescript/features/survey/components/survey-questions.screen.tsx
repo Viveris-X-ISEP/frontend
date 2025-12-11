@@ -14,6 +14,7 @@ import { useSurvey, useSubmitSurvey } from "../hooks";
 import AnswerOption from "./answer-option.component";
 
 export default function SurveyQuestionsScreen() {
+  // TODO: Display error message if survey fails to send
   const { theme } = useTheme();
   const router = useRouter();
   const styles = createStyles(theme);

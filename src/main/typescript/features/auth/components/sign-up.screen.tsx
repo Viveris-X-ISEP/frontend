@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Link } from "expo-router";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useSignUp } from "../hooks";
 import { useTheme, type Theme } from "../../../shared/theme";
 
@@ -18,6 +19,8 @@ export default function SignUpScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { handleSignUp, isLoading, error } = useSignUp();
   const { theme } = useTheme();
 
@@ -56,23 +59,44 @@ export default function SignUpScreen() {
           autoCapitalize="none"
         />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Mot de passe"
-          placeholderTextColor={theme.input.placeholder}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Mot de passe"
+            placeholderTextColor={theme.input.placeholder}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity style={styles.eyeIcon} onPress={() => setShowPassword(!showPassword)}>
+            <MaterialCommunityIcons
+              name={showPassword ? "eye-off" : "eye"}
+              size={24}
+              color={theme.colors.text}
+            />
+          </TouchableOpacity>
+        </View>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Confirmation du mot de passe"
-          placeholderTextColor={theme.input.placeholder}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Confirmation du mot de passe"
+            placeholderTextColor={theme.input.placeholder}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+          />
+          <TouchableOpacity
+            style={styles.eyeIcon}
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            <MaterialCommunityIcons
+              name={showConfirmPassword ? "eye-off" : "eye"}
+              size={24}
+              color={theme.colors.text}
+            />
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.bottomContainer}>
           <Link href="/auth/sign-in" asChild>
@@ -125,6 +149,24 @@ const createStyles = (theme: Theme) =>
       paddingHorizontal: theme.input.paddingHorizontal,
       marginBottom: theme.spacing.md,
       fontSize: theme.fontSizes.md,
+    },
+    passwordContainer: {
+      position: "relative",
+      marginBottom: theme.spacing.md,
+    },
+    passwordInput: {
+      backgroundColor: theme.input.background,
+      color: theme.input.text,
+      height: theme.input.height,
+      borderRadius: theme.input.borderRadius,
+      paddingHorizontal: theme.input.paddingHorizontal,
+      paddingRight: 50,
+      fontSize: theme.fontSizes.md,
+    },
+    eyeIcon: {
+      position: "absolute",
+      right: 15,
+      top: 15,
     },
     link: {
       color: theme.colors.primary,
