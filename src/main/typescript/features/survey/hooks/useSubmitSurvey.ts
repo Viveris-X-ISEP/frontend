@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { SurveyService } from "../services";
+import { useAuthStore } from "../../../store";
 import type { SurveyAnswer, FootprintQuizzPayload } from "../types";
 
-// TODO: Get userId from auth store once it's implemented
-const MOCK_USER_ID = 1;
-
-export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
+export function useSubmitSurvey() {
+  const userId = useAuthStore((state) => state.userId);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -98,6 +97,11 @@ export function useSubmitSurvey(userId: number = MOCK_USER_ID) {
   };
 
   const submitSurvey = async (answers: SurveyAnswer[]) => {
+    if (!userId) {
+      setError("User ID not found. Please log in again.");
+      return;
+    }
+
     setIsSubmitting(true);
     setError(null);
 

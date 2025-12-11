@@ -17,7 +17,7 @@ export function useSignIn() {
 
     try {
       const response = await AuthService.signIn(credentials);
-      await signIn(response.token, response.refreshToken);
+      await signIn(response.token, response.refreshToken, response.userId);
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string; error?: string } } };

@@ -115,7 +115,7 @@ export interface Digital {
  * POST /emissions/calculate
  */
 export interface FootprintQuizzPayload {
-  userId: number;
+  userId: number | null;
   food: Food;
   transport: Transport;
   housing: Housing;

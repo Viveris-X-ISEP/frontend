@@ -47,6 +47,7 @@ export interface RefreshTokenPayload {
 export interface AuthResponse {
   token: string;
   refreshToken: string;
+  userId: number;
 }
 
 // ===========================================

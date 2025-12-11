@@ -33,6 +33,7 @@ describe("AuthService", () => {
     const mockAuthResponse: AuthResponse = {
       token: "mock-jwt-token",
       refreshToken: "mock-refresh-token",
+      userId: 1,
     };
 
     it("should successfully sign in with valid credentials", async () => {
@@ -99,6 +100,7 @@ describe("AuthService", () => {
     const mockAuthResponse: AuthResponse = {
       token: "mock-jwt-token-for-new-user",
       refreshToken: "mock-refresh-token-for-new-user",
+      userId: 2,
     };
 
     it("should successfully register a new user", async () => {
@@ -163,6 +165,7 @@ describe("AuthService", () => {
     const mockAuthResponse: AuthResponse = {
       token: "new-jwt-token",
       refreshToken: "new-refresh-token",
+      userId: 1,
     };
 
     it("should successfully refresh tokens", async () => {

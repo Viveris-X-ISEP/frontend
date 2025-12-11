@@ -19,9 +19,10 @@ interface AuthState {
   isLoggedIn: boolean;
   token: string | null;
   refreshToken: string | null;
+  userId: number | null;
 
   // Actions
-  signIn: (token: string, refreshToken: string) => Promise<void>;
+  signIn: (token: string, refreshToken: string, userId: number) => Promise<void>;
   signOut: () => Promise<void>;
   updateTokens: (token: string, refreshToken: string) => Promise<void>;
 }
@@ -32,19 +33,22 @@ export const useAuthStore = create<AuthState>()(
       isLoggedIn: false,
       token: null,
       refreshToken: null,
+      userId: null,
 
-      signIn: async (token, refreshToken) => {
-        // Store tokens in SecureStore (separate from Zustand persistence for security)
+      signIn: async (token, refreshToken, userId) => {
+        // Store tokens and userId in SecureStore (separate from Zustand persistence for security)
         await SecureStore.setItemAsync("auth_token", token);
         await SecureStore.setItemAsync("refresh_token", refreshToken);
-        set({ isLoggedIn: true, token, refreshToken });
+        await SecureStore.setItemAsync("user_id", userId.toString());
+        set({ isLoggedIn: true, token, refreshToken, userId });
       },
 
       signOut: async () => {
-        // Clear tokens from SecureStore
+        // Clear tokens and userId from SecureStore
         await SecureStore.deleteItemAsync("auth_token");
         await SecureStore.deleteItemAsync("refresh_token");
-        set({ isLoggedIn: false, token: null, refreshToken: null });
+        await SecureStore.deleteItemAsync("user_id");
+        set({ isLoggedIn: false, token: null, refreshToken: null, userId: null });
       },
 
       updateTokens: async (token, refreshToken) => {

@@ -1,20 +1,25 @@
 import { useState, useEffect, useCallback } from "react";
 import { SurveyService } from "../services";
-
-// TODO: Get userId from auth store once it's implemented
-const MOCK_USER_ID = 1;
+import { useAuthStore } from "../../../store";
 
 /**
  * Hook to check if the user has completed the survey
  * Used to conditionally show survey prompt on home screen
  * and enable/disable missions tab
  */
-export function useSurveyStatus(userId: number = MOCK_USER_ID) {
+export function useSurveyStatus() {
+  const userId = useAuthStore((state) => state.userId);
   const [hasCompleted, setHasCompleted] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const checkSurveyStatus = useCallback(async () => {
+    if (!userId) {
+      setHasCompleted(false);
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
