@@ -1,13 +1,17 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function SurveyIntroScreen() {
   const { theme } = useTheme();
   const router = useRouter();
+  const { isFirstTime } = useLocalSearchParams<{ isFirstTime?: string }>();
   const styles = createStyles(theme);
+
+  // Determine if this is the first time based on the parameter
+  const isFirstTimeSurvey = isFirstTime === "true";
 
   const handleClose = () => {
     router.back();
@@ -26,10 +30,15 @@ export default function SurveyIntroScreen() {
 
       {/* Content */}
       <View style={styles.content}>
-        <Text style={styles.title}>Il est temps pour un nouveau départ !</Text>
+        <Text style={styles.title}>
+          {isFirstTimeSurvey
+            ? "Bienvenue sur votre parcours écologique !"
+            : "Il est temps pour un nouveau départ !"}
+        </Text>
         <Text style={styles.subtitle}>
-          Cela fait un moment que vous n&apos;avez pas mis à jour votre empreinte carbone. Refaites
-          le sondage pour un suivi plus précis et des défis personnalisés.
+          {isFirstTimeSurvey
+            ? "Commencez par calculer votre empreinte carbone pour obtenir des défis personnalisés et suivre vos progrès vers un mode de vie plus durable."
+            : "Cela fait un moment que vous n'avez pas mis à jour votre empreinte carbone. Refaites le sondage pour un suivi plus précis et des défis personnalisés."}
         </Text>
 
         {/* Earth Illustration */}
@@ -43,7 +52,9 @@ export default function SurveyIntroScreen() {
 
       {/* Start Button */}
       <TouchableOpacity style={styles.startButton} onPress={handleStart}>
-        <Text style={styles.startButtonText}>Démarrer le questionnaire</Text>
+        <Text style={styles.startButtonText}>
+          {isFirstTimeSurvey ? "Commencer le questionnaire" : "Mettre à jour mon empreinte"}
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

@@ -61,8 +61,8 @@ export const useAuthStore = create<AuthState>()(
     {
       name: "auth-storage",
       storage: createJSONStorage(() => secureStorage),
-      // Only persist isLoggedIn state; tokens are in SecureStore
-      partialize: (state) => ({ isLoggedIn: state.isLoggedIn }),
+      // Persist isLoggedIn and userId state; tokens are in SecureStore
+      partialize: (state) => ({ isLoggedIn: state.isLoggedIn, userId: state.userId }),
     }
   )
 );

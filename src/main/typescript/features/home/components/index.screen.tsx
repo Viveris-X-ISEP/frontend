@@ -15,7 +15,8 @@ export default function HomeScreen() {
   const { hasCompleted, isLoading } = useSurveyStatus();
 
   const handleStartSurvey = () => {
-    router.push("/survey" as never);
+    // Navigate to survey intro with isFirstTime=true since user hasn't completed it yet
+    router.push("/survey?isFirstTime=true" as never);
   };
 
   // Show loading state while checking survey status
