@@ -20,6 +20,7 @@
     - **Formatting**: Format the code using `prettier` by running `npm run format`.
     - **Linting**: Check for linting errors using `eslint`.
     - **Testing**: Run tests to ensure functionality.
+    - **Git status check**: Run git status to logically organise files in atomic git commits.
 
 ## API Calls
 
