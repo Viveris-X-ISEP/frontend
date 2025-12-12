@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { SurveyService } from "../services";
-import { useAuthStore } from "../../../store";
+import { useAuthStore, useSurveyStore } from "../../../store";
 
 /**
  * Hook to check if the user has completed the survey
@@ -9,6 +9,7 @@ import { useAuthStore } from "../../../store";
  */
 export function useSurveyStatus() {
   const userId = useAuthStore((state) => state.userId);
+  const lastSubmissionTimestamp = useSurveyStore((state) => state.lastSubmissionTimestamp);
   const [hasCompleted, setHasCompleted] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,9 +43,10 @@ export function useSurveyStatus() {
     }
   }, [userId]);
 
+  // Re-check when userId changes or when survey is completed (lastSubmissionTimestamp updates)
   useEffect(() => {
     checkSurveyStatus();
-  }, [checkSurveyStatus]);
+  }, [checkSurveyStatus, lastSubmissionTimestamp]);
 
   return {
     hasCompleted,

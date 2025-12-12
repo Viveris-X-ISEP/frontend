@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import { SurveyService } from "../services";
-import { useAuthStore } from "../../../store";
+import { useAuthStore, useSurveyStore } from "../../../store";
 import type { SurveyAnswer, FootprintQuizzPayload } from "../types";
 
 export function useSubmitSurvey() {
   const userId = useAuthStore((state) => state.userId);
+  const markSurveyCompleted = useSurveyStore((state) => state.markSurveyCompleted);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -108,6 +109,9 @@ export function useSubmitSurvey() {
     try {
       const payload = transformAnswersToPayload(answers);
       await SurveyService.calculateEmissions(payload);
+
+      // Mark survey as completed to trigger home screen refresh
+      markSurveyCompleted();
 
       // Navigate back to home after successful submission
       router.replace("/(tabs)/(home)");

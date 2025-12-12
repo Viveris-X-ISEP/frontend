@@ -1,5 +1,6 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import * as SecureStore from "expo-secure-store";
+import { useAuthStore } from "../../store/auth-store";
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -49,8 +50,10 @@ apiClient.interceptors.response.use(
       _retry?: boolean;
     };
 
-    // If 401 and not already retrying, attempt token refresh
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // If 401 or 403 and not already retrying, attempt token refresh
+    // 403 can occur when token is invalid/expired on some backend configurations
+    const isAuthError = error.response?.status === 401 || error.response?.status === 403;
+    if (isAuthError && !originalRequest._retry) {
       if (isRefreshing) {
         // Queue the request while refresh is in progress
         return new Promise((resolve, reject) => {
@@ -93,8 +96,16 @@ apiClient.interceptors.response.use(
         // Clear tokens on refresh failure (user needs to re-login)
         await SecureStore.deleteItemAsync("auth_token");
         await SecureStore.deleteItemAsync("refresh_token");
+        await SecureStore.deleteItemAsync("user_id");
 
-        // Note: The auth store will handle redirect via its listener
+        // Sync Zustand auth state to trigger logout flow
+        useAuthStore.setState({
+          isLoggedIn: false,
+          token: null,
+          refreshToken: null,
+          userId: null,
+        });
+
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

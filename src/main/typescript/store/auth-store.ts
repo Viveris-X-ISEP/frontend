@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import * as SecureStore from "expo-secure-store";
+import { useSurveyStore } from "./survey-store";
 
 // Custom SecureStore adapter for Zustand persist
 const secureStorage = {
@@ -48,6 +49,10 @@ export const useAuthStore = create<AuthState>()(
         await SecureStore.deleteItemAsync("auth_token");
         await SecureStore.deleteItemAsync("refresh_token");
         await SecureStore.deleteItemAsync("user_id");
+
+        // Reset survey store to clear state for next user
+        useSurveyStore.getState().reset();
+
         set({ isLoggedIn: false, token: null, refreshToken: null, userId: null });
       },
 
