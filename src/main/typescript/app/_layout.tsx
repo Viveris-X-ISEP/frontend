@@ -51,7 +51,7 @@ export default function RootLayout() {
 
       try {
         // Get the latest emission data
-        const latestEmission = await SurveyService.getLatestEmission(userId);
+        const latestEmission = await SurveyService.getLatestApiEmission(userId);
 
         // Check if more than one month has passed since the last survey
         if (latestEmission?.periodStart) {
