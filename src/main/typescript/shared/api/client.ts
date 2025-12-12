@@ -30,12 +30,20 @@ const processQueue = (error: unknown, token: string | null = null) => {
   failedQueue = [];
 };
 
-// Request interceptor - inject Bearer token
+// Endpoints that should NOT include Authorization header (public endpoints)
+const PUBLIC_ENDPOINTS = ["/auth/login", "/auth/register", "/auth/refresh"];
+
+// Request interceptor - inject Bearer token (except for public endpoints)
 apiClient.interceptors.request.use(
   async (config) => {
-    const token = await SecureStore.getItemAsync("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Skip token injection for public auth endpoints
+    const isPublicEndpoint = PUBLIC_ENDPOINTS.some((endpoint) => config.url?.includes(endpoint));
+
+    if (!isPublicEndpoint) {
+      const token = await SecureStore.getItemAsync("auth_token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -49,6 +57,14 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as InternalAxiosRequestConfig & {
       _retry?: boolean;
     };
+
+    // Skip token refresh for public endpoints - they don't need auth
+    const isPublicEndpoint = PUBLIC_ENDPOINTS.some((endpoint) =>
+      originalRequest.url?.includes(endpoint)
+    );
+    if (isPublicEndpoint) {
+      return Promise.reject(error);
+    }
 
     // If 401 or 403 and not already retrying, attempt token refresh
     // 403 can occur when token is invalid/expired on some backend configurations
