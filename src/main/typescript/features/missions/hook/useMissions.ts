@@ -35,6 +35,7 @@ export const useMission = (id: number) => {
             try {
                 const data = await getMissionById(id);
                 setMission(data);
+                console.log(`Fetched mission with id ${id}:`, data);
             } catch (error) {
                 console.error(`Failed to fetch mission with id ${id}`, error);
             } finally {

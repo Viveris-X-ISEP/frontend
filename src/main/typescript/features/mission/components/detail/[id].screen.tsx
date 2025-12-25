@@ -1,16 +1,74 @@
-import React from "react";
-import { Text, View, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView, ActivityIndicator } from "react-native";
+import React, { useState } from "react";
+import { Text, View, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert } from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import { useTheme, type Theme } from "../../../../shared/theme";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useMission } from "../../../missions/hook/useMissions";
+import { useCreateUserMission } from "../../hooks";
+import { useAuthStore } from "../../../../store";
+import { UserService } from "../../../user/services/user.service";
+import { MissionStatus } from "../../types/mission-status";
 
 export default function MissionDetailScreen() {
   const { id } = useLocalSearchParams();
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { mission, loading } = useMission(Number(id));
+  const token = useAuthStore((state) => state.token);
+  const { create: createUserMission } = useCreateUserMission();
+
+  const handleEmbark = async () => {
+    if (!token) {
+      Alert.alert("Erreur", "Veuillez vous connecter pour commencer cette mission");
+      return;
+    }
+
+    if (!mission) {
+      Alert.alert("Erreur", "Mission introuvable");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Get current user
+      const user = await UserService.getCurrentUser(token);
+      
+      const now = new Date();
+      const payload = {
+        userId: user.id,
+        missionId: mission.id,
+        status: MissionStatus.IN_PROGRESS,
+        completionRate: 0,
+        startedAt: now.toISOString(),
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString(),
+      };
+
+      const result = await createUserMission(payload);
+
+      if (result) {
+        Alert.alert(
+          "Succès",
+          "Mission ajoutée à vos missions actives !",
+          [
+            {
+              text: "OK",
+              onPress: () => router.push("/(tabs)/missions/active"),
+            },
+          ]
+        );
+      } else {
+        Alert.alert("Erreur", "Impossible d'ajouter cette mission");
+      }
+    } catch (error) {
+      console.error("Error embarking on mission:", error);
+      Alert.alert("Erreur", "Une erreur est survenue");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const categoryImages = {
     Logement: require("../../../../../resources/images/missions_categories/logement.png"),
@@ -75,8 +133,16 @@ export default function MissionDetailScreen() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.startButton}>
-          <Text style={styles.startButtonText}>Embark!</Text>
+        <TouchableOpacity 
+          style={[styles.startButton, isSubmitting && styles.startButtonDisabled]}
+          onPress={handleEmbark}
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <ActivityIndicator color={theme.colors.background} />
+          ) : (
+            <Text style={styles.startButtonText}>Embark!</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -178,5 +244,8 @@ const createStyles = (theme: Theme) =>
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
       color: theme.colors.background,
+    },
+    startButtonDisabled: {
+      opacity: 0.6,
     },
   });

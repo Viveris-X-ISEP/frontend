@@ -14,17 +14,53 @@ import {
 } from '@expo/vector-icons';
 import { Image } from "react-native";
 import { router } from "expo-router";
+import { useAuthStore } from "../../../store";
+import { UserService } from "../../user/services/user.service";
+import { UserMissionService } from "../../mission/services/user-mission.service";
+import { MissionStatus } from "../../mission/types/mission-status";
 
 export default function CatalogueScreen() {
   const { missions, loading } = useMissions();
   const { theme } = useTheme();
   const styles = createStyles(theme);
+  const token = useAuthStore((state) => state.token);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "50%"], []);
 
   const [selectedCategory, setSelectedCategory] = useState("Tout");
   const [sliderValues, setSliderValues] = useState([50, 800]);
+  const [userMissions, setUserMissions] = useState<any[]>([]);
+  const [userId, setUserId] = useState<number | null>(null);
+
+  // Fetch user and their missions
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      if (!token) return;
+      
+      try {
+        const user = await UserService.getCurrentUser(token);
+        setUserId(user.id);
+        
+        const missions = await UserMissionService.getMissionsByUserId(user.id);
+        setUserMissions(missions);
+      } catch (err) {
+        console.error("Error fetching user missions:", err);
+      }
+    };
+
+    fetchUserData();
+  }, [token]);
+
+  const getMissionStatus = (missionId: number) => {
+    const userMission = userMissions.find((um) => um.missionId === missionId);
+    if (!userMission) return null;
+    
+    if (userMission.status === MissionStatus.COMPLETED) return "completed";
+    if (userMission.status === MissionStatus.IN_PROGRESS || userMission.status === MissionStatus.ASSIGNED) return "active";
+    
+    return null;
+  };
 
   const truncateDescription = (text: string, maxLength: number = 30) => {
     if (text.length <= maxLength) return text;
@@ -85,24 +121,48 @@ export default function CatalogueScreen() {
       <FlatList
         data={filteredMissions}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.missionBlock}
-            onPress={() => router.push(`/mission/detail/${item.id}`)}
-          >
-            <View style={styles.textContainer}>
-              <Text style={styles.points}>{item.rewardPoints} points</Text>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.description}>{truncateDescription(item.description)}</Text>
-              <Text style={styles.category}>{item.category}</Text>
-            </View>
-            <Image
-              source={categoryImages[item.category as keyof typeof categoryImages]}
-              style={styles.categoryImage}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          const status = getMissionStatus(item.id);
+          const isDisabled = status !== null;
+          
+          return (
+            <TouchableOpacity
+              style={styles.missionBlock}
+              onPress={() => !isDisabled && router.push(`/mission/detail/${item.id}`)}
+              disabled={isDisabled}
+            >
+              <View style={styles.textContainer}>
+                <Text style={styles.points}>{item.rewardPoints} points</Text>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.description}>{truncateDescription(item.description)}</Text>
+                <Text style={styles.category}>{item.category}</Text>
+              </View>
+              <Image
+                source={categoryImages[item.category as keyof typeof categoryImages]}
+                style={styles.categoryImage}
+                resizeMode="cover"
+              />
+              
+              {status === "completed" && (
+                <View style={styles.overlay}>
+                  <View style={styles.overlayContent}>
+                    <FontAwesome5 name="check-circle" size={32} color={theme.colors.primary} />
+                    <Text style={styles.overlayText}>Terminée</Text>
+                  </View>
+                </View>
+              )}
+              
+              {status === "active" && (
+                <View style={styles.overlay}>
+                  <View style={styles.overlayContent}>
+                    <FontAwesome5 name="hourglass-half" size={32} color={theme.colors.primary} />
+                    <Text style={styles.overlayText}>En cours</Text>
+                  </View>
+                </View>
+              )}
+            </TouchableOpacity>
+          );
+        }}
         contentContainerStyle={styles.listContainer}
       />
 
@@ -289,5 +349,25 @@ const createStyles = (theme: Theme) =>
       fontSize: theme.fontSizes.sm,
       color: theme.colors.text,
       marginTop: theme.spacing.sm,
+    },
+    overlay: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0, 0, 0, 0.7)",
+      borderRadius: theme.borderRadius.md,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    overlayContent: {
+      alignItems: "center",
+      gap: theme.spacing.sm,
+    },
+    overlayText: {
+      color: "#ffffff",
+      fontSize: theme.fontSizes.lg,
+      fontWeight: "bold",
     },
   });

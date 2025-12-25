@@ -5,4 +5,7 @@ export interface Mission {
     category: string;
     durationDays: number;
     rewardPoints: number;
+    goal: number;
+    goalType: string;
+    goalUnit: string;
 }
