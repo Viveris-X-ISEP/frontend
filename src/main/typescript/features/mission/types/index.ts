@@ -19,6 +19,7 @@ export interface UserMission {
   mission?: Mission;
   status: MissionStatus;
   completionRate: number;
+  maxReduction?: number | null;
   completedAt?: Date | string;
   startedAt?: Date | string;
   createdAt: Date | string;
@@ -30,6 +31,7 @@ export interface CreateUserMissionDto {
   missionId: number;
   status: MissionStatus;
   completionRate: number;
+  maxReduction?: number | null;
   startedAt?: Date | string;
   completedAt?: Date | string;
   createdAt: Date | string;
@@ -39,5 +41,6 @@ export interface CreateUserMissionDto {
 export interface UpdateUserMissionDto {
   status?: MissionStatus;
   completionRate?: number;
+  maxReduction?: number | null;
   completedAt?: Date | string;
 }

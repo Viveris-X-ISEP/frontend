@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from "react-native";
 import { useTheme, type Theme } from "../../../shared/theme";
+import { MissionStatus } from "../../mission/types/mission-status";
+import { useFocusEffect } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useAuthStore } from "../../../store";
 import { useUserMissions, useDeleteUserMission } from "../../mission/hooks";
+import { UserMission } from "../../mission/types";
 import { UserService } from "../../user/services/user.service";
 
 export default function ActiveScreen() {
@@ -14,7 +17,7 @@ export default function ActiveScreen() {
   
   const [userId, setUserId] = useState<number | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [missions, setMissions] = useState<any[]>([]);
+  const [missions, setMissions] = useState<UserMission[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -88,6 +91,13 @@ export default function ActiveScreen() {
   React.useEffect(() => {
     fetchMissions();
   }, [fetchMissions]);
+
+  // Refresh missions when screen comes into focus (e.g., after update screen)
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchMissions();
+    }, [fetchMissions])
+  );
 
   const onRefresh = React.useCallback(() => {
     fetchMissions(true);
@@ -177,7 +187,7 @@ export default function ActiveScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={missions}
+        data={missions.filter((m) => m.status !== MissionStatus.COMPLETED)}
         keyExtractor={(item) => `${item.userId}-${item.missionId}`}
         refreshing={refreshing}
         onRefresh={onRefresh}

@@ -18,6 +18,7 @@ import { useAuthStore } from "../../../store";
 import { UserService } from "../../user/services/user.service";
 import { UserMissionService } from "../../mission/services/user-mission.service";
 import { MissionStatus } from "../../mission/types/mission-status";
+import { UserMission } from "../../mission/types";
 
 export default function CatalogueScreen() {
   const { missions, loading } = useMissions();
@@ -30,7 +31,7 @@ export default function CatalogueScreen() {
 
   const [selectedCategory, setSelectedCategory] = useState("Tout");
   const [sliderValues, setSliderValues] = useState([50, 800]);
-  const [userMissions, setUserMissions] = useState<any[]>([]);
+  const [userMissions, setUserMissions] = useState<UserMission[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
 
   // Fetch user and their missions

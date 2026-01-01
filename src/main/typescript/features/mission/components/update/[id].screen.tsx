@@ -17,6 +17,7 @@ import { UserService } from "../../../user/services/user.service";
 import { UserMissionService } from "../../services/user-mission.service";
 import { getMissionById } from "../../../missions/services/missions.service";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MissionStatus } from "../../types/mission-status";
 
 export default function MissionUpdateScreen() {
   const { id } = useLocalSearchParams();
@@ -84,10 +85,20 @@ export default function MissionUpdateScreen() {
 
     setSaving(true);
     try {
-      await UserMissionService.updateUserMission(userId, missionId, {
+      const dto: any = {
         completionRate: progress,
         updatedAt: new Date().toISOString(),
-      });
+      };
+
+      // If progress reaches goal, mark completed
+      if (mission && progress >= mission.goal) {
+        dto.status = MissionStatus.COMPLETED;
+        dto.completedAt = new Date().toISOString();
+      } else if (progress > 0) {
+        dto.status = MissionStatus.IN_PROGRESS;
+      }
+
+      await UserMissionService.updateUserMission(userId, missionId, dto);
 
       Alert.alert("Succès", "Progression mise à jour avec succès", [
         {
