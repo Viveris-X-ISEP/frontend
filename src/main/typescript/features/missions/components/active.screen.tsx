@@ -3,11 +3,11 @@ import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image, ActivityIndi
 import { useTheme, type Theme } from "../../../shared/theme";
 import { MissionStatus } from "../../mission/types/mission-status";
 import { useFocusEffect } from '@react-navigation/native';
-import { MaterialIcons } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { useAuthStore } from "../../../store";
-import { useUserMissions, useDeleteUserMission } from "../../mission/hooks";
+import { useDeleteUserMission } from "../../mission/hooks";
 import { UserMission } from "../../mission/types";
+import type { Mission as MissionsMission } from "../../missions/types";
 import { UserService } from "../../user/services/user.service";
 
 export default function ActiveScreen() {
@@ -17,7 +17,8 @@ export default function ActiveScreen() {
   
   const [userId, setUserId] = useState<number | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
-  const [missions, setMissions] = useState<UserMission[]>([]);
+  type EnrichedUserMission = UserMission & { mission?: MissionsMission };
+  const [missions, setMissions] = useState<EnrichedUserMission[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -66,11 +67,14 @@ export default function ActiveScreen() {
             const fullMission = await getMissionById(userMission.missionId);
             return {
               ...userMission,
-              mission: fullMission
-            };
+              mission: fullMission,
+            } as EnrichedUserMission;
           } catch (err) {
             console.error(`Error fetching mission ${userMission.missionId}:`, err);
-            return userMission;
+            return {
+              ...userMission,
+              mission: undefined,
+            } as EnrichedUserMission;
           }
         })
       );
