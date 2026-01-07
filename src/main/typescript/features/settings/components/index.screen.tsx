@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useSignOut } from '../../auth/hooks';
-import { useTheme, type Theme } from '../../../shared/theme';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useRouter } from "expo-router";
+import { useSignOut } from "../../auth/hooks";
+import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function SettingsScreen() {
   const { handleSignOut } = useSignOut();
@@ -13,34 +13,31 @@ export default function SettingsScreen() {
   // Get display value for theme
   const getThemeDisplayValue = () => {
     switch (mode) {
-      case 'light':
-        return 'Clair';
-      case 'dark':
-        return 'Sombre';
-      case 'system':
-        return 'Système';
+      case "light":
+        return "Clair";
+      case "dark":
+        return "Sombre";
+      case "system":
+        return "Système";
     }
   };
 
   // TODO: Implement language store - placeholder for now
-  const languageDisplayValue = 'Français';
+  const languageDisplayValue = "Français";
 
   return (
     <View style={styles.container}>
       {/* Profil Section */}
       <Text style={styles.sectionTitle}>Profil</Text>
 
-      <TouchableOpacity
-        style={styles.row}
-        onPress={() => router.push('/(tabs)/settings/password')}
-      >
+      <TouchableOpacity style={styles.row} onPress={() => router.push("/(tabs)/settings/password")}>
         <Text style={styles.rowText}>Changer de mot de passe</Text>
         <Text style={styles.arrow}>→</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.row}
-        onPress={() => router.push('/(tabs)/settings/notifications')}
+        onPress={() => router.push("/(tabs)/settings/notifications")}
       >
         <Text style={styles.rowText}>Gérer les notifications</Text>
         <Text style={styles.arrow}>→</Text>
@@ -52,22 +49,14 @@ export default function SettingsScreen() {
       </TouchableOpacity>
 
       {/* Personnalisation Section */}
-      <Text style={[styles.sectionTitle, styles.sectionSpacing]}>
-        Personnalisation
-      </Text>
+      <Text style={[styles.sectionTitle, styles.sectionSpacing]}>Personnalisation</Text>
 
-      <TouchableOpacity
-        style={styles.row}
-        onPress={() => router.push('/(tabs)/settings/theme')}
-      >
+      <TouchableOpacity style={styles.row} onPress={() => router.push("/(tabs)/settings/theme")}>
         <Text style={styles.rowText}>Thème</Text>
         <Text style={styles.rowValue}>{getThemeDisplayValue()}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.row}
-        onPress={() => router.push('/(tabs)/settings/language')}
-      >
+      <TouchableOpacity style={styles.row} onPress={() => router.push("/(tabs)/settings/language")}>
         <Text style={styles.rowText}>Langage</Text>
         <Text style={styles.rowValue}>{languageDisplayValue}</Text>
       </TouchableOpacity>
@@ -85,7 +74,7 @@ const createStyles = (theme: Theme) =>
     },
     sectionTitle: {
       fontSize: theme.fontSizes.lg,
-      fontWeight: 'bold',
+      fontWeight: "bold",
       color: theme.colors.text,
       marginBottom: theme.spacing.md,
     },
@@ -93,9 +82,9 @@ const createStyles = (theme: Theme) =>
       marginTop: theme.spacing.xl,
     },
     row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       paddingVertical: theme.spacing.md,
     },
     rowText: {

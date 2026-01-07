@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useTheme, type Theme } from '../../../shared/theme';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useTheme, type Theme } from "../../../shared/theme";
 
-type ThemeOption = 'light' | 'dark' | 'system';
+type ThemeOption = "light" | "dark" | "system";
 
 interface ThemeOptionConfig {
   value: ThemeOption;
@@ -9,9 +9,9 @@ interface ThemeOptionConfig {
 }
 
 const themeOptions: ThemeOptionConfig[] = [
-  { value: 'light', label: 'Clair' },
-  { value: 'dark', label: 'Sombre' },
-  { value: 'system', label: 'Système' },
+  { value: "light", label: "Clair" },
+  { value: "dark", label: "Sombre" },
+  { value: "system", label: "Système" },
 ];
 
 export default function ThemeScreen() {
@@ -43,9 +43,9 @@ const createStyles = (theme: Theme) =>
       paddingTop: theme.spacing.lg,
     },
     row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       paddingVertical: theme.spacing.md,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.outline,
@@ -57,6 +57,6 @@ const createStyles = (theme: Theme) =>
     checkmark: {
       fontSize: theme.fontSizes.lg,
       color: theme.colors.primary,
-      fontWeight: 'bold',
+      fontWeight: "bold",
     },
   });

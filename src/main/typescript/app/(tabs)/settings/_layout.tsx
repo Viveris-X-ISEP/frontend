@@ -1,5 +1,5 @@
-import { Stack } from 'expo-router';
-import { useTheme } from '../../../shared/theme';
+import { Stack } from "expo-router";
+import { useTheme } from "../../../shared/theme";
 
 export default function SettingsLayout() {
   const { theme } = useTheme();
@@ -12,7 +12,7 @@ export default function SettingsLayout() {
         },
         headerTintColor: theme.colors.text,
         headerTitleStyle: {
-          fontWeight: 'bold',
+          fontWeight: "bold",
         },
         headerShadowVisible: false,
       }}
@@ -20,31 +20,31 @@ export default function SettingsLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: 'Paramètres',
+          title: "Paramètres",
         }}
       />
       <Stack.Screen
         name="password"
         options={{
-          title: 'Mot de passe',
+          title: "Mot de passe",
         }}
       />
       <Stack.Screen
         name="notifications"
         options={{
-          title: 'Notifications',
+          title: "Notifications",
         }}
       />
       <Stack.Screen
         name="theme"
         options={{
-          title: 'Thème',
+          title: "Thème",
         }}
       />
       <Stack.Screen
         name="language"
         options={{
-          title: 'Langage',
+          title: "Langage",
         }}
       />
     </Stack>

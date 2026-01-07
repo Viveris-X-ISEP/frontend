@@ -1,3 +1,3 @@
-import MissionsScreen from '../../../features/missions/components/index.screen.tsx';
+import MissionsScreen from "../../../features/missions/components/index.screen.tsx";
 
 export default MissionsScreen;

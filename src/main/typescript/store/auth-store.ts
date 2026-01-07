@@ -1,6 +1,7 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import * as SecureStore from 'expo-secure-store';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import * as SecureStore from "expo-secure-store";
+import { useSurveyStore } from "./survey-store";
 
 // Custom SecureStore adapter for Zustand persist
 const secureStorage = {
@@ -19,9 +20,10 @@ interface AuthState {
   isLoggedIn: boolean;
   token: string | null;
   refreshToken: string | null;
+  userId: number | null;
 
   // Actions
-  signIn: (token: string, refreshToken: string) => Promise<void>;
+  signIn: (token: string, refreshToken: string, userId: number) => Promise<void>;
   signOut: () => Promise<void>;
   updateTokens: (token: string, refreshToken: string) => Promise<void>;
 }
@@ -32,33 +34,40 @@ export const useAuthStore = create<AuthState>()(
       isLoggedIn: false,
       token: null,
       refreshToken: null,
+      userId: null,
 
-      signIn: async (token, refreshToken) => {
-        // Store tokens in SecureStore (separate from Zustand persistence for security)
-        await SecureStore.setItemAsync('auth_token', token);
-        await SecureStore.setItemAsync('refresh_token', refreshToken);
-        set({ isLoggedIn: true, token, refreshToken });
+      signIn: async (token, refreshToken, userId) => {
+        // Store tokens and userId in SecureStore (separate from Zustand persistence for security)
+        await SecureStore.setItemAsync("auth_token", token);
+        await SecureStore.setItemAsync("refresh_token", refreshToken);
+        await SecureStore.setItemAsync("user_id", userId.toString());
+        set({ isLoggedIn: true, token, refreshToken, userId });
       },
 
       signOut: async () => {
-        // Clear tokens from SecureStore
-        await SecureStore.deleteItemAsync('auth_token');
-        await SecureStore.deleteItemAsync('refresh_token');
-        set({ isLoggedIn: false, token: null, refreshToken: null });
+        // Clear tokens and userId from SecureStore
+        await SecureStore.deleteItemAsync("auth_token");
+        await SecureStore.deleteItemAsync("refresh_token");
+        await SecureStore.deleteItemAsync("user_id");
+
+        // Reset survey store to clear state for next user
+        useSurveyStore.getState().reset();
+
+        set({ isLoggedIn: false, token: null, refreshToken: null, userId: null });
       },
 
       updateTokens: async (token, refreshToken) => {
         // Update tokens in SecureStore
-        await SecureStore.setItemAsync('auth_token', token);
-        await SecureStore.setItemAsync('refresh_token', refreshToken);
+        await SecureStore.setItemAsync("auth_token", token);
+        await SecureStore.setItemAsync("refresh_token", refreshToken);
         set({ token, refreshToken });
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => secureStorage),
-      // Only persist isLoggedIn state; tokens are in SecureStore
-      partialize: (state) => ({ isLoggedIn: state.isLoggedIn }),
+      // Persist isLoggedIn and userId state; tokens are in SecureStore
+      partialize: (state) => ({ isLoggedIn: state.isLoggedIn, userId: state.userId }),
     }
   )
 );

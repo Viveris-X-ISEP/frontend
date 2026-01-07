@@ -1,11 +1,13 @@
-import { apiClient } from '../../../shared/api';
+// TODO: Fix signUp api call
+
+import { apiClient } from "../../../shared/api";
 import type {
   SignInCredentials,
   SignUpCredentials,
   SignUpPayload,
   RefreshTokenPayload,
   AuthResponse,
-} from '../types';
+} from "../types";
 
 export const AuthService = {
   /**
@@ -13,10 +15,7 @@ export const AuthService = {
    * Authenticate user with email and password
    */
   signIn: async (credentials: SignInCredentials): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse>(
-      '/auth/login',
-      credentials
-    );
+    const response = await apiClient.post<AuthResponse>("/auth/login", credentials);
     return response.data;
   },
 
@@ -31,10 +30,7 @@ export const AuthService = {
       username: credentials.username,
       password: credentials.password,
     };
-    const response = await apiClient.post<AuthResponse>(
-      '/auth/register',
-      payload
-    );
+    const response = await apiClient.post<AuthResponse>("/auth/register", payload);
     return response.data;
   },
 
@@ -44,10 +40,16 @@ export const AuthService = {
    */
   refreshToken: async (refreshToken: string): Promise<AuthResponse> => {
     const payload: RefreshTokenPayload = { refreshToken };
-    const response = await apiClient.post<AuthResponse>(
-      '/auth/refresh',
-      payload
-    );
+    const response = await apiClient.post<AuthResponse>("/auth/refresh", payload);
+    return response.data;
+  },
+
+  /**
+   * GET /users/me
+   * Get current authenticated user information
+   */
+  getUserInfo: async (): Promise<import("../types").UserDto> => {
+    const response = await apiClient.get<import("../types").UserDto>("/users/me");
     return response.data;
   },
 

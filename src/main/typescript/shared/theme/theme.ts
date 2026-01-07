@@ -1,4 +1,11 @@
-import { lightColors, darkColors, fontSizes, spacing, borderRadius, type ThemeColors } from './variables';
+import {
+  lightColors,
+  darkColors,
+  fontSizes,
+  spacing,
+  borderRadius,
+  type ThemeColors,
+} from "./variables";
 
 // Theme builder function
 const createTheme = (colors: ThemeColors) => ({
@@ -6,17 +13,17 @@ const createTheme = (colors: ThemeColors) => ({
   fontSizes,
   spacing,
   borderRadius,
-  
+
   // Component-specific tokens
   input: {
     background: colors.inputBackground,
     text: colors.text,
-    placeholder: colors.text + '99', // 60% opacity
+    placeholder: colors.text + "99", // 60% opacity
     borderRadius: borderRadius.full,
     height: 56,
     paddingHorizontal: spacing.md,
   },
-  
+
   button: {
     primary: {
       background: colors.primary,

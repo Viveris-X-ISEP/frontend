@@ -43,10 +43,27 @@ export interface RefreshTokenPayload {
 /**
  * Matches backend: AuthResponseDto
  * Returned by /auth/login, /auth/register, /auth/refresh
+ * Note: Backend doesn't return userId - must be fetched from /users/me
  */
 export interface AuthResponse {
   token: string;
   refreshToken: string;
+  userId?: number;
+}
+
+/**
+ * Matches backend: UserDto
+ * Returned by /users/me
+ */
+export interface UserDto {
+  id: number;
+  email: string;
+  username: string;
+  passwordHash: string;
+  profilePictureUrl: string | null;
+  created_at: string;
+  updated_at: string;
+  role: string;
 }
 
 // ===========================================
