@@ -47,7 +47,7 @@ app-example
 .env
 .vscode/
 .idea/
-.github/instructions/
+.github
 
 # miscellaneous
 metro-cache/
