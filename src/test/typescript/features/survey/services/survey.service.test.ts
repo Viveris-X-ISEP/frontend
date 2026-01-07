@@ -2,7 +2,7 @@ import MockAdapter from "axios-mock-adapter";
 import { SurveyService } from "../../../../../main/typescript/features/survey/services/survey.service";
 import type {
   FootprintQuizzPayload,
-  UserEmissionDto,
+  UserEmissionDto
 } from "../../../../../main/typescript/features/survey/types";
 import { apiClient } from "../../../../../main/typescript/shared/api/client";
 
@@ -29,37 +29,37 @@ describe("SurveyService", () => {
       car: {
         fuelType: "GASOLINE",
         kilometersPerYear: 15000,
-        passengers: 1,
+        passengers: 1
       },
       publicTransport: {
         type: "BUS",
-        useFrequency: "MEDIUM",
+        useFrequency: "MEDIUM"
       },
       airTransport: {
         shortFlightsFrequencyPerYear: 2,
         mediumFlightsFrequencyPerYear: 1,
-        longFlightsFrequencyPerYear: 0,
+        longFlightsFrequencyPerYear: 0
       },
-      bikeUsePerWeek: 3,
+      bikeUsePerWeek: 3
     },
     food: {
       redMeatConsumptionPerWeek: 3,
       whiteMeatConsumptionPerWeek: 4,
       fishConsumptionPerWeek: 2,
-      dairyConsumptionPerWeek: 7,
+      dairyConsumptionPerWeek: 7
     },
     housing: {
       housingType: "APARTMENT",
       surfaceArea: 60,
-      heatingEnergySource: "GAZ",
+      heatingEnergySource: "GAZ"
     },
     digital: {
       digitalConsumption: {
         hoursOfStreamingPerWeek: 10,
-        chargingFrequencyPerDay: 2,
+        chargingFrequencyPerDay: 2
       },
-      numberOfDevicesOwned: 5,
-    },
+      numberOfDevicesOwned: 5
+    }
   };
 
   const mockEmissionResponse: UserEmissionDto = {
@@ -70,7 +70,7 @@ describe("SurveyService", () => {
     digitalEmissions: 200,
     totalEmissions: 6000,
     periodStart: "2025-01-01T00:00:00.000Z",
-    origin: "QUIZZ",
+    origin: "QUIZZ"
   };
 
   // =========================================
@@ -89,7 +89,7 @@ describe("SurveyService", () => {
 
     it("should throw an error when payload is invalid", async () => {
       mockApi.onPost("/emissions/calculate").reply(400, {
-        message: "Invalid payload",
+        message: "Invalid payload"
       });
 
       await expect(SurveyService.calculateEmissions(mockFootprintPayload)).rejects.toThrow();
@@ -97,7 +97,7 @@ describe("SurveyService", () => {
 
     it("should throw an error on server error", async () => {
       mockApi.onPost("/emissions/calculate").reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       await expect(SurveyService.calculateEmissions(mockFootprintPayload)).rejects.toThrow();
@@ -131,7 +131,7 @@ describe("SurveyService", () => {
 
     it("should throw an error when user not found", async () => {
       mockApi.onGet("/emissions/user/999").reply(404, {
-        message: "User not found",
+        message: "User not found"
       });
 
       await expect(SurveyService.getLatestEmission(999)).rejects.toThrow();
@@ -139,7 +139,7 @@ describe("SurveyService", () => {
 
     it("should throw an error on server error", async () => {
       mockApi.onGet(`/emissions/user/${mockUserId}`).reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       await expect(SurveyService.getLatestEmission(mockUserId)).rejects.toThrow();
@@ -155,8 +155,8 @@ describe("SurveyService", () => {
       {
         ...mockEmissionResponse,
         totalEmissions: 5500,
-        periodStart: "2025-02-01T00:00:00.000Z",
-      },
+        periodStart: "2025-02-01T00:00:00.000Z"
+      }
     ];
 
     it("should successfully get all emissions for user", async () => {
@@ -180,7 +180,7 @@ describe("SurveyService", () => {
 
     it("should throw an error on server error", async () => {
       mockApi.onGet(`/emissions/all/user/${mockUserId}`).reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       await expect(SurveyService.getAllEmissions(mockUserId)).rejects.toThrow();
@@ -193,7 +193,7 @@ describe("SurveyService", () => {
   describe("getLatestApiEmission", () => {
     const mockApiEmission: UserEmissionDto = {
       ...mockEmissionResponse,
-      origin: "API",
+      origin: "API"
     };
 
     it("should successfully get latest API emission for user", async () => {
@@ -206,7 +206,7 @@ describe("SurveyService", () => {
 
     it("should throw an error when no API emissions exist", async () => {
       mockApi.onGet(`/emissions/api/user/${mockUserId}`).reply(404, {
-        message: "No API emissions found",
+        message: "No API emissions found"
       });
 
       await expect(SurveyService.getLatestApiEmission(mockUserId)).rejects.toThrow();
@@ -235,7 +235,7 @@ describe("SurveyService", () => {
   describe("getLatestMissionEmission", () => {
     const mockMissionEmission: UserEmissionDto = {
       ...mockEmissionResponse,
-      origin: "MISSION",
+      origin: "MISSION"
     };
 
     it("should successfully get latest mission emission for user", async () => {
@@ -248,7 +248,7 @@ describe("SurveyService", () => {
 
     it("should throw an error when no mission emissions exist", async () => {
       mockApi.onGet(`/emissions/missions/user/${mockUserId}`).reply(404, {
-        message: "No mission emissions found",
+        message: "No mission emissions found"
       });
 
       await expect(SurveyService.getLatestMissionEmission(mockUserId)).rejects.toThrow();
@@ -261,7 +261,7 @@ describe("SurveyService", () => {
   describe("getAllMissionEmissions", () => {
     it("should successfully get all mission emissions for user", async () => {
       const mockMissionEmissions: UserEmissionDto[] = [
-        { ...mockEmissionResponse, origin: "MISSION" },
+        { ...mockEmissionResponse, origin: "MISSION" }
       ];
 
       mockApi.onGet(`/emissions/all/missions/user/${mockUserId}`).reply(200, mockMissionEmissions);
@@ -287,7 +287,7 @@ describe("SurveyService", () => {
 
     it("should return false when user has no emissions data", async () => {
       mockApi.onGet(`/emissions/user/${mockUserId}`).reply(404, {
-        message: "No emissions found",
+        message: "No emissions found"
       });
 
       const result = await SurveyService.hasCompletedSurvey(mockUserId);
@@ -298,7 +298,7 @@ describe("SurveyService", () => {
     it("should return false when totalEmissions is 0", async () => {
       const zeroEmissions: UserEmissionDto = {
         ...mockEmissionResponse,
-        totalEmissions: 0,
+        totalEmissions: 0
       };
 
       mockApi.onGet(`/emissions/user/${mockUserId}`).reply(200, zeroEmissions);
@@ -310,7 +310,7 @@ describe("SurveyService", () => {
 
     it("should return false on server error", async () => {
       mockApi.onGet(`/emissions/user/${mockUserId}`).reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       const result = await SurveyService.hasCompletedSurvey(mockUserId);

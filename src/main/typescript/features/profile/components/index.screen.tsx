@@ -6,7 +6,7 @@ export default function ProfileScreen() {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Text>Profile screen</Text>

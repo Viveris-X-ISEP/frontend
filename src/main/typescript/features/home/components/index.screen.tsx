@@ -87,59 +87,59 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     title: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
       textAlign: "center",
-      marginBottom: theme.spacing.lg,
+      marginBottom: theme.spacing.lg
     },
     profileCard: {
       flexDirection: "row",
       alignItems: "center",
-      marginBottom: theme.spacing.xl,
+      marginBottom: theme.spacing.xl
     },
     avatar: {
       width: 100,
       height: 100,
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.inputBackground,
-      marginRight: theme.spacing.md,
+      marginRight: theme.spacing.md
     },
     profileInfo: {
-      flex: 1,
+      flex: 1
     },
     username: {
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     level: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.primary,
+      color: theme.colors.primary
     },
     points: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.primary,
+      color: theme.colors.primary
     },
     noDataContainer: {
       flex: 1,
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     noDataTitle: {
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.sm,
+      marginBottom: theme.spacing.sm
     },
     noDataSubtitle: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       opacity: 0.7,
-      marginBottom: theme.spacing.lg,
+      marginBottom: theme.spacing.lg
     },
     surveyButton: {
       backgroundColor: theme.colors.inputBackground,
@@ -147,22 +147,22 @@ const createStyles = (theme: Theme) =>
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.xl,
       alignItems: "center",
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.md
     },
     surveyButtonText: {
       color: theme.colors.primary,
       fontSize: theme.fontSizes.md,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     placeholder: {
       flex: 1,
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     placeholderText: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       opacity: 0.5,
-      textAlign: "center",
-    },
+      textAlign: "center"
+    }
   });

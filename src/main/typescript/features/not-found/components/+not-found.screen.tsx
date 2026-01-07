@@ -6,7 +6,7 @@ export default function NotFoundScreen() {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Text>+Not Found screen</Text>

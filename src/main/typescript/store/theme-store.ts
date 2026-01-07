@@ -13,11 +13,11 @@ export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
       mode: "system",
-      setMode: (mode) => set({ mode }),
+      setMode: (mode) => set({ mode })
     }),
     {
       name: "theme-storage",
-      storage: createJSONStorage(() => AsyncStorage),
+      storage: createJSONStorage(() => AsyncStorage)
     }
   )
 );

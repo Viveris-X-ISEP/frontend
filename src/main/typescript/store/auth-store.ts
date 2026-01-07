@@ -13,7 +13,7 @@ const secureStorage = {
   },
   removeItem: async (name: string) => {
     await SecureStore.deleteItemAsync(name);
-  },
+  }
 };
 
 interface AuthState {
@@ -57,7 +57,7 @@ export const useAuthStore = create<AuthState>()(
           isLoggedIn: false,
           token: null,
           refreshToken: null,
-          userId: null,
+          userId: null
         });
       },
 
@@ -66,7 +66,7 @@ export const useAuthStore = create<AuthState>()(
         await SecureStore.setItemAsync("auth_token", token);
         await SecureStore.setItemAsync("refresh_token", refreshToken);
         set({ token, refreshToken });
-      },
+      }
     }),
     {
       name: "auth-storage",
@@ -74,8 +74,8 @@ export const useAuthStore = create<AuthState>()(
       // Persist isLoggedIn and userId state; tokens are in SecureStore
       partialize: (state) => ({
         isLoggedIn: state.isLoggedIn,
-        userId: state.userId,
-      }),
+        userId: state.userId
+      })
     }
   )
 );

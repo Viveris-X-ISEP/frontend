@@ -48,6 +48,7 @@ app-example
 .vscode/
 .idea/
 .github
+.claude/
 
 # miscellaneous
 metro-cache/

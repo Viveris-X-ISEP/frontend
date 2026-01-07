@@ -6,7 +6,7 @@ import type {
   RefreshTokenPayload,
   SignInCredentials,
   SignUpCredentials,
-  SignUpPayload,
+  SignUpPayload
 } from "../types";
 
 export const AuthService = {
@@ -28,7 +28,7 @@ export const AuthService = {
     const payload: SignUpPayload = {
       email: credentials.email,
       username: credentials.username,
-      password: credentials.password,
+      password: credentials.password
     };
     const response = await apiClient.post<AuthResponse>("/auth/register", payload);
     return response.data;
@@ -59,5 +59,5 @@ export const AuthService = {
    */
   signOut: async (): Promise<void> => {
     // No backend logout endpoint - handled client-side
-  },
+  }
 };

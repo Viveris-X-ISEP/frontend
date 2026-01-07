@@ -8,8 +8,8 @@ export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 20000, // Increased timeout to 20 seconds
   headers: {
-    "Content-Type": "application/json",
-  },
+    "Content-Type": "application/json"
+  }
 });
 
 // Flag to prevent multiple refresh attempts
@@ -20,13 +20,13 @@ let failedQueue: {
 }[] = [];
 
 const processQueue = (error: unknown, token: string | null = null) => {
-  failedQueue.forEach((prom) => {
+  for (const prom of failedQueue) {
     if (error) {
       prom.reject(error);
-    } else {
-      prom.resolve(token!);
+    } else if (token) {
+      prom.resolve(token);
     }
-  });
+  }
   failedQueue = [];
 };
 
@@ -92,7 +92,7 @@ apiClient.interceptors.response.use(
 
         // Call refresh endpoint (without interceptors to avoid loop)
         const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-          refreshToken,
+          refreshToken
         });
 
         const { token, refreshToken: newRefreshToken } = response.data;
@@ -119,7 +119,7 @@ apiClient.interceptors.response.use(
           isLoggedIn: false,
           token: null,
           refreshToken: null,
-          userId: null,
+          userId: null
         });
 
         return Promise.reject(refreshError);

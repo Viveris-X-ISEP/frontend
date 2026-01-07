@@ -22,7 +22,7 @@ export default function MissionsLayoutScreen() {
               styles.menuButtonText,
               activeTab === "active"
                 ? { color: theme.colors.text }
-                : { color: theme.colors.primary },
+                : { color: theme.colors.primary }
             ]}
           >
             Active Missions
@@ -35,7 +35,7 @@ export default function MissionsLayoutScreen() {
               styles.menuButtonText,
               activeTab === "catalogue"
                 ? { color: theme.colors.text }
-                : { color: theme.colors.primary },
+                : { color: theme.colors.primary }
             ]}
           >
             Mission Catalogue
@@ -52,14 +52,14 @@ const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     title: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
       textAlign: "center",
-      marginVertical: theme.spacing.lg,
+      marginVertical: theme.spacing.lg
     },
     menuContainer: {
       flexDirection: "row",
@@ -67,25 +67,25 @@ const createStyles = (theme: Theme) =>
       marginBottom: theme.spacing.md,
       borderBottomWidth: 1,
       borderBottomColor: theme.colors.outline,
-      paddingBottom: theme.spacing.sm,
+      paddingBottom: theme.spacing.sm
     },
     menuButton: {
       paddingVertical: theme.spacing.sm,
       paddingHorizontal: theme.spacing.md,
-      marginHorizontal: theme.spacing.sm,
+      marginHorizontal: theme.spacing.sm
     },
     menuButtonText: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.primary,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     activeButtonText: {
-      color: theme.colors.background,
+      color: theme.colors.background
     },
     activeButton: {
       backgroundColor: theme.colors.primary,
       borderRadius: theme.borderRadius.md,
       borderBottomWidth: 10,
-      borderBottomColor: theme.colors.outline,
-    },
+      borderBottomColor: theme.colors.outline
+    }
   });

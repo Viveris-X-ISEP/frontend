@@ -66,7 +66,7 @@ const createStyles = (theme: Theme) =>
       backgroundColor: "rgba(0, 0, 0, 0.5)",
       justifyContent: "center",
       alignItems: "center",
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     modalContainer: {
       backgroundColor: theme.colors.background,
@@ -74,7 +74,7 @@ const createStyles = (theme: Theme) =>
       padding: theme.spacing.xl,
       width: "100%",
       maxWidth: 400,
-      alignItems: "center",
+      alignItems: "center"
     },
     iconContainer: {
       width: 80,
@@ -83,14 +83,14 @@ const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.inputBackground,
       alignItems: "center",
       justifyContent: "center",
-      marginBottom: theme.spacing.lg,
+      marginBottom: theme.spacing.lg
     },
     title: {
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       color: theme.colors.text,
       textAlign: "center",
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     message: {
       fontSize: theme.fontSizes.md,
@@ -98,32 +98,32 @@ const createStyles = (theme: Theme) =>
       textAlign: "center",
       lineHeight: theme.fontSizes.md * 1.5,
       opacity: 0.8,
-      marginBottom: theme.spacing.xl,
+      marginBottom: theme.spacing.xl
     },
     buttonContainer: {
       width: "100%",
-      gap: theme.spacing.md,
+      gap: theme.spacing.md
     },
     primaryButton: {
       backgroundColor: theme.colors.primary,
       borderRadius: theme.borderRadius.full,
       paddingVertical: theme.spacing.md,
-      alignItems: "center",
+      alignItems: "center"
     },
     primaryButtonText: {
       color: theme.colors.background,
       fontSize: theme.fontSizes.md,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     secondaryButton: {
       borderRadius: theme.borderRadius.full,
       paddingVertical: theme.spacing.md,
-      alignItems: "center",
+      alignItems: "center"
     },
     secondaryButtonText: {
       color: theme.colors.text,
       fontSize: theme.fontSizes.md,
       fontWeight: "500",
-      opacity: 0.7,
-    },
+      opacity: 0.7
+    }
   });

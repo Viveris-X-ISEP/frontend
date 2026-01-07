@@ -10,7 +10,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
@@ -53,7 +53,7 @@ export default function MissionDetailScreen() {
         completionRate: 0,
         startedAt: now.toISOString(),
         createdAt: now.toISOString(),
-        updatedAt: now.toISOString(),
+        updatedAt: now.toISOString()
       };
 
       const result = await createUserMission(payload);
@@ -62,8 +62,8 @@ export default function MissionDetailScreen() {
         Alert.alert("Succès", "Mission ajoutée à vos missions actives !", [
           {
             text: "OK",
-            onPress: () => router.push("/(tabs)/missions/active"),
-          },
+            onPress: () => router.push("/(tabs)/missions/active")
+          }
         ]);
       } else {
         Alert.alert("Erreur", "Impossible d'ajouter cette mission");
@@ -80,7 +80,7 @@ export default function MissionDetailScreen() {
     Logement: require("../../../../../resources/images/missions_categories/logement.png"),
     Alimentation: require("../../../../../resources/images/missions_categories/alimentation.png"),
     Numérique: require("../../../../../resources/images/missions_categories/numerique.png"),
-    Transport: require("../../../../../resources/images/missions_categories/transport.png"),
+    Transport: require("../../../../../resources/images/missions_categories/transport.png")
   };
 
   if (loading) {
@@ -157,57 +157,57 @@ const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     centered: {
       flex: 1,
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     errorText: {
       fontSize: theme.fontSizes.lg,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     header: {
       height: 60,
       justifyContent: "center",
       paddingHorizontal: theme.spacing.lg,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
 
     scrollView: {
-      flex: 1,
+      flex: 1
     },
     headerImage: {
       width: "100%",
-      height: 220,
+      height: 220
     },
     content: {
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     title: {
       fontSize: 24,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     description: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       marginBottom: theme.spacing.xl,
-      lineHeight: 22,
+      lineHeight: 22
     },
     sectionTitle: {
       fontSize: 18,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.lg,
+      marginBottom: theme.spacing.lg
     },
     detailRow: {
       flexDirection: "row",
       alignItems: "center",
       borderRadius: theme.borderRadius.md,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     iconContainer: {
       width: 45,
@@ -216,40 +216,40 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       marginRight: theme.spacing.md,
       backgroundColor: theme.colors.inputBackground,
-      borderRadius: theme.borderRadius.sm,
+      borderRadius: theme.borderRadius.sm
     },
     detailContent: {
       flex: 1,
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "center",
+      alignItems: "center"
     },
     detailLabel: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     detailValue: {
       fontSize: theme.fontSizes.md,
       fontWeight: "600",
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     footer: {
       padding: theme.spacing.lg,
       paddingBottom: theme.spacing.xl,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     startButton: {
       backgroundColor: theme.colors.primary,
       padding: theme.spacing.md,
       borderRadius: theme.borderRadius.full,
-      alignItems: "center",
+      alignItems: "center"
     },
     startButtonText: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
-      color: theme.colors.background,
+      color: theme.colors.background
     },
     startButtonDisabled: {
-      opacity: 0.6,
-    },
+      opacity: 0.6
+    }
   });

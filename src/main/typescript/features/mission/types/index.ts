@@ -43,4 +43,5 @@ export interface UpdateUserMissionDto {
   completionRate?: number;
   maxReduction?: number | null;
   completedAt?: Date | string;
+  updatedAt?: Date | string;
 }

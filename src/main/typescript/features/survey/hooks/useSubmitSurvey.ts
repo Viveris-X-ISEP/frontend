@@ -61,39 +61,39 @@ export function useSubmitSurvey() {
         car: {
           fuelType: fuelType as FootprintQuizzPayload["transport"]["car"]["fuelType"],
           kilometersPerYear: kmPerYear,
-          passengers: carPassengers,
+          passengers: carPassengers
         },
         publicTransport: {
           type: publicTransportType as FootprintQuizzPayload["transport"]["publicTransport"]["type"],
           useFrequency:
-            publicTransportFreq as FootprintQuizzPayload["transport"]["publicTransport"]["useFrequency"],
+            publicTransportFreq as FootprintQuizzPayload["transport"]["publicTransport"]["useFrequency"]
         },
         airTransport: {
           shortFlightsFrequencyPerYear: shortFlights,
           mediumFlightsFrequencyPerYear: mediumFlights,
-          longFlightsFrequencyPerYear: longFlights,
+          longFlightsFrequencyPerYear: longFlights
         },
-        bikeUsePerWeek: bikeUse,
+        bikeUsePerWeek: bikeUse
       },
       food: {
         redMeatConsumptionPerWeek: redMeat,
         whiteMeatConsumptionPerWeek: whiteMeat,
         fishConsumptionPerWeek: fish,
-        dairyConsumptionPerWeek: dairy,
+        dairyConsumptionPerWeek: dairy
       },
       housing: {
         housingType: housingType as FootprintQuizzPayload["housing"]["housingType"],
         surfaceArea: surfaceArea,
         heatingEnergySource:
-          heatingSource as FootprintQuizzPayload["housing"]["heatingEnergySource"],
+          heatingSource as FootprintQuizzPayload["housing"]["heatingEnergySource"]
       },
       digital: {
         digitalConsumption: {
           hoursOfStreamingPerWeek: streamingHours,
-          chargingFrequencyPerDay: chargingFrequency,
+          chargingFrequencyPerDay: chargingFrequency
         },
-        numberOfDevicesOwned: devicesOwned,
-      },
+        numberOfDevicesOwned: devicesOwned
+      }
     };
   };
 

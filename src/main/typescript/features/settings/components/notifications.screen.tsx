@@ -12,18 +12,18 @@ const notificationSettings: NotificationSetting[] = [
   {
     id: "missions",
     label: "Nouvelles missions",
-    description: "Recevoir une notification quand de nouvelles missions sont disponibles",
+    description: "Recevoir une notification quand de nouvelles missions sont disponibles"
   },
   {
     id: "reminders",
     label: "Rappels",
-    description: "Recevoir des rappels pour les missions en cours",
+    description: "Recevoir des rappels pour les missions en cours"
   },
   {
     id: "community",
     label: "Communauté",
-    description: "Notifications liées à la communauté",
-  },
+    description: "Notifications liées à la communauté"
+  }
 ];
 
 export default function NotificationsScreen() {
@@ -34,13 +34,13 @@ export default function NotificationsScreen() {
   const [settings, setSettings] = useState<Record<string, boolean>>({
     missions: true,
     reminders: true,
-    community: false,
+    community: false
   });
 
   const toggleSetting = (id: string) => {
     setSettings((prev) => ({
       ...prev,
-      [id]: !prev[id],
+      [id]: !prev[id]
     }));
   };
 
@@ -57,7 +57,7 @@ export default function NotificationsScreen() {
             onValueChange={() => toggleSetting(setting.id)}
             trackColor={{
               false: theme.colors.outline,
-              true: theme.colors.primary,
+              true: theme.colors.primary
             }}
             thumbColor="#FFFFFF"
           />
@@ -73,7 +73,7 @@ const createStyles = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
       paddingHorizontal: theme.spacing.lg,
-      paddingTop: theme.spacing.lg,
+      paddingTop: theme.spacing.lg
     },
     row: {
       flexDirection: "row",
@@ -81,21 +81,21 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       paddingVertical: theme.spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: theme.colors.outline,
+      borderBottomColor: theme.colors.outline
     },
     textContainer: {
       flex: 1,
-      marginRight: theme.spacing.md,
+      marginRight: theme.spacing.md
     },
     label: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      fontWeight: "500",
+      fontWeight: "500"
     },
     description: {
       fontSize: theme.fontSizes.sm,
       color: theme.colors.text,
       opacity: 0.7,
-      marginTop: theme.spacing.xs,
-    },
+      marginTop: theme.spacing.xs
+    }
   });

@@ -9,7 +9,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store";
@@ -77,13 +77,13 @@ export default function ActiveScreen() {
               const fullMission = await getMissionById(userMission.missionId);
               return {
                 ...userMission,
-                mission: fullMission,
+                mission: fullMission
               } as EnrichedUserMission;
             } catch (err) {
               console.error(`Error fetching mission ${userMission.missionId}:`, err);
               return {
                 ...userMission,
-                mission: undefined,
+                mission: undefined
               } as EnrichedUserMission;
             }
           })
@@ -136,7 +136,7 @@ export default function ActiveScreen() {
     Logement: require("../../../../resources/images/missions_categories/logement.png"),
     Alimentation: require("../../../../resources/images/missions_categories/alimentation.png"),
     Numérique: require("../../../../resources/images/missions_categories/numerique.png"),
-    Transport: require("../../../../resources/images/missions_categories/transport.png"),
+    Transport: require("../../../../resources/images/missions_categories/transport.png")
   };
 
   const handleCancel = async (missionId: number) => {
@@ -154,8 +154,8 @@ export default function ActiveScreen() {
           } else {
             Alert.alert("Erreur", "Impossible d'annuler la mission");
           }
-        },
-      },
+        }
+      }
     ]);
   };
 
@@ -263,93 +263,93 @@ const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     centered: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     emptyText: {
       color: theme.colors.text,
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     errorText: {
       color: "#ef4444",
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     listContainer: {
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     missionBlock: {
       backgroundColor: theme.colors.inputBackground,
       padding: theme.spacing.md,
       marginBottom: theme.spacing.md,
       borderRadius: theme.borderRadius.md,
-      elevation: 2,
+      elevation: 2
     },
     categoryImage: {
       width: "100%",
       height: 120,
       marginBottom: theme.spacing.md,
       borderRadius: theme.borderRadius.md,
-      overflow: "hidden",
+      overflow: "hidden"
     },
     title: {
       fontSize: theme.fontSizes.md,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.sm,
+      marginBottom: theme.spacing.sm
     },
     description: {
       fontSize: theme.fontSizes.xs,
       color: theme.colors.text,
       marginBottom: theme.spacing.md,
-      opacity: 0.7,
+      opacity: 0.7
     },
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     button: {
       alignItems: "center",
       paddingVertical: theme.spacing.xs,
       paddingHorizontal: theme.spacing.md,
       borderRadius: theme.borderRadius.md,
-      justifyContent: "center",
+      justifyContent: "center"
     },
     cancelButton: {
-      backgroundColor: "#ef4444",
+      backgroundColor: "#ef4444"
     },
     updateButton: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.primary
     },
     buttonText: {
       color: theme.colors.background,
       fontSize: theme.fontSizes.xs,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     progressContainer: {
-      marginTop: theme.spacing.sm,
+      marginTop: theme.spacing.sm
     },
     progressText: {
       fontSize: theme.fontSizes.sm,
       color: theme.colors.text,
       marginBottom: theme.spacing.xs,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     progressBarBackground: {
       width: "100%",
       height: 8,
       backgroundColor: theme.colors.outline,
       borderRadius: theme.borderRadius.full,
-      overflow: "hidden",
+      overflow: "hidden"
     },
     progressBarFill: {
       height: "100%",
       backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
-    },
+      borderRadius: theme.borderRadius.full
+    }
   });

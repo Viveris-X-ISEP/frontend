@@ -3,7 +3,7 @@ import {
   FontAwesome,
   FontAwesome5,
   Ionicons,
-  MaterialCommunityIcons,
+  MaterialCommunityIcons
 } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
@@ -92,7 +92,7 @@ export default function CatalogueScreen() {
     Logement: require("../../../../resources/images/missions_categories/logement.png"),
     Alimentation: require("../../../../resources/images/missions_categories/alimentation.png"),
     Numérique: require("../../../../resources/images/missions_categories/numerique.png"),
-    Transport: require("../../../../resources/images/missions_categories/transport.png"),
+    Transport: require("../../../../resources/images/missions_categories/transport.png")
   };
 
   const filteredMissions = useMemo(() => {
@@ -190,14 +190,14 @@ export default function CatalogueScreen() {
                 key={category}
                 style={[
                   styles.categoryButton,
-                  selectedCategory === category && styles.selectedCategoryButton,
+                  selectedCategory === category && styles.selectedCategoryButton
                 ]}
                 onPress={() => setSelectedCategory(category)}
               >
                 <Text
                   style={[
                     styles.categoryButtonText,
-                    selectedCategory === category && styles.selectedCategoryButtonText,
+                    selectedCategory === category && styles.selectedCategoryButtonText
                   ]}
                 >
                   {category}
@@ -221,7 +221,7 @@ export default function CatalogueScreen() {
               backgroundColor: theme.colors.primary,
               width: 10,
               height: 10,
-              borderWidth: 0,
+              borderWidth: 0
             }}
           />
           <Text style={styles.sliderValue}>
@@ -237,20 +237,20 @@ const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     centered: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     loadingText: {
       color: theme.colors.text,
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     listContainer: {
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     missionBlock: {
       backgroundColor: theme.colors.inputBackground,
@@ -260,25 +260,25 @@ const createStyles = (theme: Theme) =>
       elevation: 2,
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
+      justifyContent: "space-between"
     },
     textContainer: {
       flex: 1,
-      marginRight: theme.spacing.md,
+      marginRight: theme.spacing.md
     },
     title: {
       fontSize: theme.fontSizes.md,
       fontWeight: "bold",
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     description: {
       fontSize: theme.fontSizes.sm,
-      color: theme.colors.primary,
+      color: theme.colors.primary
     },
     points: {
       fontSize: theme.fontSizes.md,
       fontWeight: "bold",
-      color: theme.colors.primary,
+      color: theme.colors.primary
     },
     filterButton: {
       backgroundColor: theme.colors.inputBackground,
@@ -286,79 +286,79 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full,
       alignItems: "center",
       margin: theme.spacing.md,
-      alignSelf: "flex-start",
+      alignSelf: "flex-start"
     },
     filterButtonText: {
       color: theme.colors.text,
       fontSize: theme.fontSizes.md,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     bottomSheetContent: {
       flex: 1,
       padding: theme.spacing.lg,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     bottomSheetTitle: {
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     sectionTitle: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginVertical: theme.spacing.md,
+      marginVertical: theme.spacing.md
     },
     subsectionTitle: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      marginVertical: theme.spacing.md,
+      marginVertical: theme.spacing.md
     },
     categoryContainer: {
       flexDirection: "row",
       flexWrap: "wrap",
-      justifyContent: "space-between",
+      justifyContent: "space-between"
     },
     categoryButton: {
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.md,
       borderRadius: theme.borderRadius.md,
       borderWidth: 1,
-      borderColor: theme.colors.outline,
+      borderColor: theme.colors.outline
     },
     selectedCategoryButton: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.primary
     },
     categoryButtonText: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     selectedCategoryButtonText: {
-      color: theme.colors.background,
+      color: theme.colors.background
     },
     slider: {
       width: "100%",
-      height: 40,
+      height: 40
     },
     sliderValue: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       textAlign: "center",
       marginVertical: theme.spacing.sm,
-      paddingBottom: theme.spacing.md,
+      paddingBottom: theme.spacing.md
     },
     categoryImage: {
       width: 120,
       height: 80,
       marginBottom: theme.spacing.sm,
       borderRadius: 8,
-      overflow: "hidden",
+      overflow: "hidden"
     },
     category: {
       fontSize: theme.fontSizes.sm,
       color: theme.colors.text,
-      marginTop: theme.spacing.sm,
+      marginTop: theme.spacing.sm
     },
     overlay: {
       position: "absolute",
@@ -369,15 +369,15 @@ const createStyles = (theme: Theme) =>
       backgroundColor: "rgba(0, 0, 0, 0.7)",
       borderRadius: theme.borderRadius.md,
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     overlayContent: {
       alignItems: "center",
-      gap: theme.spacing.sm,
+      gap: theme.spacing.sm
     },
     overlayText: {
       color: "#ffffff",
       fontSize: theme.fontSizes.lg,
-      fontWeight: "bold",
-    },
+      fontWeight: "bold"
+    }
   });

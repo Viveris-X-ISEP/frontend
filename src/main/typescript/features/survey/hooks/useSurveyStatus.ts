@@ -14,6 +14,7 @@ export function useSurveyStatus() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: lastSubmissionTimestamp triggers re-fetch after survey completion
   const checkSurveyStatus = useCallback(async () => {
     if (!userId) {
       setHasCompleted(false);
@@ -41,17 +42,17 @@ export function useSurveyStatus() {
     } finally {
       setIsLoading(false);
     }
-  }, [userId]);
+  }, [userId, lastSubmissionTimestamp]);
 
   // Re-check when userId changes or when survey is completed (lastSubmissionTimestamp updates)
   useEffect(() => {
     checkSurveyStatus();
-  }, [checkSurveyStatus, lastSubmissionTimestamp]);
+  }, [checkSurveyStatus]);
 
   return {
     hasCompleted,
     isLoading,
     error,
-    refetch: checkSurveyStatus,
+    refetch: checkSurveyStatus
   };
 }

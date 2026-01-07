@@ -22,6 +22,6 @@ export function useTheme(): UseThemeReturn {
     theme: isDark ? darkTheme : lightTheme,
     mode,
     setMode,
-    isDark,
+    isDark
   };
 }

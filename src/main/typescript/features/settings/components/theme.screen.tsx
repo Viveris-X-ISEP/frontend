@@ -11,7 +11,7 @@ interface ThemeOptionConfig {
 const themeOptions: ThemeOptionConfig[] = [
   { value: "light", label: "Clair" },
   { value: "dark", label: "Sombre" },
-  { value: "system", label: "Système" },
+  { value: "system", label: "Système" }
 ];
 
 export default function ThemeScreen() {
@@ -40,7 +40,7 @@ const createStyles = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
       paddingHorizontal: theme.spacing.lg,
-      paddingTop: theme.spacing.lg,
+      paddingTop: theme.spacing.lg
     },
     row: {
       flexDirection: "row",
@@ -48,15 +48,15 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       paddingVertical: theme.spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: theme.colors.outline,
+      borderBottomColor: theme.colors.outline
     },
     rowText: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     checkmark: {
       fontSize: theme.fontSizes.lg,
       color: theme.colors.primary,
-      fontWeight: "bold",
-    },
+      fontWeight: "bold"
+    }
   });

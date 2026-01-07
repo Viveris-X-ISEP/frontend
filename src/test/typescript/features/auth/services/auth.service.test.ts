@@ -3,7 +3,7 @@ import { AuthService } from "../../../../../main/typescript/features/auth/servic
 import type {
   AuthResponse,
   SignInCredentials,
-  SignUpCredentials,
+  SignUpCredentials
 } from "../../../../../main/typescript/features/auth/types";
 import { apiClient } from "../../../../../main/typescript/shared/api/client";
 
@@ -27,13 +27,13 @@ describe("AuthService", () => {
   describe("signIn", () => {
     const validCredentials: SignInCredentials = {
       email: "test@example.com",
-      password: "TestPassword123!",
+      password: "TestPassword123!"
     };
 
     const mockAuthResponse: AuthResponse = {
       token: "mock-jwt-token",
       refreshToken: "mock-refresh-token",
-      userId: 1,
+      userId: 1
     };
 
     it("should successfully sign in with valid credentials", async () => {
@@ -49,11 +49,11 @@ describe("AuthService", () => {
     it("should throw an error when credentials are invalid", async () => {
       const invalidCredentials: SignInCredentials = {
         email: "wrong@example.com",
-        password: "wrongpassword",
+        password: "wrongpassword"
       };
 
       mockApi.onPost("/auth/login", invalidCredentials).reply(401, {
-        message: "Invalid credentials",
+        message: "Invalid credentials"
       });
 
       await expect(AuthService.signIn(invalidCredentials)).rejects.toThrow();
@@ -67,7 +67,7 @@ describe("AuthService", () => {
 
     it("should throw an error on server error (500)", async () => {
       mockApi.onPost("/auth/login").reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       await expect(AuthService.signIn(validCredentials)).rejects.toThrow();
@@ -88,19 +88,19 @@ describe("AuthService", () => {
       email: "newuser@example.com",
       username: "newuser",
       password: "SecurePassword123!",
-      confirmPassword: "SecurePassword123!",
+      confirmPassword: "SecurePassword123!"
     };
 
     const expectedPayload = {
       email: "newuser@example.com",
       username: "newuser",
-      password: "SecurePassword123!",
+      password: "SecurePassword123!"
     };
 
     const mockAuthResponse: AuthResponse = {
       token: "mock-jwt-token-for-new-user",
       refreshToken: "mock-refresh-token-for-new-user",
-      userId: 2,
+      userId: 2
     };
 
     it("should successfully register a new user", async () => {
@@ -127,7 +127,7 @@ describe("AuthService", () => {
 
     it("should throw an error when email already exists", async () => {
       mockApi.onPost("/auth/register").reply(400, {
-        message: "Email already registered",
+        message: "Email already registered"
       });
 
       await expect(AuthService.signUp(validSignUpCredentials)).rejects.toThrow();
@@ -135,7 +135,7 @@ describe("AuthService", () => {
 
     it("should throw an error when username already exists", async () => {
       mockApi.onPost("/auth/register").reply(400, {
-        message: "Username already taken",
+        message: "Username already taken"
       });
 
       await expect(AuthService.signUp(validSignUpCredentials)).rejects.toThrow();
@@ -143,7 +143,7 @@ describe("AuthService", () => {
 
     it("should throw an error on server error", async () => {
       mockApi.onPost("/auth/register").reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       await expect(AuthService.signUp(validSignUpCredentials)).rejects.toThrow();
@@ -165,7 +165,7 @@ describe("AuthService", () => {
     const mockAuthResponse: AuthResponse = {
       token: "new-jwt-token",
       refreshToken: "new-refresh-token",
-      userId: 1,
+      userId: 1
     };
 
     it("should successfully refresh tokens", async () => {
@@ -184,7 +184,7 @@ describe("AuthService", () => {
       const invalidRefreshToken = "invalid-refresh-token";
 
       mockApi.onPost("/auth/refresh", { refreshToken: invalidRefreshToken }).reply(401, {
-        message: "Invalid refresh token",
+        message: "Invalid refresh token"
       });
 
       await expect(AuthService.refreshToken(invalidRefreshToken)).rejects.toThrow();
@@ -194,7 +194,7 @@ describe("AuthService", () => {
       const expiredRefreshToken = "expired-refresh-token";
 
       mockApi.onPost("/auth/refresh", { refreshToken: expiredRefreshToken }).reply(401, {
-        message: "Refresh token expired",
+        message: "Refresh token expired"
       });
 
       await expect(AuthService.refreshToken(expiredRefreshToken)).rejects.toThrow();
@@ -202,7 +202,7 @@ describe("AuthService", () => {
 
     it("should handle server errors", async () => {
       mockApi.onPost("/auth/refresh").reply(500, {
-        message: "Internal server error",
+        message: "Internal server error"
       });
 
       await expect(AuthService.refreshToken(validRefreshToken)).rejects.toThrow();

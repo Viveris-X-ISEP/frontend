@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { type Theme, useTheme } from "../../../shared/theme";
@@ -29,7 +29,7 @@ export default function SurveyQuestionsScreen() {
     isLastQuestion,
     selectAnswer,
     goToNextQuestion,
-    goToPreviousQuestion,
+    goToPreviousQuestion
   } = useSurvey();
 
   const { submitSurvey, isSubmitting, error } = useSubmitSurvey();
@@ -112,7 +112,7 @@ export default function SurveyQuestionsScreen() {
           style={[
             styles.button,
             styles.primaryButton,
-            (!canProceed || isSubmitting) && styles.disabledButton,
+            (!canProceed || isSubmitting) && styles.disabledButton
           ]}
           onPress={handleNext}
           disabled={!canProceed || isSubmitting}
@@ -136,96 +136,96 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     closeButton: {
       alignSelf: "flex-end",
-      padding: theme.spacing.sm,
+      padding: theme.spacing.sm
     },
     progressSection: {
-      marginBottom: theme.spacing.lg,
+      marginBottom: theme.spacing.lg
     },
     progressText: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      marginBottom: theme.spacing.sm,
+      marginBottom: theme.spacing.sm
     },
     progressBarContainer: {
-      marginTop: theme.spacing.xs,
+      marginTop: theme.spacing.xs
     },
     progressBarBackground: {
       height: theme.spacing.sm,
       backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.full,
-      overflow: "hidden",
+      overflow: "hidden"
     },
     progressBarFill: {
       height: "100%",
       backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
+      borderRadius: theme.borderRadius.full
     },
     contentContainer: {
-      flex: 1,
+      flex: 1
     },
     content: {
-      paddingBottom: theme.spacing.lg,
+      paddingBottom: theme.spacing.lg
     },
     questionText: {
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       color: theme.colors.text,
       marginBottom: theme.spacing.lg,
-      lineHeight: theme.fontSizes.xl * 1.3,
+      lineHeight: theme.fontSizes.xl * 1.3
     },
     optionsContainer: {
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.md
     },
     errorText: {
       color: theme.colors.error,
       fontSize: theme.fontSizes.sm,
       textAlign: "center",
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.md
     },
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
-      paddingTop: theme.spacing.md,
+      paddingTop: theme.spacing.md
     },
     button: {
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.lg,
       borderRadius: theme.borderRadius.full,
       minWidth: 120,
-      alignItems: "center",
+      alignItems: "center"
     },
     primaryButton: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.primary
     },
     primaryButtonText: {
       color: theme.colors.background,
       fontSize: theme.fontSizes.md,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     secondaryButton: {
-      backgroundColor: theme.colors.inputBackground,
+      backgroundColor: theme.colors.inputBackground
     },
     secondaryButtonText: {
       color: theme.colors.text,
       fontSize: theme.fontSizes.md,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     disabledButton: {
-      opacity: 0.5,
+      opacity: 0.5
     },
     disabledText: {
-      opacity: 0.5,
+      opacity: 0.5
     },
     loadingContainer: {
       flexDirection: "row",
       alignItems: "center",
-      gap: theme.spacing.sm,
+      gap: theme.spacing.sm
     },
     loadingText: {
-      marginLeft: theme.spacing.sm,
-    },
+      marginLeft: theme.spacing.sm
+    }
   });

@@ -164,7 +164,7 @@ Each feature module follows a consistent structure:
 | `bun run android` | Run on Android emulator/device |
 | `bun run ios` | Run on iOS simulator/device |
 | `bun run web` | Run in web browser |
-| `bun run lint` | Run ESLint |
+| `bun run lint` | Run Biome |
 | `bun test` | Run Jest tests |
 | `bun run test:watch` | Run tests in watch mode |
 | `bun run test:coverage` | Run tests with coverage report |

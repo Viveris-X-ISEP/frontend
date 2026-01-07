@@ -18,8 +18,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "GASOLINE", label: "Essence", value: "GASOLINE" },
       { id: "DIESEL", label: "Diesel", value: "DIESEL" },
       { id: "ELECTRIC", label: "Électrique", value: "ELECTRIC" },
-      { id: "HYBRID", label: "Hybride", value: "HYBRID" },
-    ],
+      { id: "HYBRID", label: "Hybride", value: "HYBRID" }
+    ]
   },
   {
     id: "car_km_per_year",
@@ -31,8 +31,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "5000", label: "Moins de 5 000 km", value: "5000" },
       { id: "10000", label: "5 000 - 10 000 km", value: "10000" },
       { id: "15000", label: "10 000 - 20 000 km", value: "15000" },
-      { id: "25000", label: "Plus de 20 000 km", value: "25000" },
-    ],
+      { id: "25000", label: "Plus de 20 000 km", value: "25000" }
+    ]
   },
   {
     id: "car_passengers",
@@ -43,8 +43,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "1", label: "Je suis seul(e)", value: "1" },
       { id: "2", label: "2 personnes", value: "2" },
       { id: "3", label: "3 personnes", value: "3" },
-      { id: "4", label: "4 personnes ou plus", value: "4" },
-    ],
+      { id: "4", label: "4 personnes ou plus", value: "4" }
+    ]
   },
   {
     id: "public_transport_type",
@@ -55,8 +55,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "BUS", label: "Bus", value: "BUS" },
       { id: "TRAMWAY", label: "Tramway", value: "TRAMWAY" },
       { id: "METRO", label: "Métro", value: "METRO" },
-      { id: "TRAIN", label: "Train", value: "TRAIN" },
-    ],
+      { id: "TRAIN", label: "Train", value: "TRAIN" }
+    ]
   },
   {
     id: "public_transport_frequency",
@@ -66,8 +66,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
     options: [
       { id: "HIGH", label: "Quotidiennement", value: "HIGH" },
       { id: "MEDIUM", label: "Quelques fois par semaine", value: "MEDIUM" },
-      { id: "LOW", label: "Rarement ou jamais", value: "LOW" },
-    ],
+      { id: "LOW", label: "Rarement ou jamais", value: "LOW" }
+    ]
   },
   {
     id: "air_short_flights",
@@ -78,8 +78,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucun", value: "0" },
       { id: "1", label: "1-2 vols", value: "1" },
       { id: "3", label: "3-5 vols", value: "3" },
-      { id: "6", label: "Plus de 5 vols", value: "6" },
-    ],
+      { id: "6", label: "Plus de 5 vols", value: "6" }
+    ]
   },
   {
     id: "air_medium_flights",
@@ -90,8 +90,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucun", value: "0" },
       { id: "1", label: "1-2 vols", value: "1" },
       { id: "3", label: "3-5 vols", value: "3" },
-      { id: "6", label: "Plus de 5 vols", value: "6" },
-    ],
+      { id: "6", label: "Plus de 5 vols", value: "6" }
+    ]
   },
   {
     id: "air_long_flights",
@@ -102,8 +102,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucun", value: "0" },
       { id: "1", label: "1-2 vols", value: "1" },
       { id: "3", label: "3-5 vols", value: "3" },
-      { id: "6", label: "Plus de 5 vols", value: "6" },
-    ],
+      { id: "6", label: "Plus de 5 vols", value: "6" }
+    ]
   },
   {
     id: "bike_use_per_week",
@@ -114,8 +114,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Jamais", value: "0" },
       { id: "1", label: "1-2 fois", value: "1" },
       { id: "3", label: "3-5 fois", value: "3" },
-      { id: "7", label: "Tous les jours", value: "7" },
-    ],
+      { id: "7", label: "Tous les jours", value: "7" }
+    ]
   },
 
   // ==========================================
@@ -130,8 +130,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucun", value: "0" },
       { id: "1", label: "1-2 repas", value: "1" },
       { id: "3", label: "3-5 repas", value: "3" },
-      { id: "7", label: "Plus de 5 repas", value: "7" },
-    ],
+      { id: "7", label: "Plus de 5 repas", value: "7" }
+    ]
   },
   {
     id: "white_meat_per_week",
@@ -142,8 +142,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucun", value: "0" },
       { id: "2", label: "1-3 repas", value: "2" },
       { id: "4", label: "4-6 repas", value: "4" },
-      { id: "7", label: "Plus de 6 repas", value: "7" },
-    ],
+      { id: "7", label: "Plus de 6 repas", value: "7" }
+    ]
   },
   {
     id: "fish_per_week",
@@ -154,8 +154,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucun", value: "0" },
       { id: "1", label: "1-2 repas", value: "1" },
       { id: "3", label: "3-4 repas", value: "3" },
-      { id: "5", label: "Plus de 4 repas", value: "5" },
-    ],
+      { id: "5", label: "Plus de 4 repas", value: "5" }
+    ]
   },
   {
     id: "dairy_per_week",
@@ -166,8 +166,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "0", label: "Aucune", value: "0" },
       { id: "3", label: "1-5 portions", value: "3" },
       { id: "7", label: "6-10 portions", value: "7" },
-      { id: "14", label: "Plus de 10 portions", value: "14" },
-    ],
+      { id: "14", label: "Plus de 10 portions", value: "14" }
+    ]
   },
 
   // ==========================================
@@ -182,8 +182,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "APARTMENT", label: "Appartement", value: "APARTMENT" },
       { id: "HOUSE", label: "Maison", value: "HOUSE" },
       { id: "COLOCATION", label: "Colocation", value: "COLOCATION" },
-      { id: "VILLA", label: "Villa", value: "VILLA" },
-    ],
+      { id: "VILLA", label: "Villa", value: "VILLA" }
+    ]
   },
   {
     id: "surface_area",
@@ -195,8 +195,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "50", label: "30-50 m²", value: "50" },
       { id: "80", label: "50-80 m²", value: "80" },
       { id: "100", label: "80-120 m²", value: "100" },
-      { id: "150", label: "Plus de 120 m²", value: "150" },
-    ],
+      { id: "150", label: "Plus de 120 m²", value: "150" }
+    ]
   },
   {
     id: "heating_energy_source",
@@ -209,8 +209,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "FUEL_OIL", label: "Fioul", value: "FUEL_OIL" },
       { id: "HEAT_PUMP", label: "Pompe à chaleur", value: "HEAT_PUMP" },
       { id: "WOOD", label: "Bois", value: "WOOD" },
-      { id: "HEAT_NETWORK", label: "Réseau de chaleur", value: "HEAT_NETWORK" },
-    ],
+      { id: "HEAT_NETWORK", label: "Réseau de chaleur", value: "HEAT_NETWORK" }
+    ]
   },
 
   // ==========================================
@@ -226,8 +226,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "5", label: "Moins de 5 heures", value: "5" },
       { id: "10", label: "5-10 heures", value: "10" },
       { id: "20", label: "10-20 heures", value: "20" },
-      { id: "30", label: "Plus de 20 heures", value: "30" },
-    ],
+      { id: "30", label: "Plus de 20 heures", value: "30" }
+    ]
   },
   {
     id: "charging_frequency_per_day",
@@ -238,8 +238,8 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "1", label: "1 fois", value: "1" },
       { id: "2", label: "2 fois", value: "2" },
       { id: "3", label: "3 fois", value: "3" },
-      { id: "4", label: "4 fois ou plus", value: "4" },
-    ],
+      { id: "4", label: "4 fois ou plus", value: "4" }
+    ]
   },
   {
     id: "devices_owned",
@@ -250,9 +250,9 @@ const SURVEY_QUESTIONS: SurveyQuestion[] = [
       { id: "1", label: "1-2 appareils", value: "1" },
       { id: "3", label: "3-4 appareils", value: "3" },
       { id: "5", label: "5-6 appareils", value: "5" },
-      { id: "8", label: "Plus de 6 appareils", value: "8" },
-    ],
-  },
+      { id: "8", label: "Plus de 6 appareils", value: "8" }
+    ]
+  }
 ];
 
 export function useSurvey() {
@@ -275,7 +275,7 @@ export function useSurvey() {
         const newAnswer: SurveyAnswer = {
           questionId: currentQuestion.id,
           answerId,
-          value,
+          value
         };
 
         if (existingIndex >= 0) {
@@ -318,6 +318,6 @@ export function useSurvey() {
     selectAnswer,
     goToNextQuestion,
     goToPreviousQuestion,
-    resetSurvey,
+    resetSurvey
   };
 }

@@ -8,7 +8,7 @@ interface LanguageOption {
 
 const languageOptions: LanguageOption[] = [
   { value: "fr", label: "Français" },
-  { value: "en", label: "English" },
+  { value: "en", label: "English" }
 ];
 
 export default function LanguageScreen() {
@@ -45,7 +45,7 @@ const createStyles = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
       paddingHorizontal: theme.spacing.lg,
-      paddingTop: theme.spacing.lg,
+      paddingTop: theme.spacing.lg
     },
     row: {
       flexDirection: "row",
@@ -53,15 +53,15 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       paddingVertical: theme.spacing.md,
       borderBottomWidth: 1,
-      borderBottomColor: theme.colors.outline,
+      borderBottomColor: theme.colors.outline
     },
     rowText: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     checkmark: {
       fontSize: theme.fontSizes.lg,
       color: theme.colors.primary,
-      fontWeight: "bold",
-    },
+      fontWeight: "bold"
+    }
   });

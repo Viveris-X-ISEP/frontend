@@ -56,5 +56,5 @@ export const UserMissionService = {
    */
   async deleteUserMission(userId: number, missionId: number): Promise<void> {
     await apiClient.delete(`/user-missions/user/${userId}/mission/${missionId}`);
-  },
+  }
 };

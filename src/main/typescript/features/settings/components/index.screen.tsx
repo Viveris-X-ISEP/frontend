@@ -70,41 +70,41 @@ const createStyles = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
       paddingHorizontal: theme.spacing.lg,
-      paddingTop: theme.spacing.lg,
+      paddingTop: theme.spacing.lg
     },
     sectionTitle: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     sectionSpacing: {
-      marginTop: theme.spacing.xl,
+      marginTop: theme.spacing.xl
     },
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingVertical: theme.spacing.md,
+      paddingVertical: theme.spacing.md
     },
     rowText: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     rowValue: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     arrow: {
       fontSize: theme.fontSizes.lg,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     logoutText: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.error,
+      color: theme.colors.error
     },
     logoutArrow: {
       fontSize: theme.fontSizes.lg,
-      color: theme.colors.error,
-    },
+      color: theme.colors.error
+    }
   });
