@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
 import { useTheme, type Theme } from "../../../../shared/theme";
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
@@ -14,7 +24,7 @@ export default function MissionDetailScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { mission, loading } = useMission(Number(id));
   const token = useAuthStore((state) => state.token);
   const { create: createUserMission } = useCreateUserMission();
@@ -34,7 +44,7 @@ export default function MissionDetailScreen() {
     try {
       // Get current user
       const user = await UserService.getCurrentUser(token);
-      
+
       const now = new Date();
       const payload = {
         userId: user.id,
@@ -49,16 +59,12 @@ export default function MissionDetailScreen() {
       const result = await createUserMission(payload);
 
       if (result) {
-        Alert.alert(
-          "Succès",
-          "Mission ajoutée à vos missions actives !",
-          [
-            {
-              text: "OK",
-              onPress: () => router.push("/(tabs)/missions/active"),
-            },
-          ]
-        );
+        Alert.alert("Succès", "Mission ajoutée à vos missions actives !", [
+          {
+            text: "OK",
+            onPress: () => router.push("/(tabs)/missions/active"),
+          },
+        ]);
       } else {
         Alert.alert("Erreur", "Impossible d'ajouter cette mission");
       }
@@ -100,9 +106,7 @@ export default function MissionDetailScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity 
-          onPress={() => router.back()}
-        >
+        <TouchableOpacity onPress={() => router.back()}>
           <MaterialIcons name="arrow-back" size={24} color={theme.colors.text} />
         </TouchableOpacity>
       </View>
@@ -119,7 +123,7 @@ export default function MissionDetailScreen() {
           <Text style={styles.description}>{mission.description}</Text>
 
           <Text style={styles.sectionTitle}>Mission Details</Text>
-          
+
           <View style={styles.detailRow}>
             <View style={styles.iconContainer}>
               <MaterialIcons name="card-giftcard" size={24} color={theme.colors.text} />
@@ -133,7 +137,7 @@ export default function MissionDetailScreen() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity 
+        <TouchableOpacity
           style={[styles.startButton, isSubmitting && styles.startButtonDisabled]}
           onPress={handleEmbark}
           disabled={isSubmitting}

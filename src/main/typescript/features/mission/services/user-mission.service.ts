@@ -22,7 +22,9 @@ export const UserMissionService = {
    * Get a specific user's mission
    */
   async getUserMission(userId: number, missionId: number): Promise<UserMission> {
-    const response = await apiClient.get<UserMission>(`/user-missions/user/${userId}/mission/${missionId}`);
+    const response = await apiClient.get<UserMission>(
+      `/user-missions/user/${userId}/mission/${missionId}`
+    );
     return response.data;
   },
 
@@ -37,8 +39,15 @@ export const UserMissionService = {
   /**
    * Update a user's mission
    */
-  async updateUserMission(userId: number, missionId: number, dto: UpdateUserMissionDto): Promise<UserMission> {
-    const response = await apiClient.put<UserMission>(`/user-missions/user/${userId}/mission/${missionId}`, dto);
+  async updateUserMission(
+    userId: number,
+    missionId: number,
+    dto: UpdateUserMissionDto
+  ): Promise<UserMission> {
+    const response = await apiClient.put<UserMission>(
+      `/user-missions/user/${userId}/mission/${missionId}`,
+      dto
+    );
     return response.data;
   },
 

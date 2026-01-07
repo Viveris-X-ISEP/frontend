@@ -11,7 +11,7 @@ import {
   FontAwesome5,
   Entypo,
   FontAwesome,
-} from '@expo/vector-icons';
+} from "@expo/vector-icons";
 import { Image } from "react-native";
 import { router } from "expo-router";
 import { useAuthStore } from "../../../store";
@@ -38,11 +38,11 @@ export default function CatalogueScreen() {
   React.useEffect(() => {
     const fetchUserData = async () => {
       if (!token) return;
-      
+
       try {
         const user = await UserService.getCurrentUser(token);
         setUserId(user.id);
-        
+
         const missions = await UserMissionService.getMissionsByUserId(user.id);
         setUserMissions(missions);
       } catch (err) {
@@ -56,24 +56,28 @@ export default function CatalogueScreen() {
   const getMissionStatus = (missionId: number) => {
     const userMission = userMissions.find((um) => um.missionId === missionId);
     if (!userMission) return null;
-    
+
     if (userMission.status === MissionStatus.COMPLETED) return "completed";
-    if (userMission.status === MissionStatus.IN_PROGRESS || userMission.status === MissionStatus.ASSIGNED) return "active";
-    
+    if (
+      userMission.status === MissionStatus.IN_PROGRESS ||
+      userMission.status === MissionStatus.ASSIGNED
+    )
+      return "active";
+
     return null;
   };
 
   const truncateDescription = (text: string, maxLength: number = 30) => {
     if (text.length <= maxLength) return text;
-    
+
     const truncated = text.substring(0, maxLength);
-    const lastSpaceIndex = truncated.lastIndexOf(' ');
-    
+    const lastSpaceIndex = truncated.lastIndexOf(" ");
+
     if (lastSpaceIndex > 0) {
-      return truncated.substring(0, lastSpaceIndex) + '...';
+      return truncated.substring(0, lastSpaceIndex) + "...";
     }
-    
-    return truncated + '...';
+
+    return truncated + "...";
   };
 
   const handleSheetChanges = useCallback((index: number) => {
@@ -94,7 +98,8 @@ export default function CatalogueScreen() {
   const filteredMissions = useMemo(() => {
     return missions.filter((mission) => {
       const categoryMatch = selectedCategory === "Tout" || mission.category === selectedCategory;
-      const rewardMatch = mission.rewardPoints >= sliderValues[0] && mission.rewardPoints <= sliderValues[1];
+      const rewardMatch =
+        mission.rewardPoints >= sliderValues[0] && mission.rewardPoints <= sliderValues[1];
       return categoryMatch && rewardMatch;
     });
   }, [missions, selectedCategory, sliderValues]);
@@ -115,7 +120,7 @@ export default function CatalogueScreen() {
       >
         {/* text with filter icon outline */}
         <Text style={styles.filterButtonText}>
-          <FontAwesome5 name="filter" size={16} color={theme.colors.text} />  Filter
+          <FontAwesome5 name="filter" size={16} color={theme.colors.text} /> Filter
         </Text>
       </TouchableOpacity>
 
@@ -125,7 +130,7 @@ export default function CatalogueScreen() {
         renderItem={({ item }) => {
           const status = getMissionStatus(item.id);
           const isDisabled = status !== null;
-          
+
           return (
             <TouchableOpacity
               style={styles.missionBlock}
@@ -143,7 +148,7 @@ export default function CatalogueScreen() {
                 style={styles.categoryImage}
                 resizeMode="cover"
               />
-              
+
               {status === "completed" && (
                 <View style={styles.overlay}>
                   <View style={styles.overlayContent}>
@@ -152,7 +157,7 @@ export default function CatalogueScreen() {
                   </View>
                 </View>
               )}
-              
+
               {status === "active" && (
                 <View style={styles.overlay}>
                   <View style={styles.overlayContent}>
@@ -180,7 +185,7 @@ export default function CatalogueScreen() {
 
           <Text style={styles.sectionTitle}>Categorie</Text>
           <View style={styles.categoryContainer}>
-            {["Tout","Logement", "Alimentation", "Numérique", "Transport"].map((category) => (
+            {["Tout", "Logement", "Alimentation", "Numérique", "Transport"].map((category) => (
               <TouchableOpacity
                 key={category}
                 style={[
@@ -192,8 +197,7 @@ export default function CatalogueScreen() {
                 <Text
                   style={[
                     styles.categoryButtonText,
-                    selectedCategory === category &&
-                      styles.selectedCategoryButtonText,
+                    selectedCategory === category && styles.selectedCategoryButtonText,
                   ]}
                 >
                   {category}
@@ -213,7 +217,12 @@ export default function CatalogueScreen() {
             sliderLength={280}
             selectedStyle={{ backgroundColor: theme.colors.primary }}
             unselectedStyle={{ backgroundColor: theme.colors.outline }}
-            markerStyle={{ backgroundColor: theme.colors.primary, width: 10, height: 10, borderWidth: 0 }}
+            markerStyle={{
+              backgroundColor: theme.colors.primary,
+              width: 10,
+              height: 10,
+              borderWidth: 0,
+            }}
           />
           <Text style={styles.sliderValue}>
             {sliderValues[0]} Points - {sliderValues[1]} Points
@@ -277,7 +286,7 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full,
       alignItems: "center",
       margin: theme.spacing.md,
-      alignSelf: "flex-start", 
+      alignSelf: "flex-start",
     },
     filterButtonText: {
       color: theme.colors.text,

@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { FlatList, Text, View, StyleSheet, TouchableOpacity, Image, ActivityIndicator, Alert } from "react-native";
+import {
+  FlatList,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
 import { useTheme, type Theme } from "../../../shared/theme";
 import { MissionStatus } from "../../mission/types/mission-status";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
 import { useAuthStore } from "../../../store";
 import { useDeleteUserMission } from "../../mission/hooks";
@@ -14,7 +23,7 @@ export default function ActiveScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const token = useAuthStore((state) => state.token);
-  
+
   const [userId, setUserId] = useState<number | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   type EnrichedUserMission = UserMission & { mission?: MissionsMission };
@@ -22,7 +31,7 @@ export default function ActiveScreen() {
   const [missionsLoading, setMissionsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
-  
+
   const { deleteUserMission, loading: deleteLoading } = useDeleteUserMission();
 
   React.useEffect(() => {
@@ -31,7 +40,7 @@ export default function ActiveScreen() {
         setLoadingUser(false);
         return;
       }
-      
+
       try {
         const user = await UserService.getCurrentUser(token);
         setUserId(user.id);
@@ -45,52 +54,55 @@ export default function ActiveScreen() {
     fetchUser();
   }, [token]);
 
-  const fetchMissions = React.useCallback(async (isRefreshing = false) => {
-    if (!userId) return;
-    
-    if (isRefreshing) {
-      setRefreshing(true);
-    } else {
-      setMissionsLoading(true);
-    }
-    setError(null);
-    
-    try {
-      const { UserMissionService } = await import("../../mission/services/user-mission.service");
-      const { getMissionById } = await import("../../missions/services/missions.service");
-      
-      const userMissions = await UserMissionService.getMissionsByUserId(userId);
-      
-      const enrichedMissions = await Promise.all(
-        userMissions.map(async (userMission) => {
-          try {
-            const fullMission = await getMissionById(userMission.missionId);
-            return {
-              ...userMission,
-              mission: fullMission,
-            } as EnrichedUserMission;
-          } catch (err) {
-            console.error(`Error fetching mission ${userMission.missionId}:`, err);
-            return {
-              ...userMission,
-              mission: undefined,
-            } as EnrichedUserMission;
-          }
-        })
-      );
-      
-      setMissions(enrichedMissions);
-    } catch (err) {
-      console.error("Error fetching missions:", err);
-      setError("Impossible de charger les missions");
-    } finally {
+  const fetchMissions = React.useCallback(
+    async (isRefreshing = false) => {
+      if (!userId) return;
+
       if (isRefreshing) {
-        setRefreshing(false);
+        setRefreshing(true);
       } else {
-        setMissionsLoading(false);
+        setMissionsLoading(true);
       }
-    }
-  }, [userId]);
+      setError(null);
+
+      try {
+        const { UserMissionService } = await import("../../mission/services/user-mission.service");
+        const { getMissionById } = await import("../../missions/services/missions.service");
+
+        const userMissions = await UserMissionService.getMissionsByUserId(userId);
+
+        const enrichedMissions = await Promise.all(
+          userMissions.map(async (userMission) => {
+            try {
+              const fullMission = await getMissionById(userMission.missionId);
+              return {
+                ...userMission,
+                mission: fullMission,
+              } as EnrichedUserMission;
+            } catch (err) {
+              console.error(`Error fetching mission ${userMission.missionId}:`, err);
+              return {
+                ...userMission,
+                mission: undefined,
+              } as EnrichedUserMission;
+            }
+          })
+        );
+
+        setMissions(enrichedMissions);
+      } catch (err) {
+        console.error("Error fetching missions:", err);
+        setError("Impossible de charger les missions");
+      } finally {
+        if (isRefreshing) {
+          setRefreshing(false);
+        } else {
+          setMissionsLoading(false);
+        }
+      }
+    },
+    [userId]
+  );
 
   React.useEffect(() => {
     fetchMissions();
@@ -109,15 +121,15 @@ export default function ActiveScreen() {
 
   const truncateDescription = (text: string, maxLength: number = 30) => {
     if (text.length <= maxLength) return text;
-    
+
     const truncated = text.substring(0, maxLength);
-    const lastSpaceIndex = truncated.lastIndexOf(' ');
-    
+    const lastSpaceIndex = truncated.lastIndexOf(" ");
+
     if (lastSpaceIndex > 0) {
-      return truncated.substring(0, lastSpaceIndex) + '...';
+      return truncated.substring(0, lastSpaceIndex) + "...";
     }
-    
-    return truncated + '...';
+
+    return truncated + "...";
   };
 
   const categoryImages = {
@@ -130,25 +142,21 @@ export default function ActiveScreen() {
   const handleCancel = async (missionId: number) => {
     if (!userId) return;
 
-    Alert.alert(
-      "Annuler la mission",
-      "Êtes-vous sûr de vouloir annuler cette mission ?",
-      [
-        { text: "Non", style: "cancel" },
-        {
-          text: "Oui",
-          onPress: async () => {
-            const success = await deleteUserMission(userId, missionId);
-            if (success) {
-              setMissions(missions.filter((m) => m.missionId !== missionId));
-              Alert.alert("Succès", "Mission annulée avec succès");
-            } else {
-              Alert.alert("Erreur", "Impossible d'annuler la mission");
-            }
-          },
+    Alert.alert("Annuler la mission", "Êtes-vous sûr de vouloir annuler cette mission ?", [
+      { text: "Non", style: "cancel" },
+      {
+        text: "Oui",
+        onPress: async () => {
+          const success = await deleteUserMission(userId, missionId);
+          if (success) {
+            setMissions(missions.filter((m) => m.missionId !== missionId));
+            Alert.alert("Succès", "Mission annulée avec succès");
+          } else {
+            Alert.alert("Erreur", "Impossible d'annuler la mission");
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const handleUpdate = (missionId: number) => {
@@ -198,7 +206,8 @@ export default function ActiveScreen() {
         renderItem={({ item }) => {
           if (!item.mission) return null;
 
-          const completionRate = item.mission.goal > 0 ? (item.completionRate / item.mission.goal) * 100 : 0;
+          const completionRate =
+            item.mission.goal > 0 ? (item.completionRate / item.mission.goal) * 100 : 0;
 
           return (
             <View style={styles.missionBlock}>
@@ -207,10 +216,12 @@ export default function ActiveScreen() {
                 style={styles.categoryImage}
                 resizeMode="cover"
               />
-              
+
               <Text style={styles.title}>{item.mission.title}</Text>
-              <Text style={styles.description}>{truncateDescription(item.mission.description)}</Text>
-              
+              <Text style={styles.description}>
+                {truncateDescription(item.mission.description)}
+              </Text>
+
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={[styles.button, styles.cancelButton]}
@@ -219,7 +230,7 @@ export default function ActiveScreen() {
                 >
                   <Text style={styles.buttonText}>Annuler</Text>
                 </TouchableOpacity>
-                
+
                 <TouchableOpacity
                   style={[styles.button, styles.updateButton]}
                   onPress={() => handleUpdate(item.missionId)}
@@ -227,17 +238,15 @@ export default function ActiveScreen() {
                   <Text style={styles.buttonText}>Modifier</Text>
                 </TouchableOpacity>
               </View>
-              
+
               <View style={styles.progressContainer}>
                 <Text style={styles.progressText}>
-                  {item.completionRate} / {item.mission.goal} {item.mission.goalUnit?.toLowerCase() || ""}
+                  {item.completionRate} / {item.mission.goal}{" "}
+                  {item.mission.goalUnit?.toLowerCase() || ""}
                 </Text>
                 <View style={styles.progressBarBackground}>
                   <View
-                    style={[
-                      styles.progressBarFill,
-                      { width: `${Math.min(completionRate, 100)}%` },
-                    ]}
+                    style={[styles.progressBarFill, { width: `${Math.min(completionRate, 100)}%` }]}
                   />
                 </View>
               </View>

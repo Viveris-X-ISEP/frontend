@@ -53,7 +53,12 @@ export const useAuthStore = create<AuthState>()(
         // Reset survey store to clear state for next user
         useSurveyStore.getState().reset();
 
-        set({ isLoggedIn: false, token: null, refreshToken: null, userId: null });
+        set({
+          isLoggedIn: false,
+          token: null,
+          refreshToken: null,
+          userId: null,
+        });
       },
 
       updateTokens: async (token, refreshToken) => {
@@ -67,7 +72,10 @@ export const useAuthStore = create<AuthState>()(
       name: "auth-storage",
       storage: createJSONStorage(() => secureStorage),
       // Persist isLoggedIn and userId state; tokens are in SecureStore
-      partialize: (state) => ({ isLoggedIn: state.isLoggedIn, userId: state.userId }),
+      partialize: (state) => ({
+        isLoggedIn: state.isLoggedIn,
+        userId: state.userId,
+      }),
     }
   )
 );

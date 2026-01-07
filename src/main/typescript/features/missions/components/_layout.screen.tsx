@@ -16,36 +16,26 @@ export default function MissionsLayoutScreen() {
       <Text style={styles.title}>Missions</Text>
 
       <View style={styles.menuContainer}>
-        <TouchableOpacity
-          style={[
-            styles.menuButton,
-          ]}
-          onPress={() => setActiveTab("active")}
-        >
+        <TouchableOpacity style={[styles.menuButton]} onPress={() => setActiveTab("active")}>
           <Text
             style={[
               styles.menuButtonText,
               activeTab === "active"
-                ? { color: theme.colors.text } 
-                : { color: theme.colors.primary }, 
+                ? { color: theme.colors.text }
+                : { color: theme.colors.primary },
             ]}
           >
             Active Missions
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.menuButton,
-          ]}
-          onPress={() => setActiveTab("catalogue")}
-        >
+        <TouchableOpacity style={[styles.menuButton]} onPress={() => setActiveTab("catalogue")}>
           <Text
             style={[
               styles.menuButtonText,
               activeTab === "catalogue"
-                ? { color: theme.colors.text } 
-                : { color: theme.colors.primary }, 
+                ? { color: theme.colors.text }
+                : { color: theme.colors.primary },
             ]}
           >
             Mission Catalogue

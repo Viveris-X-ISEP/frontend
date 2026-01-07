@@ -135,10 +135,7 @@ export default function MissionUpdateScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => router.back()}
-        >
+        <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
           <MaterialIcons name="close" size={24} color={theme.colors.text} />
         </TouchableOpacity>
       </View>
@@ -150,7 +147,7 @@ export default function MissionUpdateScreen() {
 
           <View style={styles.inputSection}>
             <Text style={styles.label}>Progression actuelle</Text>
-            
+
             <View style={styles.inputContainer}>
               <TouchableOpacity
                 style={styles.controlButton}
@@ -194,10 +191,7 @@ export default function MissionUpdateScreen() {
 
             <View style={styles.progressBarBackground}>
               <View
-                style={[
-                  styles.progressBarFill,
-                  { width: `${Math.min(completionRate, 100)}%` },
-                ]}
+                style={[styles.progressBarFill, { width: `${Math.min(completionRate, 100)}%` }]}
               />
             </View>
           </View>
