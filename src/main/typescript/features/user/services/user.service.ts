@@ -1,5 +1,5 @@
-import { User, CreateUserDto, UpdateLastActiveDto } from "../types";
 import { apiClient } from "../../../shared/api/client";
+import { type CreateUserDto, UpdateLastActiveDto, type User } from "../types";
 
 export const UserService = {
   async findAll(): Promise<User[]> {

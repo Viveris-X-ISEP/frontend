@@ -1,5 +1,5 @@
 import { apiClient } from "../../../shared/api/client";
-import { Mission } from "../types";
+import type { Mission } from "../types";
 
 const API_URL = "/missions";
 

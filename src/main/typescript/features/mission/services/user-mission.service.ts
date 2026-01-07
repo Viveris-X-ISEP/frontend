@@ -1,5 +1,5 @@
-import { UserMission, CreateUserMissionDto, UpdateUserMissionDto } from "../types";
 import { apiClient } from "../../../shared/api/client";
+import type { CreateUserMissionDto, UpdateUserMissionDto, UserMission } from "../types";
 
 export const UserMissionService = {
   /**

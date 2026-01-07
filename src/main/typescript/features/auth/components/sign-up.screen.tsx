@@ -1,18 +1,18 @@
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Link } from "expo-router";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useSignUp } from "../hooks";
-import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function SignUpScreen() {
   const [username, setUsername] = useState("");

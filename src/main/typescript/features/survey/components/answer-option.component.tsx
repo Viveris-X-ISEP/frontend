@@ -1,6 +1,6 @@
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 import type { SurveyAnswerOption } from "../types";
 
 interface AnswerOptionProps {

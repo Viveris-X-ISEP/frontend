@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { View, Text, Switch, StyleSheet } from "react-native";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { StyleSheet, Switch, Text, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 
 interface NotificationSetting {
   id: string;

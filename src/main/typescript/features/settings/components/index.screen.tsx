@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useSignOut } from "../../auth/hooks";
-import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function SettingsScreen() {
   const { handleSignOut } = useSignOut();

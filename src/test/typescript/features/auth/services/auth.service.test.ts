@@ -1,11 +1,11 @@
 import MockAdapter from "axios-mock-adapter";
 import { AuthService } from "../../../../../main/typescript/features/auth/services/auth.service";
-import { apiClient } from "../../../../../main/typescript/shared/api/client";
 import type {
+  AuthResponse,
   SignInCredentials,
   SignUpCredentials,
-  AuthResponse,
 } from "../../../../../main/typescript/features/auth/types";
+import { apiClient } from "../../../../../main/typescript/shared/api/client";
 
 describe("AuthService", () => {
   let mockApi: MockAdapter;

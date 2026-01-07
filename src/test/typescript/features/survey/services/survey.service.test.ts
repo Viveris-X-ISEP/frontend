@@ -1,10 +1,10 @@
 import MockAdapter from "axios-mock-adapter";
 import { SurveyService } from "../../../../../main/typescript/features/survey/services/survey.service";
-import { apiClient } from "../../../../../main/typescript/shared/api/client";
 import type {
   FootprintQuizzPayload,
   UserEmissionDto,
 } from "../../../../../main/typescript/features/survey/types";
+import { apiClient } from "../../../../../main/typescript/shared/api/client";
 
 describe("SurveyService", () => {
   let mockApi: MockAdapter;
@@ -130,7 +130,7 @@ describe("SurveyService", () => {
     });
 
     it("should throw an error when user not found", async () => {
-      mockApi.onGet(`/emissions/user/999`).reply(404, {
+      mockApi.onGet("/emissions/user/999").reply(404, {
         message: "User not found",
       });
 

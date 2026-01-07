@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import {
-  FlatList,
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
-import { useTheme, type Theme } from "../../../shared/theme";
-import { MissionStatus } from "../../mission/types/mission-status";
 import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
+import React, { useState } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store";
 import { useDeleteUserMission } from "../../mission/hooks";
-import { UserMission } from "../../mission/types";
+import type { UserMission } from "../../mission/types";
+import { MissionStatus } from "../../mission/types/mission-status";
 import type { Mission as MissionsMission } from "../../missions/types";
 import { UserService } from "../../user/services/user.service";
 
@@ -119,17 +119,17 @@ export default function ActiveScreen() {
     fetchMissions(true);
   }, [fetchMissions]);
 
-  const truncateDescription = (text: string, maxLength: number = 30) => {
+  const truncateDescription = (text: string, maxLength = 30) => {
     if (text.length <= maxLength) return text;
 
     const truncated = text.substring(0, maxLength);
     const lastSpaceIndex = truncated.lastIndexOf(" ");
 
     if (lastSpaceIndex > 0) {
-      return truncated.substring(0, lastSpaceIndex) + "...";
+      return `${truncated.substring(0, lastSpaceIndex)}...`;
     }
 
-    return truncated + "...";
+    return `${truncated}...`;
   };
 
   const categoryImages = {

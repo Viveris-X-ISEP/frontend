@@ -1,27 +1,27 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState, useEffect } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
   ActivityIndicator,
   Alert,
-  ScrollView,
   SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useLocalSearchParams, router } from "expo-router";
-import { useTheme, type Theme } from "../../../../shared/theme";
+import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
+import { getMissionById } from "../../../missions/services/missions.service";
 import { UserService } from "../../../user/services/user.service";
 import { UserMissionService } from "../../services/user-mission.service";
-import { getMissionById } from "../../../missions/services/missions.service";
-import { MaterialIcons } from "@expo/vector-icons";
 import { MissionStatus } from "../../types/mission-status";
 
 export default function MissionUpdateScreen() {
   const { id } = useLocalSearchParams();
-  const missionId = parseInt(id as string);
+  const missionId = Number.parseInt(id as string);
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const token = useAuthStore((state) => state.token);
@@ -74,7 +74,7 @@ export default function MissionUpdateScreen() {
   };
 
   const handleInputChange = (value: string) => {
-    const numValue = parseInt(value) || 0;
+    const numValue = Number.parseInt(value) || 0;
     if (mission) {
       setProgress(Math.min(Math.max(numValue, 0), mission.goal));
     }

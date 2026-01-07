@@ -1,7 +1,7 @@
 import {
-  hasOneMonthPassed,
-  hasDaysPassed,
   formatDateFr,
+  hasDaysPassed,
+  hasOneMonthPassed,
 } from "../../../main/typescript/utility/date.utils";
 
 describe("Date Utility Functions", () => {

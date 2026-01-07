@@ -1,7 +1,7 @@
-import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useSurveyStatus } from "../../survey/hooks";
 
 // TODO: Replace with actual user data from store or API

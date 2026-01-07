@@ -1,24 +1,24 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { FlatList, Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import { useMissions } from "../hook/useMissions";
-import { useTheme, type Theme } from "../../../shared/theme";
 import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome5,
   Entypo,
   FontAwesome,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { Image } from "react-native";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { router } from "expo-router";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store";
-import { UserService } from "../../user/services/user.service";
 import { UserMissionService } from "../../mission/services/user-mission.service";
+import type { UserMission } from "../../mission/types";
 import { MissionStatus } from "../../mission/types/mission-status";
-import { UserMission } from "../../mission/types";
+import { UserService } from "../../user/services/user.service";
+import { useMissions } from "../hook/useMissions";
 
 export default function CatalogueScreen() {
   const { missions, loading } = useMissions();
@@ -67,17 +67,17 @@ export default function CatalogueScreen() {
     return null;
   };
 
-  const truncateDescription = (text: string, maxLength: number = 30) => {
+  const truncateDescription = (text: string, maxLength = 30) => {
     if (text.length <= maxLength) return text;
 
     const truncated = text.substring(0, maxLength);
     const lastSpaceIndex = truncated.lastIndexOf(" ");
 
     if (lastSpaceIndex > 0) {
-      return truncated.substring(0, lastSpaceIndex) + "...";
+      return `${truncated.substring(0, lastSpaceIndex)}...`;
     }
 
-    return truncated + "...";
+    return `${truncated}...`;
   };
 
   const handleSheetChanges = useCallback((index: number) => {

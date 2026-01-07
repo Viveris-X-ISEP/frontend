@@ -1,7 +1,7 @@
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 
 interface SurveyPromptModalProps {
   visible: boolean;

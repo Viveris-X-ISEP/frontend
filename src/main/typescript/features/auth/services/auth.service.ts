@@ -2,11 +2,11 @@
 
 import { apiClient } from "../../../shared/api";
 import type {
+  AuthResponse,
+  RefreshTokenPayload,
   SignInCredentials,
   SignUpCredentials,
   SignUpPayload,
-  RefreshTokenPayload,
-  AuthResponse,
 } from "../types";
 
 export const AuthService = {

@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAllMissions, getMissionById } from "../services/missions.service";
-import { Mission } from "../types";
+import type { Mission } from "../types";
 
 export const useMissions = () => {
   const [missions, setMissions] = useState<Mission[]>([]);

@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import type { SurveyQuestion, SurveyAnswer } from "../types";
+import { useCallback, useState } from "react";
+import type { SurveyAnswer, SurveyQuestion } from "../types";
 
 /**
  * Survey questions mapped to FootprintQuizzDto fields

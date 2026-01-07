@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 
 interface LanguageOption {
   value: string;

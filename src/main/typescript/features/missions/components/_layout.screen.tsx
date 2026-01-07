@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CatalogueScreen from "./catalogue.screen";
+import { type Theme, useTheme } from "../../../shared/theme";
 import ActiveMissionsScreen from "./active.screen";
-import { useTheme, type Theme } from "../../../shared/theme";
+import CatalogueScreen from "./catalogue.screen";
 
 export default function MissionsLayoutScreen() {
   const { theme } = useTheme();

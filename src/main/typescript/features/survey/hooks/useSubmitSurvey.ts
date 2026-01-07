@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useRouter } from "expo-router";
-import { SurveyService } from "../services";
+import { useState } from "react";
 import { useAuthStore, useSurveyStore } from "../../../store";
-import type { SurveyAnswer, FootprintQuizzPayload } from "../types";
+import { SurveyService } from "../services";
+import type { FootprintQuizzPayload, SurveyAnswer } from "../types";
 
 export function useSubmitSurvey() {
   const userId = useAuthStore((state) => state.userId);
@@ -23,8 +23,8 @@ export function useSubmitSurvey() {
     const getNumericAnswer = (questionId: string, defaultValue: number): number => {
       const value = getAnswerValue(questionId);
       if (typeof value === "number") return value;
-      const parsed = parseInt(value as string, 10);
-      return isNaN(parsed) ? defaultValue : parsed;
+      const parsed = Number.parseInt(value as string, 10);
+      return Number.isNaN(parsed) ? defaultValue : parsed;
     };
 
     // Transport answers

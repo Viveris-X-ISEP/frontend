@@ -1,11 +1,11 @@
-import { useEffect, useState, useRef } from "react";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import * as SecureStore from "expo-secure-store";
-import { useAuthStore } from "../store";
-import { useTheme } from "../shared/theme";
+import { StatusBar } from "expo-status-bar";
+import { useEffect, useRef, useState } from "react";
 import { SurveyPromptModal } from "../features/survey/components/survey-prompt-modal";
 import { SurveyService } from "../features/survey/services/survey.service";
+import { useTheme } from "../shared/theme";
+import { useAuthStore } from "../store";
 import { hasOneMonthPassed } from "../utility";
 
 export default function RootLayout() {

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import {
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { type Theme, useTheme } from "../../../shared/theme";
 
 export default function PasswordScreen() {
   const { theme } = useTheme();

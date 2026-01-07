@@ -1,10 +1,10 @@
 import {
-  lightColors,
+  type ThemeColors,
+  borderRadius,
   darkColors,
   fontSizes,
+  lightColors,
   spacing,
-  borderRadius,
-  type ThemeColors,
 } from "./variables";
 
 // Theme builder function
@@ -18,7 +18,7 @@ const createTheme = (colors: ThemeColors) => ({
   input: {
     background: colors.inputBackground,
     text: colors.text,
-    placeholder: colors.text + "99", // 60% opacity
+    placeholder: `${colors.text}99`, // 60% opacity
     borderRadius: borderRadius.full,
     height: 56,
     paddingHorizontal: spacing.md,

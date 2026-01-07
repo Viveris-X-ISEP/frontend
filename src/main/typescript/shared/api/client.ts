@@ -1,4 +1,4 @@
-import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 import * as SecureStore from "expo-secure-store";
 import { useAuthStore } from "../../store/auth-store";
 

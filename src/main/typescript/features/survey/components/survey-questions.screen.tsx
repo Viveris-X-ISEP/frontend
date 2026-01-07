@@ -1,16 +1,16 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import {
-  View,
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import { useTheme, type Theme } from "../../../shared/theme";
-import { useSurvey, useSubmitSurvey } from "../hooks";
+import { type Theme, useTheme } from "../../../shared/theme";
+import { useSubmitSurvey, useSurvey } from "../hooks";
 import AnswerOption from "./answer-option.component";
 
 export default function SurveyQuestionsScreen() {

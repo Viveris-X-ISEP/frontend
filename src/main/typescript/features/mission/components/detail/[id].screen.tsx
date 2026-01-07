@@ -1,22 +1,22 @@
+import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  SafeAreaView,
   ActivityIndicator,
   Alert,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useLocalSearchParams, router } from "expo-router";
-import { useTheme, type Theme } from "../../../../shared/theme";
-import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
-import { useMission } from "../../../missions/hook/useMissions";
-import { useCreateUserMission } from "../../hooks";
+import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
+import { useMission } from "../../../missions/hook/useMissions";
 import { UserService } from "../../../user/services/user.service";
+import { useCreateUserMission } from "../../hooks";
 import { MissionStatus } from "../../types/mission-status";
 
 export default function MissionDetailScreen() {

@@ -1,4 +1,4 @@
-import { MissionStatus } from "./mission-status";
+import type { MissionStatus } from "./mission-status";
 
 export interface Mission {
   id: number;

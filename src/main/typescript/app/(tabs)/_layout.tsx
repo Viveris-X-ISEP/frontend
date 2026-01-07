@@ -1,14 +1,14 @@
-import { Tabs } from "expo-router";
-import { Platform } from "react-native";
 import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome5,
   Entypo,
   FontAwesome,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { useTheme } from "../../shared/theme";
+import { Tabs } from "expo-router";
+import { Platform } from "react-native";
 import { useSurveyStatus } from "../../features/survey/hooks";
+import { useTheme } from "../../shared/theme";
 
 export default function TabLayout() {
   const { theme } = useTheme();
