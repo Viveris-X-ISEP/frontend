@@ -16,7 +16,3 @@ export interface CreateUserDto {
   profilePictureUrl?: string;
   username: string;
 }
-
-export interface UpdateLastActiveDto {
-  lastActive: string; // ISO string format
-}
