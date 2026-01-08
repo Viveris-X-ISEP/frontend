@@ -6,7 +6,7 @@ export default function IndexScreen() {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Text>Index screen</Text>

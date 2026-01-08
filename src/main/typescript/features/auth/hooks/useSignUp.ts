@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { useAuthStore } from "../../../store";
 import { AuthService } from "../services";
 import type { SignUpCredentials } from "../types";
@@ -36,7 +36,9 @@ export function useSignUp() {
       await signIn(response.token, response.refreshToken, userInfo.id);
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
-      const error = err as { response?: { data?: { message?: string; error?: string } } };
+      const error = err as {
+        response?: { data?: { message?: string; error?: string } };
+      };
       const message =
         error.response?.data?.message || error.response?.data?.error || "Échec de l'inscription";
       setError(message);

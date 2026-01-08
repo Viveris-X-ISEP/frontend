@@ -6,7 +6,7 @@ export default function UserScreen() {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Text>User screen</Text>

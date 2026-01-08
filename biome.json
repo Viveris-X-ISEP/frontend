@@ -1,0 +1,67 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf",
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      ".expo/**",
+      "*.lock",
+      "package-lock.json",
+      "bun.lock",
+      "coverage/**",
+      ".idea/**",
+      ".vscode/**",
+      ".DS_Store",
+      "Thumbs.db",
+      "android/**",
+      "ios/**",
+      "web-build/**"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "always",
+      "quoteStyle": "double",
+      "trailingCommas": "none",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "arrowParentheses": "always",
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded"
+    }
+  },
+  "files": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      ".expo/**",
+      "*.lock",
+      "package-lock.json",
+      "bun.lock",
+      "coverage/**",
+      ".idea/**",
+      ".vscode/**",
+      ".DS_Store",
+      "Thumbs.db",
+      "android/**",
+      "ios/**",
+      "web-build/**"
+    ]
+  }
+}

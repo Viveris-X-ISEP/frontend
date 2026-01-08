@@ -1,8 +1,8 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter, useLocalSearchParams } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { type Theme, useTheme } from "../../../shared/theme";
 
 export default function SurveyIntroScreen() {
   const { theme } = useTheme();
@@ -65,35 +65,35 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     closeButton: {
       alignSelf: "flex-end",
-      padding: theme.spacing.sm,
+      padding: theme.spacing.sm
     },
     content: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      paddingHorizontal: theme.spacing.md,
+      paddingHorizontal: theme.spacing.md
     },
     title: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
       textAlign: "center",
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     subtitle: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       textAlign: "center",
       lineHeight: theme.fontSizes.md * 1.5,
-      opacity: 0.8,
+      opacity: 0.8
     },
     imageContainer: {
       marginTop: theme.spacing.xl,
-      marginBottom: theme.spacing.xl,
+      marginBottom: theme.spacing.xl
     },
     imagePlaceholder: {
       width: 200,
@@ -101,18 +101,18 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.inputBackground,
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "center"
     },
     startButton: {
       backgroundColor: theme.colors.primary,
       borderRadius: theme.borderRadius.full,
       paddingVertical: theme.spacing.md,
       alignItems: "center",
-      marginBottom: theme.spacing.lg,
+      marginBottom: theme.spacing.lg
     },
     startButtonText: {
       color: theme.colors.background,
       fontSize: theme.fontSizes.lg,
-      fontWeight: "600",
-    },
+      fontWeight: "600"
+    }
   });

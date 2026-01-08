@@ -58,7 +58,7 @@ export function formatDateFr(dateString: string): string {
     const options: Intl.DateTimeFormatOptions = {
       day: "numeric",
       month: "long",
-      year: "numeric",
+      year: "numeric"
     };
     return date.toLocaleDateString("fr-FR", options);
   } catch (error) {

@@ -27,8 +27,8 @@ A React Native mobile application built with [Expo](https://expo.dev) for the Gr
 Before you begin, ensure you have the following installed:
 
 - **Node.js** (v18 or higher) - [Download](https://nodejs.org/)
-- **npm** (comes with Node.js) or **yarn**
-- **Expo CLI** - Install globally: `npm install -g expo-cli`
+- **Bun** - [Install](https://bun.sh/)
+- **Expo CLI** - Install globally: `bun install -g expo-cli`
 - **Expo Go** app on your mobile device ([iOS](https://apps.apple.com/app/expo-go/id982107779) / [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))
 
 ## Getting Started
@@ -43,7 +43,7 @@ cd projet-industriel-front
 ### 2. Install dependencies
 
 ```bash
-npm install
+bun install
 ```
 
 ### 3. Configure environment variables
@@ -160,14 +160,14 @@ Each feature module follows a consistent structure:
 
 | Command | Description |
 |---------|-------------|
-| `npm start` | Start Expo development server |
-| `npm run android` | Run on Android emulator/device |
-| `npm run ios` | Run on iOS simulator/device |
-| `npm run web` | Run in web browser |
-| `npm run lint` | Run ESLint |
-| `npm test` | Run Jest tests |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:coverage` | Run tests with coverage report |
+| `bun start` | Start Expo development server |
+| `bun run android` | Run on Android emulator/device |
+| `bun run ios` | Run on iOS simulator/device |
+| `bun run web` | Run in web browser |
+| `bun run lint` | Run Biome |
+| `bun test` | Run Jest tests |
+| `bun run test:watch` | Run tests in watch mode |
+| `bun run test:coverage` | Run tests with coverage report |
 
 ## Environment Configuration
 
@@ -183,13 +183,13 @@ Run the test suite:
 
 ```bash
 # Run all tests
-npm test
+bun test
 
 # Run tests in watch mode
-npm run test:watch
+bun run test:watch
 
 # Generate coverage report
-npm run test:coverage
+bun run test:coverage
 ```
 
 Tests are located in `src/test/typescript/` mirroring the main source structure.

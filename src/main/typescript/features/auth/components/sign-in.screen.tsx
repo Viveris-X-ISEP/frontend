@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import { Link } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
+import { useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useSignIn } from "../hooks";
-import { useTheme, type Theme } from "../../../shared/theme";
 
 export default function SignInScreen() {
   const [email, setEmail] = useState("");
@@ -89,14 +89,14 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       padding: theme.spacing.lg,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     title: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
       marginTop: theme.spacing.xl,
-      marginBottom: theme.spacing.xl,
+      marginBottom: theme.spacing.xl
     },
     input: {
       backgroundColor: theme.input.background,
@@ -105,11 +105,11 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.input.borderRadius,
       paddingHorizontal: theme.input.paddingHorizontal,
       marginBottom: theme.spacing.md,
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     passwordContainer: {
       position: "relative",
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     passwordInput: {
       backgroundColor: theme.input.background,
@@ -118,50 +118,50 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.input.borderRadius,
       paddingHorizontal: theme.input.paddingHorizontal,
       paddingRight: 50,
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     eyeIcon: {
       position: "absolute",
       right: 15,
-      top: 15,
+      top: 15
     },
     link: {
       color: theme.colors.primary,
       fontSize: theme.fontSizes.md,
       textAlign: "center",
-      marginVertical: theme.spacing.sm,
+      marginVertical: theme.spacing.sm
     },
     error: {
       color: theme.colors.error,
       marginBottom: theme.spacing.md,
-      textAlign: "center",
+      textAlign: "center"
     },
     bottomContainer: {
       flex: 1,
       justifyContent: "flex-end",
-      marginBottom: theme.spacing.xl,
+      marginBottom: theme.spacing.xl
     },
     button: {
       height: 56,
       borderRadius: theme.borderRadius.full,
       justifyContent: "center",
       alignItems: "center",
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.md
     },
     primaryButton: {
-      backgroundColor: theme.button.primary.background,
+      backgroundColor: theme.button.primary.background
     },
     primaryButtonText: {
       color: theme.button.primary.text,
       fontSize: theme.fontSizes.lg,
-      fontWeight: "600",
+      fontWeight: "600"
     },
     secondaryButton: {
-      backgroundColor: theme.button.secondary.background,
+      backgroundColor: theme.button.secondary.background
     },
     secondaryButtonText: {
       color: theme.button.secondary.text,
       fontSize: theme.fontSizes.lg,
-      fontWeight: "600",
-    },
+      fontWeight: "600"
+    }
   });

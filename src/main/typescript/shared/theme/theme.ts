@@ -1,10 +1,10 @@
 import {
-  lightColors,
+  type ThemeColors,
+  borderRadius,
   darkColors,
   fontSizes,
-  spacing,
-  borderRadius,
-  type ThemeColors,
+  lightColors,
+  spacing
 } from "./variables";
 
 // Theme builder function
@@ -18,25 +18,25 @@ const createTheme = (colors: ThemeColors) => ({
   input: {
     background: colors.inputBackground,
     text: colors.text,
-    placeholder: colors.text + "99", // 60% opacity
+    placeholder: `${colors.text}99`, // 60% opacity
     borderRadius: borderRadius.full,
     height: 56,
-    paddingHorizontal: spacing.md,
+    paddingHorizontal: spacing.md
   },
 
   button: {
     primary: {
       background: colors.primary,
-      text: colors.text,
+      text: colors.text
     },
     secondary: {
       background: colors.inputBackground,
-      text: colors.text,
+      text: colors.text
     },
     danger: {
-      text: colors.error,
-    },
-  },
+      text: colors.error
+    }
+  }
 });
 
 // Pre-built themes

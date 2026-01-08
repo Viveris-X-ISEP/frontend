@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import * as SecureStore from "expo-secure-store";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { useSurveyStore } from "./survey-store";
 
 // Custom SecureStore adapter for Zustand persist
@@ -13,7 +13,7 @@ const secureStorage = {
   },
   removeItem: async (name: string) => {
     await SecureStore.deleteItemAsync(name);
-  },
+  }
 };
 
 interface AuthState {
@@ -53,7 +53,12 @@ export const useAuthStore = create<AuthState>()(
         // Reset survey store to clear state for next user
         useSurveyStore.getState().reset();
 
-        set({ isLoggedIn: false, token: null, refreshToken: null, userId: null });
+        set({
+          isLoggedIn: false,
+          token: null,
+          refreshToken: null,
+          userId: null
+        });
       },
 
       updateTokens: async (token, refreshToken) => {
@@ -61,13 +66,16 @@ export const useAuthStore = create<AuthState>()(
         await SecureStore.setItemAsync("auth_token", token);
         await SecureStore.setItemAsync("refresh_token", refreshToken);
         set({ token, refreshToken });
-      },
+      }
     }),
     {
       name: "auth-storage",
       storage: createJSONStorage(() => secureStorage),
       // Persist isLoggedIn and userId state; tokens are in SecureStore
-      partialize: (state) => ({ isLoggedIn: state.isLoggedIn, userId: state.userId }),
+      partialize: (state) => ({
+        isLoggedIn: state.isLoggedIn,
+        userId: state.userId
+      })
     }
   )
 );

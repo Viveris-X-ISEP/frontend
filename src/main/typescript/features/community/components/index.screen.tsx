@@ -6,7 +6,7 @@ export default function CommunityScreen() {
       style={{
         flex: 1,
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Text>Community screen</Text>

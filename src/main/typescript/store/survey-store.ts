@@ -16,5 +16,5 @@ export const useSurveyStore = create<SurveyState>()((set) => ({
 
   markSurveyCompleted: () => set({ lastSubmissionTimestamp: Date.now() }),
 
-  reset: () => set({ lastSubmissionTimestamp: null }),
+  reset: () => set({ lastSubmissionTimestamp: null })
 }));

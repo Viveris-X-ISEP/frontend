@@ -78,5 +78,5 @@ export const SurveyService = {
       // If no emissions data exists, survey hasn't been completed
       return false;
     }
-  },
+  }
 };

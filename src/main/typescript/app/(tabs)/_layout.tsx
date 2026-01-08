@@ -1,14 +1,14 @@
-import { Tabs } from "expo-router";
-import { Platform } from "react-native";
 import {
-  Ionicons,
-  MaterialCommunityIcons,
-  FontAwesome5,
   Entypo,
   FontAwesome,
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons
 } from "@expo/vector-icons";
-import { useTheme } from "../../shared/theme";
+import { Tabs } from "expo-router";
+import { Platform } from "react-native";
 import { useSurveyStatus } from "../../features/survey/hooks";
+import { useTheme } from "../../shared/theme";
 
 export default function TabLayout() {
   const { theme } = useTheme();
@@ -30,14 +30,14 @@ export default function TabLayout() {
             position: "absolute",
             paddingTop: 8,
             backgroundColor: theme.colors.background,
-            borderTopColor: theme.colors.outline,
+            borderTopColor: theme.colors.outline
           },
           default: {
             paddingTop: 8,
             backgroundColor: theme.colors.background,
-            borderTopColor: theme.colors.outline,
-          },
-        }),
+            borderTopColor: theme.colors.outline
+          }
+        })
       }}
     >
       <Tabs.Screen
@@ -46,7 +46,7 @@ export default function TabLayout() {
           title: "",
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account" size={28} color={color} />
-          ),
+          )
         }}
       />
       <Tabs.Screen
@@ -61,7 +61,7 @@ export default function TabLayout() {
             />
           ),
           // Disable tab press if survey not completed
-          tabBarButton: isMissionsEnabled ? undefined : () => null,
+          tabBarButton: isMissionsEnabled ? undefined : () => null
         }}
         listeners={{
           tabPress: (e) => {
@@ -69,28 +69,28 @@ export default function TabLayout() {
               // Prevent navigation to missions if survey not completed
               e.preventDefault();
             }
-          },
+          }
         }}
       />
       <Tabs.Screen
         name="(home)/index"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => <Entypo name="home" size={28} color={color} />,
+          tabBarIcon: ({ color }) => <Entypo name="home" size={28} color={color} />
         }}
       />
       <Tabs.Screen
         name="community/index"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => <Ionicons name="people" size={28} color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="people" size={28} color={color} />
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => <FontAwesome name="gear" size={28} color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="gear" size={28} color={color} />
         }}
       />
     </Tabs>

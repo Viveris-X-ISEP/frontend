@@ -1,27 +1,29 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState, useEffect } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
   ActivityIndicator,
   Alert,
-  ScrollView,
   SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
-import { useLocalSearchParams, router } from "expo-router";
-import { useTheme, type Theme } from "../../../../shared/theme";
+import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
+import { getMissionById } from "../../../missions/services/missions.service";
+import type { Mission } from "../../../missions/types";
 import { UserService } from "../../../user/services/user.service";
 import { UserMissionService } from "../../services/user-mission.service";
-import { getMissionById } from "../../../missions/services/missions.service";
-import { MaterialIcons } from "@expo/vector-icons";
+import type { UpdateUserMissionDto, UserMission } from "../../types";
 import { MissionStatus } from "../../types/mission-status";
 
 export default function MissionUpdateScreen() {
   const { id } = useLocalSearchParams();
-  const missionId = parseInt(id as string);
+  const missionId = Number.parseInt(id as string);
   const { theme } = useTheme();
   const styles = createStyles(theme);
   const token = useAuthStore((state) => state.token);
@@ -29,8 +31,8 @@ export default function MissionUpdateScreen() {
   const [userId, setUserId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [mission, setMission] = useState<any>(null);
-  const [userMission, setUserMission] = useState<any>(null);
+  const [mission, setMission] = useState<Mission | null>(null);
+  const [userMission, setUserMission] = useState<UserMission | null>(null);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function MissionUpdateScreen() {
 
         const [missionData, userMissionData] = await Promise.all([
           getMissionById(missionId),
-          UserMissionService.getUserMission(user.id, missionId),
+          UserMissionService.getUserMission(user.id, missionId)
         ]);
 
         setMission(missionData);
@@ -74,7 +76,7 @@ export default function MissionUpdateScreen() {
   };
 
   const handleInputChange = (value: string) => {
-    const numValue = parseInt(value) || 0;
+    const numValue = Number.parseInt(value) || 0;
     if (mission) {
       setProgress(Math.min(Math.max(numValue, 0), mission.goal));
     }
@@ -85,26 +87,25 @@ export default function MissionUpdateScreen() {
 
     setSaving(true);
     try {
-      const dto: any = {
+      const dto: UpdateUserMissionDto = {
         completionRate: progress,
         updatedAt: new Date().toISOString(),
+        status:
+          mission && progress >= mission.goal
+            ? MissionStatus.COMPLETED
+            : progress > 0
+              ? MissionStatus.IN_PROGRESS
+              : undefined,
+        completedAt: mission && progress >= mission.goal ? new Date().toISOString() : undefined
       };
-
-      // If progress reaches goal, mark completed
-      if (mission && progress >= mission.goal) {
-        dto.status = MissionStatus.COMPLETED;
-        dto.completedAt = new Date().toISOString();
-      } else if (progress > 0) {
-        dto.status = MissionStatus.IN_PROGRESS;
-      }
 
       await UserMissionService.updateUserMission(userId, missionId, dto);
 
       Alert.alert("Succès", "Progression mise à jour avec succès", [
         {
           text: "OK",
-          onPress: () => router.back(),
-        },
+          onPress: () => router.back()
+        }
       ]);
     } catch (err) {
       console.error("Error updating mission:", err);
@@ -135,10 +136,7 @@ export default function MissionUpdateScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => router.back()}
-        >
+        <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
           <MaterialIcons name="close" size={24} color={theme.colors.text} />
         </TouchableOpacity>
       </View>
@@ -150,7 +148,7 @@ export default function MissionUpdateScreen() {
 
           <View style={styles.inputSection}>
             <Text style={styles.label}>Progression actuelle</Text>
-            
+
             <View style={styles.inputContainer}>
               <TouchableOpacity
                 style={styles.controlButton}
@@ -194,10 +192,7 @@ export default function MissionUpdateScreen() {
 
             <View style={styles.progressBarBackground}>
               <View
-                style={[
-                  styles.progressBarFill,
-                  { width: `${Math.min(completionRate, 100)}%` },
-                ]}
+                style={[styles.progressBarFill, { width: `${Math.min(completionRate, 100)}%` }]}
               />
             </View>
           </View>
@@ -224,47 +219,47 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      paddingBottom: theme.spacing.md,
+      paddingBottom: theme.spacing.md
     },
     content: {
-      padding: theme.spacing.lg,
+      padding: theme.spacing.lg
     },
     centered: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     errorText: {
       color: "#ef4444",
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     title: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     description: {
       fontSize: theme.fontSizes.sm,
       color: theme.colors.text,
       marginBottom: theme.spacing.xl,
-      opacity: 0.7,
+      opacity: 0.7
     },
     inputSection: {
-      marginBottom: theme.spacing.xl,
+      marginBottom: theme.spacing.xl
     },
     label: {
       fontSize: theme.fontSizes.md,
       fontWeight: "600",
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     inputContainer: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      gap: theme.spacing.md,
+      gap: theme.spacing.md
     },
     controlButton: {
       width: 50,
@@ -272,7 +267,7 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.md,
       backgroundColor: theme.colors.inputBackground,
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     input: {
       width: 120,
@@ -283,32 +278,32 @@ const createStyles = (theme: Theme) =>
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       textAlign: "center",
-      paddingHorizontal: theme.spacing.sm,
+      paddingHorizontal: theme.spacing.sm
     },
     statusSection: {
       marginBottom: theme.spacing.xl,
       padding: theme.spacing.md,
       backgroundColor: theme.colors.inputBackground,
-      borderRadius: theme.borderRadius.md,
+      borderRadius: theme.borderRadius.md
     },
     statusText: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       marginBottom: theme.spacing.md,
       fontWeight: "600",
-      textAlign: "center",
+      textAlign: "center"
     },
     progressBarBackground: {
       width: "100%",
       height: 12,
       backgroundColor: theme.colors.outline,
       borderRadius: theme.borderRadius.full,
-      overflow: "hidden",
+      overflow: "hidden"
     },
     progressBarFill: {
       height: "100%",
       backgroundColor: theme.colors.primary,
-      borderRadius: theme.borderRadius.full,
+      borderRadius: theme.borderRadius.full
     },
     saveButton: {
       backgroundColor: theme.colors.primary,
@@ -316,25 +311,25 @@ const createStyles = (theme: Theme) =>
       paddingHorizontal: theme.spacing.lg,
       borderRadius: theme.borderRadius.md,
       alignItems: "center",
-      marginTop: theme.spacing.lg,
+      marginTop: theme.spacing.lg
     },
     saveButtonDisabled: {
-      opacity: 0.6,
+      opacity: 0.6
     },
     saveButtonText: {
       color: theme.colors.background,
       fontSize: theme.fontSizes.md,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     header: {
       paddingTop: theme.spacing.md,
       paddingHorizontal: theme.spacing.md,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     closeButton: {
       alignSelf: "flex-start",
       backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.full,
-      padding: theme.spacing.sm,
-    },
+      padding: theme.spacing.sm
+    }
   });

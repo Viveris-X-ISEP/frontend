@@ -1,6 +1,6 @@
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme, type Theme } from "../../../shared/theme";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { type Theme, useTheme } from "../../../shared/theme";
 import type { SurveyAnswerOption } from "../types";
 
 interface AnswerOptionProps {
@@ -39,10 +39,10 @@ const createStyles = (theme: Theme) =>
       padding: theme.spacing.md,
       marginBottom: theme.spacing.sm,
       borderWidth: 2,
-      borderColor: "transparent",
+      borderColor: "transparent"
     },
     containerSelected: {
-      borderColor: theme.colors.primary,
+      borderColor: theme.colors.primary
     },
     radio: {
       width: theme.spacing.lg,
@@ -52,15 +52,15 @@ const createStyles = (theme: Theme) =>
       borderColor: theme.colors.outline,
       alignItems: "center",
       justifyContent: "center",
-      marginRight: theme.spacing.md,
+      marginRight: theme.spacing.md
     },
     radioSelected: {
       backgroundColor: theme.colors.primary,
-      borderColor: theme.colors.primary,
+      borderColor: theme.colors.primary
     },
     label: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      flex: 1,
-    },
+      flex: 1
+    }
   });

@@ -1,4 +1,4 @@
-import { MissionStatus } from "./mission-status";
+import type { MissionStatus } from "./mission-status";
 
 export interface Mission {
   id: number;
@@ -43,4 +43,5 @@ export interface UpdateUserMissionDto {
   completionRate?: number;
   maxReduction?: number | null;
   completedAt?: Date | string;
+  updatedAt?: Date | string;
 }

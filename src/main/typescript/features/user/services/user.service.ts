@@ -1,5 +1,5 @@
-import { User, CreateUserDto, UpdateLastActiveDto } from "../types";
 import { apiClient } from "../../../shared/api/client";
+import type { CreateUserDto, User } from "../types";
 
 export const UserService = {
   async findAll(): Promise<User[]> {
@@ -9,7 +9,7 @@ export const UserService = {
 
   async getCurrentUser(token: string): Promise<User> {
     const response = await apiClient.get<User>("/users/me", {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` }
     });
     return response.data;
   },
@@ -21,7 +21,7 @@ export const UserService = {
 
   async updateLastActive(token: string): Promise<User> {
     const response = await apiClient.patch<User>("/users/lastActive", null, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` }
     });
     return response.data;
   },
@@ -33,5 +33,5 @@ export const UserService = {
   async getUserById(id: number): Promise<User> {
     const response = await apiClient.get<User>(`/users/${id}`);
     return response.data;
-  },
+  }
 };
