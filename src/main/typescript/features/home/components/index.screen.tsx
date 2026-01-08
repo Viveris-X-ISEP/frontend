@@ -1,26 +1,52 @@
-import { useRouter } from "expo-router";
-import { ActivityIndicator, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { type Theme, useTheme } from "../../../shared/theme";
-import { useSurveyStatus } from "../../survey/hooks";
-
-// TODO: Replace with actual user data from store or API
-const AVATAR_PLACEHOLDER =
-  "https://api.dicebear.com/7.x/avataaars/png?seed=EcoWarrior&backgroundColor=f0f0f0";
+import { useRouter, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
+import { useTheme, type Theme } from "../../../shared/theme";
+import { useSurveyStatus, useLatestEmissions } from "../../survey/hooks";
+import { useAuthStore } from "../../../store/auth-store";
+import { useUser } from "../../user/hooks/useUser";
+import { useActiveMissions } from "../../mission/hooks/useActiveMissions";
+import { EmissionsCard } from "./emissions-card";
+import { ActiveMissionCard } from "./active-mission-card";
+import { calculateLevel, calculateTotalPoints, calculateCompletedPoints } from "../../../utility";
 
 export default function HomeScreen() {
   const { theme } = useTheme();
   const router = useRouter();
   const styles = createStyles(theme);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { hasCompleted, isLoading } = useSurveyStatus();
+  const { token, userId } = useAuthStore();
+  const { user, loading: userLoading } = useUser(undefined, token || undefined);
+  const { emissions, loading: emissionsLoading } = useLatestEmissions(userId, refreshKey);
+  const { missions, activeMission, loading: missionsLoading } = useActiveMissions(userId, refreshKey);
+
+  // Calculate dynamic user stats - with safety checks
+  const totalPoints = missions ? calculateTotalPoints(missions) : 0;
+  const completedPoints = missions ? calculateCompletedPoints(missions) : 0;
+  const userLevel = calculateLevel(totalPoints);
+
+  // Auto-refresh data when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      // Only refresh if user is logged in
+      if (userId) {
+        setRefreshKey((prev) => prev + 1);
+      }
+    }, [userId])
+  );
+
+  const AVATAR_PLACEHOLDER = user?.profilePictureUrl || 
+    `https://api.dicebear.com/7.x/avataaars/png?seed=${user?.username || "User"}&backgroundColor=f0f0f0`;
 
   const handleStartSurvey = () => {
     // Navigate to survey intro with isFirstTime=true since user hasn't completed it yet
     router.push("/survey?isFirstTime=true" as never);
   };
 
-  // Show loading state while checking survey status
-  if (isLoading) {
+  // Show loading state while checking survey status or user data
+  if (isLoading || userLoading) {
     return (
       <SafeAreaView style={styles.container}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -38,9 +64,9 @@ export default function HomeScreen() {
         <View style={styles.profileCard}>
           <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
           <View style={styles.profileInfo}>
-            <Text style={styles.username}>EcoWarrior</Text>
-            <Text style={styles.level}>Niveau 1</Text>
-            <Text style={styles.points}>0 Points</Text>
+            <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
+            <Text style={styles.level}></Text>
+            <Text style={styles.points}></Text>
           </View>
         </View>
 
@@ -59,25 +85,37 @@ export default function HomeScreen() {
   }
 
   // Survey completed - show regular home screen
-  // TODO: Implement full home screen with emissions data
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Accueil</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.title}>Accueil</Text>
 
-      {/* User Profile Card - Figma Style */}
-      <View style={styles.profileCard}>
-        <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
-        <View style={styles.profileInfo}>
-          <Text style={styles.username}>EcoWarrior</Text>
-          <Text style={styles.level}>Niveau 3</Text>
-          <Text style={styles.points}>1200 Points</Text>
+        {/* User Profile Card - Figma Style */}
+        <View style={styles.profileCard}>
+          <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
+          <View style={styles.profileInfo}>
+            <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
+            {/* PAS DE SYSTEME DE NIVEAU POUR L'INSTANT
+            <Text style={styles.level}>Niveau {userLevel}</Text>
+            */}
+            <Text style={styles.points}>{completedPoints} Points</Text>
+          </View>
         </View>
-      </View>
 
-      {/* TODO: Add mission card, emissions chart, etc. */}
-      <View style={styles.placeholder}>
-        <Text style={styles.placeholderText}>Empreinte carbone et missions à implémenter</Text>
-      </View>
+        {/* Emissions Chart */}
+        {emissionsLoading ? (
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        ) : (
+          <EmissionsCard emissions={emissions} />
+        )}
+
+        {/* Active Mission Card */}
+        {missionsLoading ? (
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        ) : (
+          <ActiveMissionCard userMission={activeMission} />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -154,15 +192,4 @@ const createStyles = (theme: Theme) =>
       fontSize: theme.fontSizes.md,
       fontWeight: "600"
     },
-    placeholder: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    placeholderText: {
-      fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
-      opacity: 0.5,
-      textAlign: "center"
-    }
   });
