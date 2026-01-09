@@ -1,3 +1,3 @@
-import MissionsLayoutScreen from "../../../features/missions/components/_layout.screen.tsx";
+import MissionsLayoutScreen from "../../../features/missions/components/_layout.screen";
 
 export default MissionsLayoutScreen;
