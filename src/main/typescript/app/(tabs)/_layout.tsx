@@ -80,7 +80,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="community/index"
+        name="community"
         options={{
           title: "",
           tabBarIcon: ({ color }) => <Ionicons name="people" size={28} color={color} />
