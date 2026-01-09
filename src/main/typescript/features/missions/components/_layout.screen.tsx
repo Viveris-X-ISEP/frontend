@@ -71,11 +71,11 @@ const createStyles = (theme: Theme) =>
     },
     menuButton: {
       paddingVertical: theme.spacing.sm,
-      paddingHorizontal: theme.spacing.md,
+      paddingHorizontal: theme.spacing.sm,
       marginHorizontal: theme.spacing.sm
     },
     menuButtonText: {
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.sm,
       color: theme.colors.primary,
       fontWeight: "bold"
     },

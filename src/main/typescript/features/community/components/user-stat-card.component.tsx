@@ -27,7 +27,8 @@ const createStyles = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.lg,
-      padding: theme.spacing.md,
+      paddingVertical: theme.spacing.md,
+      paddingHorizontal: theme.spacing.sm,
       alignItems: "center"
     },
     value: {
@@ -37,7 +38,7 @@ const createStyles = (theme: Theme) =>
       marginTop: theme.spacing.sm
     },
     label: {
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.xs,
       color: theme.colors.text,
       opacity: 0.7,
       textAlign: "center",
