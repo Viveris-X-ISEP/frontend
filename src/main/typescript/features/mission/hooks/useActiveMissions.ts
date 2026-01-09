@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UserMissionService } from "../services/user-mission.service";
-import { UserMission } from "../types";
+import type { UserMission } from "../types";
 
 export const useActiveMissions = (userId: number | null, refreshTrigger?: number) => {
   const [missions, setMissions] = useState<UserMission[]>([]);
@@ -8,6 +8,7 @@ export const useActiveMissions = (userId: number | null, refreshTrigger?: number
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: refreshTrigger is intentionally used to force refetch
   useEffect(() => {
     const fetchMissions = async () => {
       if (!userId) {
@@ -20,11 +21,9 @@ export const useActiveMissions = (userId: number | null, refreshTrigger?: number
       try {
         const data = await UserMissionService.getMissionsByUserId(userId);
         setMissions(data);
-        
+
         // Find the first in-progress mission
-        const inProgress = data.find(
-          (m) => m.status === "IN_PROGRESS" && m.completionRate < 100
-        );
+        const inProgress = data.find((m) => m.status === "IN_PROGRESS" && m.completionRate < 100);
         setActiveMission(inProgress || null);
       } catch (err) {
         setError("Impossible de récupérer les missions");

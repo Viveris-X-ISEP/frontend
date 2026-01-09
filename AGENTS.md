@@ -17,9 +17,7 @@
     ```
 
 - **Pre-commit Checks**: Before committing, ensure the following checks are performed:
-    - **Formatting**: Format the code using `biome` by running `bun biome format`.
-    - **Linting**: Check for linting errors using `biome` by running `bun biome lint`.
-    - **Checking**: Check for additional errors using `biome` by running `bun biome check` and fix them using `bun biome check --fix`.
+    - **Formatting & Linting & Organising imports**: Format and Lint code and organise imports using by running `bun biome check`. Fix errors automatically using `bun biome check --fix` and manually address the remaining until there are no more errors.
     - **Testing**: Run tests to ensure functionality.
     - **Git status check**: Run git status to logically organise files in atomic git commits.
 

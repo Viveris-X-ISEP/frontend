@@ -1,4 +1,3 @@
-
 export const calculateLevel = (totalPoints: number): number => {
   return Math.floor(totalPoints / 500) + 1;
 };
@@ -9,7 +8,7 @@ export const calculateCompletedPoints = (
   if (!missions || !Array.isArray(missions)) {
     return 0;
   }
-  
+
   return missions.reduce((total, userMission) => {
     if (userMission.status === "COMPLETED" && userMission.mission) {
       const points = userMission.mission.rewardPoints || userMission.mission.points || 0;
@@ -28,7 +27,7 @@ export const calculateTotalPoints = (
   if (!missions || !Array.isArray(missions)) {
     return 0;
   }
-  
+
   return missions.reduce((total, userMission) => {
     if (userMission.status === "COMPLETED" && userMission.mission) {
       return total + userMission.mission.points;
@@ -44,11 +43,13 @@ export const calculateTotalPoints = (
 /**
  * Get progress to next level
  */
-export const getLevelProgress = (totalPoints: number): { current: number; max: number; percentage: number } => {
+export const getLevelProgress = (
+  totalPoints: number
+): { current: number; max: number; percentage: number } => {
   const pointsInCurrentLevel = totalPoints % 500;
   return {
     current: pointsInCurrentLevel,
     max: 500,
-    percentage: (pointsInCurrentLevel / 500) * 100,
+    percentage: (pointsInCurrentLevel / 500) * 100
   };
 };

@@ -1,15 +1,23 @@
-import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter, useFocusEffect } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
-import { useTheme, type Theme } from "../../../shared/theme";
-import { useSurveyStatus, useLatestEmissions } from "../../survey/hooks";
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store/auth-store";
-import { useUser } from "../../user/hooks/useUser";
+import { calculateCompletedPoints, calculateLevel, calculateTotalPoints } from "../../../utility";
 import { useActiveMissions } from "../../mission/hooks/useActiveMissions";
-import { EmissionsCard } from "./emissions-card";
+import { useLatestEmissions, useSurveyStatus } from "../../survey/hooks";
+import { useUser } from "../../user/hooks/useUser";
 import { ActiveMissionCard } from "./active-mission-card";
-import { calculateLevel, calculateTotalPoints, calculateCompletedPoints } from "../../../utility";
+import { EmissionsCard } from "./emissions-card";
 
 export default function HomeScreen() {
   const { theme } = useTheme();
@@ -20,7 +28,11 @@ export default function HomeScreen() {
   const { token, userId } = useAuthStore();
   const { user, loading: userLoading } = useUser(undefined, token || undefined);
   const { emissions, loading: emissionsLoading } = useLatestEmissions(userId, refreshKey);
-  const { missions, activeMission, loading: missionsLoading } = useActiveMissions(userId, refreshKey);
+  const {
+    missions,
+    activeMission,
+    loading: missionsLoading
+  } = useActiveMissions(userId, refreshKey);
 
   // Calculate dynamic user stats - with safety checks
   const totalPoints = missions ? calculateTotalPoints(missions) : 0;
@@ -37,7 +49,8 @@ export default function HomeScreen() {
     }, [userId])
   );
 
-  const AVATAR_PLACEHOLDER = user?.profilePictureUrl || 
+  const AVATAR_PLACEHOLDER =
+    user?.profilePictureUrl ||
     `https://api.dicebear.com/7.x/avataaars/png?seed=${user?.username || "User"}&backgroundColor=f0f0f0`;
 
   const handleStartSurvey = () => {
@@ -65,8 +78,8 @@ export default function HomeScreen() {
           <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
           <View style={styles.profileInfo}>
             <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
-            <Text style={styles.level}></Text>
-            <Text style={styles.points}></Text>
+            <Text style={styles.level} />
+            <Text style={styles.points} />
           </View>
         </View>
 
@@ -191,5 +204,5 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.primary,
       fontSize: theme.fontSizes.md,
       fontWeight: "600"
-    },
+    }
   });
