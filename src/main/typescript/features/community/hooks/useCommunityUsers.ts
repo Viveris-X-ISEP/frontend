@@ -73,6 +73,9 @@ export function useCommunityUsers(): UseCommunityUsersReturn {
     fetchUsers(0, true);
   }, [fetchUsers]);
 
+  // Note: Client-side filtering on already-fetched data. When searchQuery is active,
+  // pagination (loadMore) should be disabled in the UI since hasMore is based on the
+  // full dataset, not filtered results. For server-side search, update CommunityService.
   const filteredUsers = searchQuery
     ? users.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()))
     : users;

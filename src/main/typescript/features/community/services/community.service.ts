@@ -45,19 +45,28 @@ export const CommunityService = {
   async getCommunityUserProfile(userId: string): Promise<CommunityUserProfile> {
     const numericId = Number.parseInt(userId, 10);
 
+    // Validate userId is a valid number
+    if (Number.isNaN(numericId)) {
+      throw new Error(`Invalid userId: ${userId}`);
+    }
+
     // Check if this is a mock user
     const mockUser = MOCK_USERS.find((u) => u.id === userId);
     if (mockUser) {
       // Return mock profile data
       await new Promise((resolve) => setTimeout(resolve, 300));
+      // Ensure totalMissions is always >= missionsCompleted + activeMissions
+      const activeMissions = Math.floor(Math.random() * 5);
+      const additionalMissions = Math.floor(Math.random() * 5);
+      const totalMissions = mockUser.missionsCompleted + activeMissions + additionalMissions;
       return {
         id: mockUser.id,
         username: mockUser.username,
         profilePictureUrl: mockUser.profilePictureUrl,
         totalPoints: mockUser.missionsCompleted * 50,
         missionsCompleted: mockUser.missionsCompleted,
-        activeMissions: Math.floor(Math.random() * 5),
-        totalMissions: mockUser.missionsCompleted + Math.floor(Math.random() * 5)
+        activeMissions,
+        totalMissions
       };
     }
 
