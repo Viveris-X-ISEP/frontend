@@ -1,3 +1,3 @@
-import CommunityScreen from "../../../features/community/components/index.screen";
+import CommunityListScreen from "../../../features/community/components/community-list.screen";
 
-export default CommunityScreen;
+export default CommunityListScreen;

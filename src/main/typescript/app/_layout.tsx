@@ -85,7 +85,6 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="mission/detail/[id]" />
           <Stack.Screen name="mission/update/[id]" />
-          <Stack.Screen name="user/[id]" />
           <Stack.Screen name="survey" />
         </Stack.Protected>
 
