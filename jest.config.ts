@@ -1,5 +1,6 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
+import type { JestConfigWithTsJest } from "ts-jest";
+
+const config: JestConfigWithTsJest = {
   preset: "ts-jest",
   testEnvironment: "node",
   roots: ["<rootDir>/src/test/typescript"],
@@ -20,3 +21,5 @@ module.exports = {
   collectCoverageFrom: ["src/main/typescript/**/*.{ts,tsx}", "!src/main/typescript/**/*.d.ts"],
   coverageDirectory: "coverage"
 };
+
+export default config;
