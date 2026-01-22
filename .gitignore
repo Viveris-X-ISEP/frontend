@@ -47,7 +47,7 @@ app-example
 .env
 .vscode/
 .idea/
-.github
+.github/instructions/
 .claude/
 
 # miscellaneous
