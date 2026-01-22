@@ -13,7 +13,6 @@
     .
     .
 
-    Author: Joaquim Kéloglanian
     Branch: <local branch name>"
     ```
 
