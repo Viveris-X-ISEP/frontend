@@ -5,7 +5,7 @@
 - **Atomic Git Commits**: Perform atomic git commits following this format:
 
     ```bash
-    git commit -m "<type>(operational scope): <title>.
+    git commit -m "<type>(<operational scope>): <title>.
 
     <bullet point>
     <bullet point>
@@ -13,6 +13,7 @@
     .
     .
 
+    Author: Joaquim Kéloglanian
     Branch: <local branch name>"
     ```
 
