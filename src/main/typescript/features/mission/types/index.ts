@@ -5,7 +5,7 @@ export interface Mission {
   title: string;
   description: string;
   category: string;
-  points: number;
+  rewardPoints : number;
   difficulty: string;
   duration: string;
   imageUrl?: string;

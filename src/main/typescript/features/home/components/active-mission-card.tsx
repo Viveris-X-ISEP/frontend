@@ -12,7 +12,6 @@ export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
   const { theme } = useTheme();
   const router = useRouter();
   const styles = createStyles(theme);
-
   if (!userMission || !userMission.mission) {
     return (
       <View style={styles.container}>
@@ -62,7 +61,7 @@ export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
         </View>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Points</Text>
-          <Text style={styles.detailValue}>+{mission.points}</Text>
+          <Text style={styles.detailValue}>{mission.rewardPoints}</Text>
         </View>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Statut</Text>
