@@ -116,10 +116,10 @@ export interface Digital {
  */
 export interface FootprintQuizzPayload {
   userId: number | null;
-  food: Food;
-  transport: Transport;
-  housing: Housing;
-  digital: Digital;
+  foodDto: Food;
+  transportDto: Transport;
+  housingDto: Housing;
+  digitalDto: Digital;
 }
 
 // ===========================================
