@@ -57,16 +57,16 @@ export function useSubmitSurvey() {
 
     return {
       userId,
-      transport: {
+      transportDto: {
         car: {
-          fuelType: fuelType as FootprintQuizzPayload["transport"]["car"]["fuelType"],
+          fuelType: fuelType as FootprintQuizzPayload["transportDto"]["car"]["fuelType"],
           kilometersPerYear: kmPerYear,
           passengers: carPassengers
         },
         publicTransport: {
-          type: publicTransportType as FootprintQuizzPayload["transport"]["publicTransport"]["type"],
+          type: publicTransportType as FootprintQuizzPayload["transportDto"]["publicTransport"]["type"],
           useFrequency:
-            publicTransportFreq as FootprintQuizzPayload["transport"]["publicTransport"]["useFrequency"]
+            publicTransportFreq as FootprintQuizzPayload["transportDto"]["publicTransport"]["useFrequency"]
         },
         airTransport: {
           shortFlightsFrequencyPerYear: shortFlights,
@@ -75,19 +75,19 @@ export function useSubmitSurvey() {
         },
         bikeUsePerWeek: bikeUse
       },
-      food: {
+      foodDto: {
         redMeatConsumptionPerWeek: redMeat,
         whiteMeatConsumptionPerWeek: whiteMeat,
         fishConsumptionPerWeek: fish,
         dairyConsumptionPerWeek: dairy
       },
-      housing: {
-        housingType: housingType as FootprintQuizzPayload["housing"]["housingType"],
+      housingDto: {
+        housingType: housingType as FootprintQuizzPayload["housingDto"]["housingType"],
         surfaceArea: surfaceArea,
         heatingEnergySource:
-          heatingSource as FootprintQuizzPayload["housing"]["heatingEnergySource"]
+          heatingSource as FootprintQuizzPayload["housingDto"]["heatingEnergySource"]
       },
-      digital: {
+      digitalDto: {
         digitalConsumption: {
           hoursOfStreamingPerWeek: streamingHours,
           chargingFrequencyPerDay: chargingFrequency
