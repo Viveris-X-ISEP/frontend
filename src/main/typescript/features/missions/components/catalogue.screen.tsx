@@ -1,10 +1,4 @@
-import {
-  Entypo,
-  FontAwesome,
-  FontAwesome5,
-  Ionicons,
-  MaterialCommunityIcons
-} from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { router } from "expo-router";
