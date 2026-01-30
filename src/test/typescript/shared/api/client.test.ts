@@ -120,9 +120,11 @@ describe("API Client", () => {
       const newToken = createJwt(3600);
       const refreshToken = "valid-refresh-token";
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken) // First call gets expired token
-        .mockResolvedValueOnce(refreshToken); // Second call gets refresh token
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       // Mock the refresh endpoint with full URL
       axiosMock
@@ -147,9 +149,11 @@ describe("API Client", () => {
       const expiredToken = createJwt(-60);
       const refreshToken = "invalid-refresh-token";
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(refreshToken);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       axiosMock
         .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh")
@@ -157,7 +161,9 @@ describe("API Client", () => {
 
       mockApi.onGet("/users/me").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow("Authentication failed");
+      await expect(apiClient.get("/users/me")).rejects.toThrow(
+        "Authentication failed: unable to refresh access token"
+      );
 
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("auth_token");
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("refresh_token");
@@ -176,9 +182,11 @@ describe("API Client", () => {
       const newToken = createJwt(3600);
       const refreshToken = "valid-refresh-token";
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(almostExpiredToken)
-        .mockResolvedValueOnce(refreshToken);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(almostExpiredToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       axiosMock.onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh").reply(200, {
         token: newToken,
@@ -200,9 +208,11 @@ describe("API Client", () => {
       const refreshToken = "valid-refresh-token";
       const newToken = createJwt(3600);
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(invalidToken)
-        .mockResolvedValueOnce(refreshToken);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(invalidToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       axiosMock.onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh").reply(200, {
         token: newToken,
@@ -327,9 +337,11 @@ describe("API Client", () => {
       const refreshToken = "valid-refresh-token";
       const newToken = createJwt(3600);
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(refreshToken);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       axiosMock
         .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh", { refreshToken })
@@ -349,9 +361,11 @@ describe("API Client", () => {
     it("should clear auth and redirect when refresh token is missing", async () => {
       const expiredToken = createJwt(-60);
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(null); // No refresh token
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(null);
+        return Promise.resolve(null);
+      });
 
       mockApi.onGet("/users/me").reply(200, { id: 1 });
 
@@ -367,9 +381,11 @@ describe("API Client", () => {
       const expiredToken = createJwt(-60);
       const refreshToken = "invalid-refresh-token";
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(refreshToken);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       axiosMock
         .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh")
@@ -393,9 +409,11 @@ describe("API Client", () => {
       const expiredToken = createJwt(-60);
       const refreshToken = "valid-refresh-token";
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(refreshToken);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(refreshToken);
+        return Promise.resolve(null);
+      });
 
       axiosMock.onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh").networkError();
 
@@ -414,9 +432,11 @@ describe("API Client", () => {
     it("should delete all auth tokens from SecureStore on refresh failure", async () => {
       const expiredToken = createJwt(-60);
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(null);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(null);
+        return Promise.resolve(null);
+      });
 
       mockApi.onGet("/users/me").reply(200, { id: 1 });
 
@@ -430,9 +450,11 @@ describe("API Client", () => {
     it("should update Zustand auth state on auth failure", async () => {
       const expiredToken = createJwt(-60);
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(null);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(null);
+        return Promise.resolve(null);
+      });
 
       mockApi.onGet("/users/me").reply(200, { id: 1 });
 
@@ -449,9 +471,11 @@ describe("API Client", () => {
     it("should redirect to sign-in screen on auth failure", async () => {
       const expiredToken = createJwt(-60);
 
-      (SecureStore.getItemAsync as jest.Mock)
-        .mockResolvedValueOnce(expiredToken)
-        .mockResolvedValueOnce(null);
+      (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
+        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "refresh_token") return Promise.resolve(null);
+        return Promise.resolve(null);
+      });
 
       mockApi.onGet("/users/me").reply(200, { id: 1 });
 

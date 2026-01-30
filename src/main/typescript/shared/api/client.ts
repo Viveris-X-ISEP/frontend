@@ -52,7 +52,6 @@ export const apiClient = axios.create({
 });
 
 // Token refresh state
-let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
 // Refresh access token
@@ -93,12 +92,15 @@ apiClient.interceptors.request.use(
 
     // Refresh token if expired
     if (token && isTokenExpired(token)) {
-      isRefreshing = true;
       const newToken = await refreshAccessToken();
-      isRefreshing = false;
 
       if (!newToken) {
-        return Promise.reject(new Error("Authentication failed"));
+        const authError: Error & { code?: string; details?: unknown } = new Error(
+          "Authentication failed: unable to refresh access token"
+        );
+        authError.code = "AUTH_REFRESH_FAILED";
+        authError.details = { reason: "Token refresh returned null" };
+        return Promise.reject(authError);
       }
       token = newToken;
     }
@@ -132,13 +134,19 @@ apiClient.interceptors.response.use(
     if (isAuthError && !isPublicEndpoint && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      // Wait if already refreshing
-      if (isRefreshing) {
-        await new Promise((resolve) => setTimeout(resolve, 100));
+      // Wait if already refreshing: use the same promise-based mechanism as the request interceptor
+      if (refreshPromise) {
+        try {
+          await refreshPromise;
+        } catch {
+          // Ignore refresh errors here; the subsequent token check will handle invalid state
+        }
       }
 
       const token = await SecureStore.getItemAsync("auth_token");
       if (token && !isTokenExpired(token)) {
+        // Update auth store to maintain consistency with SecureStore
+        useAuthStore.setState({ token });
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return apiClient(originalRequest);
       }
