@@ -3,7 +3,10 @@ export const calculateLevel = (totalPoints: number): number => {
 };
 
 export const calculateCompletedPoints = (
-  missions: Array<{ status: string; mission?: { rewardPoints?: number; points?: number } }>
+  missions: Array<{
+    status: string;
+    mission?: { rewardPoints?: number; points?: number };
+  }>
 ): number => {
   if (!missions || !Array.isArray(missions)) {
     return 0;
@@ -22,7 +25,11 @@ export const calculateCompletedPoints = (
  * Calculate total points from completed missions
  */
 export const calculateTotalPoints = (
-  missions: Array<{ status: string; completionRate: number; mission?: { points: number } }>
+  missions: Array<{
+    status: string;
+    completionRate: number;
+    mission?: { points: number };
+  }>
 ): number => {
   if (!missions || !Array.isArray(missions)) {
     return 0;

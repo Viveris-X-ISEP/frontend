@@ -70,18 +70,18 @@ export const EmissionsCard = ({ emissions, historicalData }: EmissionsCardProps)
 
       {/* Emissions Breakdown Section */}
       <View style={styles.bottomSection}>
-        <Text style={styles.sectionTitle}>Répartition des Émissions</Text>
-        <Text style={styles.breakdownTotal}>100%</Text>
-        <Text style={styles.breakdownLabel}>Actuel</Text>
-
         {/* Horizontal Bars */}
         <View style={styles.barsContainer}>
           {breakdown.map((item) => (
             <View key={item.label} style={styles.barRow}>
-              <Text style={styles.barLabel}>{item.label}</Text>
+              <View style={styles.barLabelContainer}>
+                <Text style={styles.barLabel}>{item.label}</Text>
+                <Text style={styles.barPercentage}>
+                  {(item.value / 1000).toFixed(2)}t ({item.percentage.toFixed(1)}%)
+                </Text>
+              </View>
               <View style={styles.barTrack}>
                 <View style={[styles.barFill, { width: `${item.percentage}%` }]} />
-                <View style={styles.barMarker} />
               </View>
             </View>
           ))}
@@ -94,40 +94,39 @@ export const EmissionsCard = ({ emissions, historicalData }: EmissionsCardProps)
 const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      backgroundColor: "#2D2D2D",
+      backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.lg,
       padding: theme.spacing.lg,
       marginBottom: theme.spacing.lg
     },
     topSection: {
-      marginBottom: theme.spacing.xl
+      marginBottom: theme.spacing.md
     },
     bottomSection: {
-      paddingTop: theme.spacing.md
+      paddingTop: theme.spacing.xs
     },
     sectionTitle: {
       fontSize: theme.fontSizes.md,
-      color: "#9CA3AF",
-      marginBottom: theme.spacing.sm
+      color: theme.colors.primary
     },
     totalValue: {
-      fontSize: 36,
+      fontSize: theme.fontSizes.xxl + 8,
       fontWeight: "bold",
-      color: "#FFFFFF",
+      color: theme.colors.text,
       marginBottom: theme.spacing.xs
     },
     percentage: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "600",
-      color: "#4ADE80",
+      color: theme.colors.primary,
       marginBottom: theme.spacing.xs
     },
     percentageNegative: {
-      color: "#4ADE80"
+      color: theme.colors.primary
     },
     periodLabel: {
       fontSize: theme.fontSizes.sm,
-      color: "#6B7280",
+      color: theme.colors.outline,
       marginBottom: theme.spacing.lg
     },
     chartContainer: {
@@ -135,7 +134,7 @@ const createStyles = (theme: Theme) =>
     },
     chartPlaceholder: {
       height: 100,
-      backgroundColor: "#3D3D3D",
+      backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.sm,
       justifyContent: "center",
       alignItems: "center",
@@ -143,7 +142,7 @@ const createStyles = (theme: Theme) =>
     },
     chartPlaceholderText: {
       fontSize: theme.fontSizes.lg,
-      color: "#4ADE80"
+      color: theme.colors.primary
     },
     chartLabels: {
       flexDirection: "row",
@@ -152,18 +151,7 @@ const createStyles = (theme: Theme) =>
     },
     chartLabel: {
       fontSize: theme.fontSizes.sm,
-      color: "#4ADE80"
-    },
-    breakdownTotal: {
-      fontSize: 36,
-      fontWeight: "bold",
-      color: "#FFFFFF",
-      marginBottom: theme.spacing.xs
-    },
-    breakdownLabel: {
-      fontSize: theme.fontSizes.sm,
-      color: "#4ADE80",
-      marginBottom: theme.spacing.lg
+      color: theme.colors.primary
     },
     barsContainer: {
       gap: theme.spacing.lg
@@ -171,21 +159,33 @@ const createStyles = (theme: Theme) =>
     barRow: {
       marginBottom: theme.spacing.md
     },
-    barLabel: {
-      fontSize: theme.fontSizes.sm,
-      color: "#4ADE80",
+    barLabelContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
       marginBottom: theme.spacing.xs
     },
+    barLabel: {
+      fontSize: theme.fontSizes.sm,
+      color: theme.colors.primary
+    },
+    barPercentage: {
+      fontSize: theme.fontSizes.sm,
+      color: theme.colors.text,
+      fontWeight: "600"
+    },
     barTrack: {
-      height: 8,
-      backgroundColor: "#3D3D3D",
+      height: theme.spacing.md,
+      backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.outline,
       position: "relative",
       overflow: "visible"
     },
     barFill: {
       height: "100%",
-      backgroundColor: "#4ADE80",
+      backgroundColor: theme.colors.primary,
       borderRadius: theme.borderRadius.sm
     },
     barMarker: {
@@ -194,11 +194,11 @@ const createStyles = (theme: Theme) =>
       top: 0,
       bottom: 0,
       width: 2,
-      backgroundColor: "#FFFFFF"
+      backgroundColor: theme.colors.text
     },
     noData: {
       fontSize: theme.fontSizes.md,
-      color: "#9CA3AF",
+      color: theme.colors.outline,
       textAlign: "center",
       marginTop: theme.spacing.md
     }
