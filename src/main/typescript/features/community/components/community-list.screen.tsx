@@ -28,7 +28,7 @@ export default function CommunityListScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.centered}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
         </View>
@@ -38,7 +38,7 @@ export default function CommunityListScreen() {
 
   if (error) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.centered}>
           <Text style={styles.errorText}>{error}</Text>
         </View>
@@ -47,7 +47,7 @@ export default function CommunityListScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <Text style={styles.title}>Communauté</Text>
       <UserSearchBar value={searchQuery} onChangeText={setSearchQuery} />
       <FlatList
@@ -81,7 +81,8 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.lg
+      padding: theme.spacing.lg,
+      paddingBottom: 0
     },
     title: {
       fontSize: theme.fontSizes.xxl,
@@ -108,6 +109,6 @@ const createStyles = (theme: Theme) =>
       marginTop: theme.spacing.xl
     },
     loadingMore: {
-      marginVertical: theme.spacing.lg
+      marginTop: theme.spacing.lg
     }
   });

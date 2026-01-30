@@ -61,7 +61,7 @@ export default function HomeScreen() {
   // Show loading state while checking survey status or user data
   if (isLoading || userLoading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
       </SafeAreaView>
     );
@@ -70,7 +70,7 @@ export default function HomeScreen() {
   // Survey not completed - show prompt to take survey
   if (!hasCompleted) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <Text style={styles.title}>Accueil</Text>
 
         {/* User Profile Card - Figma Style */}
@@ -99,7 +99,7 @@ export default function HomeScreen() {
 
   // Survey completed - show regular home screen
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Accueil</Text>
 
@@ -138,7 +138,8 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.lg
+      padding: theme.spacing.lg,
+      paddingBottom: 0
     },
     title: {
       fontSize: theme.fontSizes.xxl,

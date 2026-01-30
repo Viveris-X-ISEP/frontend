@@ -12,7 +12,7 @@ export default function MissionsLayoutScreen() {
   const [activeTab, setActiveTab] = useState("catalogue");
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <Text style={styles.title}>Missions</Text>
 
       <View style={styles.menuContainer}>
