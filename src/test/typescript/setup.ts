@@ -10,6 +10,22 @@ jest.mock("expo-secure-store", () => ({
   deleteItemAsync: jest.fn()
 }));
 
+// Mock expo-router for Node.js test environment
+jest.mock("expo-router", () => ({
+  router: {
+    replace: jest.fn(),
+    push: jest.fn(),
+    back: jest.fn()
+  },
+  useRouter: jest.fn(() => ({
+    replace: jest.fn(),
+    push: jest.fn(),
+    back: jest.fn()
+  })),
+  Link: "Link",
+  Redirect: "Redirect"
+}));
+
 // Set default environment variables for tests
 process.env.EXPO_PUBLIC_API_URL = "http://localhost:8080/ProjetIndustrielBack";
 
