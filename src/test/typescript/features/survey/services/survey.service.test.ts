@@ -25,7 +25,7 @@ describe("SurveyService", () => {
 
   const mockFootprintPayload: FootprintQuizzPayload = {
     userId: mockUserId,
-    transport: {
+    transportDto: {
       car: {
         fuelType: "GASOLINE",
         kilometersPerYear: 15000,
@@ -42,18 +42,18 @@ describe("SurveyService", () => {
       },
       bikeUsePerWeek: 3
     },
-    food: {
+    foodDto: {
       redMeatConsumptionPerWeek: 3,
       whiteMeatConsumptionPerWeek: 4,
       fishConsumptionPerWeek: 2,
       dairyConsumptionPerWeek: 7
     },
-    housing: {
+    housingDto: {
       housingType: "APARTMENT",
       surfaceArea: 60,
       heatingEnergySource: "GAZ"
     },
-    digital: {
+    digitalDto: {
       digitalConsumption: {
         hoursOfStreamingPerWeek: 10,
         chargingFrequencyPerDay: 2
