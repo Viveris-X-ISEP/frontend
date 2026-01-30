@@ -1,6 +1,13 @@
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store/auth-store";
@@ -8,7 +15,7 @@ import {
   calculateCompletedPoints,
   calculateLevel,
   calculateTotalPoints,
-  getLevelProgress
+  getLevelProgress,
 } from "../../../utility";
 import { useActiveMissions } from "../../mission/hooks/useActiveMissions";
 import { useUser } from "../../user/hooks/useUser";
@@ -36,8 +43,10 @@ export default function ProfileScreen() {
     router.replace("/auth/sign-in" as never);
   };
 
-  const completedMissions = missions?.filter((m) => m.status === "COMPLETED").length || 0;
-  const inProgressMissions = missions?.filter((m) => m.status === "IN_PROGRESS").length || 0;
+  const completedMissions =
+    missions?.filter((m) => m.status === "COMPLETED").length || 0;
+  const inProgressMissions =
+    missions?.filter((m) => m.status === "IN_PROGRESS").length || 0;
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
@@ -64,7 +73,11 @@ export default function ProfileScreen() {
         {/* Stats Cards */}
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
-            <FontAwesome5 name="trophy" size={24} color={theme.colors.primary} />
+            <FontAwesome5
+              name="trophy"
+              size={24}
+              color={theme.colors.primary}
+            />
             <Text style={styles.statValue}>{completedMissions}</Text>
             <Text style={styles.statLabel}>Missions complétées</Text>
           </View>
@@ -89,16 +102,26 @@ export default function ProfileScreen() {
             onPress={() => router.push("/(tabs)/settings" as never)}
           >
             <View style={styles.menuLeft}>
-              <Ionicons name="settings-outline" size={24} color={theme.colors.text} />
+              <Ionicons
+                name="settings-outline"
+                size={24}
+                color={theme.colors.text}
+              />
               <Text style={styles.menuText}>Paramètres</Text>
             </View>
-            <Ionicons name="chevron-forward" size={24} color={theme.colors.text} />
+            <Ionicons
+              name="chevron-forward"
+              size={24}
+              color={theme.colors.text}
+            />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
             <View style={styles.menuLeft}>
               <MaterialIcons name="logout" size={24} color="#EF4444" />
-              <Text style={[styles.menuText, styles.logoutText]}>Déconnexion</Text>
+              <Text style={[styles.menuText, styles.logoutText]}>
+                Déconnexion
+              </Text>
             </View>
             <Ionicons name="chevron-forward" size={24} color="#EF4444" />
           </TouchableOpacity>
@@ -115,61 +138,60 @@ const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.background,
       padding: theme.spacing.lg,
       paddingBottom: 0,
-      marginBottom: theme.spacing.md
     },
     title: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
       textAlign: "center",
-      marginBottom: theme.spacing.lg
+      marginBottom: theme.spacing.lg,
     },
     profileHeader: {
       alignItems: "center",
-      marginBottom: theme.spacing.xl
+      marginBottom: theme.spacing.xl,
     },
     avatar: {
       width: 120,
       height: 120,
       borderRadius: theme.borderRadius.full,
       backgroundColor: theme.colors.inputBackground,
-      marginBottom: theme.spacing.md
+      marginBottom: theme.spacing.md,
     },
     username: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.xs
+      marginBottom: theme.spacing.xs,
     },
     email: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      opacity: 0.7
+      opacity: 0.7,
     },
     pointsCard: {
       backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.lg,
       padding: theme.spacing.xl,
       alignItems: "center",
-      marginBottom: theme.spacing.lg
+      marginBottom: theme.spacing.lg,
     },
     pointsValue: {
       fontSize: 48,
       fontWeight: "bold",
       color: theme.colors.primary,
-      marginTop: theme.spacing.sm
+      marginTop: theme.spacing.sm,
     },
     pointsLabel: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       opacity: 0.7,
-      marginTop: theme.spacing.xs
+      marginTop: theme.spacing.xs,
     },
     statsContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
       marginBottom: theme.spacing.lg,
-      gap: theme.spacing.md
+      gap: theme.spacing.md,
     },
     statCard: {
       flex: 1,
@@ -177,25 +199,25 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.lg,
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.sm,
-      alignItems: "center"
+      alignItems: "center",
     },
     statValue: {
       fontSize: theme.fontSizes.xxl,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginTop: theme.spacing.sm
+      marginTop: theme.spacing.sm,
     },
     statLabel: {
       fontSize: theme.fontSizes.xs,
       color: theme.colors.text,
       opacity: 0.7,
       textAlign: "center",
-      marginTop: theme.spacing.xs
+      marginTop: theme.spacing.xs,
     },
     menuContainer: {
       backgroundColor: theme.colors.inputBackground,
       borderRadius: theme.borderRadius.lg,
-      overflow: "hidden"
+      overflow: "hidden",
     },
     menuItem: {
       flexDirection: "row",
@@ -203,19 +225,19 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       padding: theme.spacing.lg,
       borderBottomWidth: 1,
-      borderBottomColor: theme.colors.background
+      borderBottomColor: theme.colors.background,
     },
     menuLeft: {
       flexDirection: "row",
       alignItems: "center",
-      gap: theme.spacing.md
+      gap: theme.spacing.md,
     },
     menuText: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      fontWeight: "500"
+      fontWeight: "500",
     },
     logoutText: {
-      color: "#EF4444"
-    }
+      color: "#EF4444",
+    },
   });
