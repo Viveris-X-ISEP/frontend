@@ -21,11 +21,11 @@ export default function MissionsLayoutScreen() {
             style={[
               styles.menuButtonText,
               activeTab === "active"
-                ? { color: theme.colors.text }
+                ? { color: theme.colors.text }            
                 : { color: theme.colors.primary }
             ]}
           >
-            Active Missions
+            Missions Actives
           </Text>
         </TouchableOpacity>
 
@@ -38,7 +38,7 @@ export default function MissionsLayoutScreen() {
                 : { color: theme.colors.primary }
             ]}
           >
-            Mission Catalogue
+            Catalogue de Missions
           </Text>
         </TouchableOpacity>
       </View>
@@ -75,7 +75,7 @@ const createStyles = (theme: Theme) =>
       marginHorizontal: theme.spacing.sm
     },
     menuButtonText: {
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.xs,
       color: theme.colors.primary,
       fontWeight: "bold"
     },
