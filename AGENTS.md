@@ -5,15 +5,11 @@
 - **Atomic Git Commits**: Perform atomic git commits following this format:
 
     ```bash
-    git commit -m "<type>(<operational scope>): <title>.
+    git commit -m "<type>(<operational scope>): <title>
 
-    <bullet point>
-    <bullet point>
-    .
-    .
-    .
+    <Body section>
 
-    Branch: <local branch name>"
+    <Footer section>"
     ```
 
 - **Pre-commit Checks**: Before committing, ensure the following checks are performed:
