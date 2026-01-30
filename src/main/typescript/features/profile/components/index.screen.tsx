@@ -40,8 +40,11 @@ export default function ProfileScreen() {
   const inProgressMissions = missions?.filter((m) => m.status === "IN_PROGRESS").length || 0;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: theme.spacing.md }}
+      >
         <Text style={styles.title}>Profil</Text>
 
         {/* Profile Header */}
@@ -110,7 +113,9 @@ const createStyles = (theme: Theme) =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-      padding: theme.spacing.lg
+      padding: theme.spacing.lg,
+      paddingBottom: 0,
+      marginBottom: theme.spacing.md
     },
     title: {
       fontSize: theme.fontSizes.xxl,

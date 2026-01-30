@@ -25,19 +25,11 @@ export default function TabLayout() {
         tabBarActiveTintColor: theme.colors.text,
         tabBarInactiveTintColor: theme.colors.primary,
         tabBarShowLabel: false,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: "absolute",
-            paddingTop: 8,
-            backgroundColor: theme.colors.background,
-            borderTopColor: theme.colors.outline
-          },
-          default: {
-            paddingTop: 8,
-            backgroundColor: theme.colors.background,
-            borderTopColor: theme.colors.outline
-          }
-        })
+        tabBarStyle: {
+          paddingTop: 10,
+          backgroundColor: theme.colors.background,
+          borderTopColor: theme.colors.outline
+        }
       }}
     >
       <Tabs.Screen

@@ -70,7 +70,8 @@ const createStyles = (theme: Theme) =>
       flex: 1,
       backgroundColor: theme.colors.background,
       paddingHorizontal: theme.spacing.lg,
-      paddingTop: theme.spacing.lg
+      paddingTop: theme.spacing.lg,
+      paddingBottom: 0
     },
     sectionTitle: {
       fontSize: theme.fontSizes.lg,

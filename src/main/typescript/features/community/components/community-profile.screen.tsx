@@ -20,7 +20,7 @@ export default function CommunityProfileScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.centered}>
           <ActivityIndicator size="large" color={theme.colors.primary} />
         </View>
@@ -30,7 +30,7 @@ export default function CommunityProfileScreen() {
 
   if (error || !profile) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
         <View style={styles.centered}>
           <Text style={styles.errorText}>{error || "Profil non trouvé"}</Text>
         </View>
@@ -39,7 +39,7 @@ export default function CommunityProfileScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Profil</Text>
 

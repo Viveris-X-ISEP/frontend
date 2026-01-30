@@ -63,7 +63,7 @@ const createStyles = (theme: Theme) =>
       backgroundColor: theme.colors.primary,
       paddingVertical: theme.spacing.sm,
       paddingHorizontal: theme.spacing.md,
-      borderRadius: theme.borderRadius.md
+      borderRadius: theme.borderRadius.full
     },
     buttonText: {
       fontSize: theme.fontSizes.sm,
