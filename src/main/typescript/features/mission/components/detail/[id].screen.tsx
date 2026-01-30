@@ -12,6 +12,10 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
+import {
+  MISSION_CATEGORY_IMAGES,
+  type MissionCategory
+} from "../../../../shared/constants/mission-categories";
 import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
 import { useMission } from "../../../missions/hook/useMissions";
@@ -76,13 +80,6 @@ export default function MissionDetailScreen() {
     }
   };
 
-  const categoryImages = {
-    Logement: require("../../../../../resources/images/missions_categories/logement.png"),
-    Alimentation: require("../../../../../resources/images/missions_categories/alimentation.png"),
-    Numérique: require("../../../../../resources/images/missions_categories/numerique.png"),
-    Transport: require("../../../../../resources/images/missions_categories/transport.png")
-  };
-
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -113,7 +110,7 @@ export default function MissionDetailScreen() {
 
       <ScrollView style={styles.scrollView}>
         <Image
-          source={categoryImages[mission.category as keyof typeof categoryImages]}
+          source={MISSION_CATEGORY_IMAGES[mission.category as MissionCategory]}
           style={styles.headerImage}
           resizeMode="cover"
         />
