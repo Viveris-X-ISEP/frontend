@@ -1,11 +1,17 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { router } from "expo-router";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  ALL_CATEGORIES,
+  MISSION_CATEGORY_DISPLAY_NAMES,
+  MISSION_CATEGORY_IMAGES,
+  MissionCategory
+} from "../../../shared/constants/mission-categories";
 import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store";
 import { UserMissionService } from "../../mission/services/user-mission.service";
@@ -23,7 +29,7 @@ export default function CatalogueScreen() {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "50%"], []);
 
-  const [selectedCategory, setSelectedCategory] = useState("Tout");
+  const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORIES);
   const [sliderValues, setSliderValues] = useState([50, 800]);
   const [userMissions, setUserMissions] = useState<UserMission[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
@@ -82,16 +88,10 @@ export default function CatalogueScreen() {
     setSliderValues(values);
   };
 
-  const categoryImages = {
-    Logement: require("../../../../resources/images/missions_categories/logement.png"),
-    Alimentation: require("../../../../resources/images/missions_categories/alimentation.png"),
-    Numérique: require("../../../../resources/images/missions_categories/numerique.png"),
-    Transport: require("../../../../resources/images/missions_categories/transport.png")
-  };
-
   const filteredMissions = useMemo(() => {
     return missions.filter((mission) => {
-      const categoryMatch = selectedCategory === "Tout" || mission.category === selectedCategory;
+      const categoryMatch =
+        selectedCategory === ALL_CATEGORIES || mission.category === selectedCategory;
       const rewardMatch =
         mission.rewardPoints >= sliderValues[0] && mission.rewardPoints <= sliderValues[1];
       return categoryMatch && rewardMatch;
@@ -138,7 +138,7 @@ export default function CatalogueScreen() {
                 <Text style={styles.category}>{item.category}</Text>
               </View>
               <Image
-                source={categoryImages[item.category as keyof typeof categoryImages]}
+                source={MISSION_CATEGORY_IMAGES[item.category as MissionCategory]}
                 style={styles.categoryImage}
                 resizeMode="cover"
               />
@@ -173,13 +173,31 @@ export default function CatalogueScreen() {
         onChange={handleSheetChanges}
         enablePanDownToClose
         backgroundStyle={{ backgroundColor: theme.colors.background }}
+        activeOffsetY={[-10, 10]}
+        failOffsetX={[-10, 10]}
       >
-        <BottomSheetView style={styles.bottomSheetContent}>
+        <BottomSheetScrollView style={styles.bottomSheetContent}>
           <Text style={styles.bottomSheetTitle}>Filtrer</Text>
 
           <Text style={styles.sectionTitle}>Categorie</Text>
           <View style={styles.categoryContainer}>
-            {["Tout", "Logement", "Alimentation", "Numérique", "Transport"].map((category) => (
+            <TouchableOpacity
+              style={[
+                styles.categoryButton,
+                selectedCategory === ALL_CATEGORIES && styles.selectedCategoryButton
+              ]}
+              onPress={() => setSelectedCategory(ALL_CATEGORIES)}
+            >
+              <Text
+                style={[
+                  styles.categoryButtonText,
+                  selectedCategory === ALL_CATEGORIES && styles.selectedCategoryButtonText
+                ]}
+              >
+                {ALL_CATEGORIES}
+              </Text>
+            </TouchableOpacity>
+            {Object.values(MissionCategory).map((category) => (
               <TouchableOpacity
                 key={category}
                 style={[
@@ -194,7 +212,7 @@ export default function CatalogueScreen() {
                     selectedCategory === category && styles.selectedCategoryButtonText
                   ]}
                 >
-                  {category}
+                  {MISSION_CATEGORY_DISPLAY_NAMES[category]}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -221,7 +239,7 @@ export default function CatalogueScreen() {
           <Text style={styles.sliderValue}>
             {sliderValues[0]} Points - {sliderValues[1]} Points
           </Text>
-        </BottomSheetView>
+        </BottomSheetScrollView>
       </BottomSheet>
     </GestureHandlerRootView>
   );
@@ -312,14 +330,16 @@ const createStyles = (theme: Theme) =>
     categoryContainer: {
       flexDirection: "row",
       flexWrap: "wrap",
-      justifyContent: "space-between"
+      gap: theme.spacing.sm
     },
     categoryButton: {
       paddingVertical: theme.spacing.md,
       paddingHorizontal: theme.spacing.md,
-      borderRadius: theme.borderRadius.md,
+      borderRadius: theme.borderRadius.sm,
       borderWidth: 1,
-      borderColor: theme.colors.outline
+      borderColor: theme.colors.outline,
+      backgroundColor: theme.colors.background,
+      margin: theme.spacing.xs
     },
     selectedCategoryButton: {
       backgroundColor: theme.colors.primary
