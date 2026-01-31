@@ -38,15 +38,16 @@ export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={handlePress}>
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Mission en cours</Text>
         <FontAwesome5 name="trophy" size={20} color={theme.colors.primary} />
       </View>
-
       <View style={styles.categoryBadge}>
         <Text style={styles.categoryBadgeText}>{mission.category}</Text>
       </View>
 
+      {/* Mission Title and Description */}
       <Text style={styles.missionTitle}>{mission.title}</Text>
       <Text style={styles.missionDescription} numberOfLines={2}>
         {mission.description}
@@ -54,14 +55,14 @@ export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
 
       {/* Progress Bar */}
       <View style={styles.progressContainer}>
-        <Text style={styles.progressText}>
-          {rawProgress} / {mission.goal} {mission.goalUnit ? mission.goalUnit.toLowerCase() : ""}
-        </Text>
         <View style={styles.progressBackground}>
           <View
             style={[styles.progressFill, { width: `${Math.min(completionPercentage, 100)}%` }]}
           />
         </View>
+        <Text style={styles.progressText}>
+          {rawProgress} / {mission.goal} {mission.goalUnit ? mission.goalUnit.toLowerCase() : ""}
+        </Text>
       </View>
 
       {/* Mission Details */}
@@ -91,7 +92,7 @@ const createStyles = (theme: Theme) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: theme.spacing.md
+      marginBottom: theme.spacing.xs
     },
     title: {
       fontSize: theme.fontSizes.lg,
@@ -103,11 +104,11 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full,
       paddingHorizontal: theme.spacing.md,
       alignSelf: "flex-start",
-      marginBottom: theme.spacing.md
+      marginBottom: theme.spacing.lg
     },
     categoryBadgeText: {
       color: theme.colors.background,
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.xs,
       fontWeight: "600"
     },
     missionTitle: {
@@ -138,11 +139,12 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full
     },
     progressText: {
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.xs,
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
       fontWeight: "600",
-      textAlign: "center"
+      textAlign: "left",
+      paddingTop: theme.spacing.xs,
+      paddingLeft: theme.spacing.xs
     },
     detailsContainer: {
       flexDirection: "row",
@@ -153,13 +155,14 @@ const createStyles = (theme: Theme) =>
       alignItems: "center"
     },
     detailLabel: {
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.md,
+      fontWeight: "600",
       color: theme.colors.text,
       opacity: 0.6,
       marginBottom: theme.spacing.xs
     },
     detailValue: {
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.lg,
       fontWeight: "600",
       color: theme.colors.primary
     },
