@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useAuthStore } from "../../../store/auth-store";
 import { UserService } from "../services/user.service";
 import type { User } from "../types";
 
-export const useUser = (id?: number, token?: string) => {
+export const useUser = (id?: number) => {
+  const userId = useAuthStore((state) => state.userId);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -12,12 +14,10 @@ export const useUser = (id?: number, token?: string) => {
       setLoading(true);
       setError(null);
       try {
-        if (id) {
-          const fetchedUser = await UserService.getUserById(id);
+        const targetUserId = id ?? userId ?? undefined;
+        if (targetUserId) {
+          const fetchedUser = await UserService.getUserById(targetUserId);
           setUser(fetchedUser);
-        } else if (token) {
-          const currentUser = await UserService.getCurrentUser(token);
-          setUser(currentUser);
         }
       } catch (err) {
         setError("Failed to fetch user.");
@@ -27,7 +27,7 @@ export const useUser = (id?: number, token?: string) => {
     };
 
     fetchUser();
-  }, [id, token]);
+  }, [id, userId]);
 
   return { user, loading, error };
 };

@@ -45,15 +45,6 @@ export const AuthService = {
   },
 
   /**
-   * GET /users/me
-   * Get current authenticated user information
-   */
-  getUserInfo: async (): Promise<import("../types").UserDto> => {
-    const response = await apiClient.get<import("../types").UserDto>("/users/me");
-    return response.data;
-  },
-
-  /**
    * Client-side logout (no backend endpoint)
    * Tokens are cleared locally
    */

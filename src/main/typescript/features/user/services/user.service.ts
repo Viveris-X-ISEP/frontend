@@ -7,13 +7,6 @@ export const UserService = {
     return response.data;
   },
 
-  async getCurrentUser(token: string): Promise<User> {
-    const response = await apiClient.get<User>("/users/me", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    return response.data;
-  },
-
   async createUser(dto: CreateUserDto): Promise<User> {
     const response = await apiClient.post<User>("/users/create", dto);
     return response.data;

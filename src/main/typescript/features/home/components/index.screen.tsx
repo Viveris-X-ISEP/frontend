@@ -25,8 +25,8 @@ export default function HomeScreen() {
   const styles = createStyles(theme);
   const [refreshKey, setRefreshKey] = useState(0);
   const { hasCompleted, isLoading } = useSurveyStatus();
-  const { token, userId } = useAuthStore();
-  const { user, loading: userLoading } = useUser(undefined, token || undefined);
+  const { userId } = useAuthStore();
+  const { user, loading: userLoading } = useUser(userId ?? undefined);
   const { emissions, loading: emissionsLoading } = useLatestEmissions(userId, refreshKey);
   const {
     missions,

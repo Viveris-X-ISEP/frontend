@@ -19,7 +19,6 @@ import {
 import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
 import { useMission } from "../../../missions/hook/useMissions";
-import { UserService } from "../../../user/services/user.service";
 import { useCreateUserMission } from "../../hooks";
 import { MissionStatus } from "../../types/mission-status";
 
@@ -30,11 +29,11 @@ export default function MissionDetailScreen() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { mission, loading } = useMission(Number(id));
-  const token = useAuthStore((state) => state.token);
+  const userId = useAuthStore((state) => state.userId);
   const { create: createUserMission } = useCreateUserMission();
 
   const handleEmbark = async () => {
-    if (!token) {
+    if (!userId) {
       Alert.alert("Erreur", "Veuillez vous connecter pour commencer cette mission");
       return;
     }
@@ -46,12 +45,9 @@ export default function MissionDetailScreen() {
 
     setIsSubmitting(true);
     try {
-      // Get current user
-      const user = await UserService.getCurrentUser(token);
-
       const now = new Date();
       const payload = {
-        userId: user.id,
+        userId,
         missionId: mission.id,
         status: MissionStatus.IN_PROGRESS,
         completionRate: 0,
