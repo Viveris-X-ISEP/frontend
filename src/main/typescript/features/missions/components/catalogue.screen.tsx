@@ -39,8 +39,7 @@ export default function CatalogueScreen() {
   const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORIES);
   const [sliderValues, setSliderValues] = useState([50, 800]);
   const [userMissions, setUserMissions] = useState<UserMission[]>([]);
-  const [mainEmissionCategory, setMainEmissionCategory] =
-    useState<MissionCategory | null>(null);
+  const [mainEmissionCategory, setMainEmissionCategory] = useState<MissionCategory | null>(null);
 
   // Fetch user, their missions, and emissions
   React.useEffect(() => {
