@@ -17,14 +17,13 @@ import { useAuthStore } from "../../../store";
 import { UserMissionService } from "../../mission/services/user-mission.service";
 import type { UserMission } from "../../mission/types";
 import { MissionStatus } from "../../mission/types/mission-status";
-import { UserService } from "../../user/services/user.service";
 import { useMissions } from "../hook/useMissions";
 
 export default function CatalogueScreen() {
   const { missions, loading } = useMissions();
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const token = useAuthStore((state) => state.token);
+  const userId = useAuthStore((state) => state.userId);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "50%"], []);
@@ -32,18 +31,13 @@ export default function CatalogueScreen() {
   const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORIES);
   const [sliderValues, setSliderValues] = useState([50, 800]);
   const [userMissions, setUserMissions] = useState<UserMission[]>([]);
-  const [userId, setUserId] = useState<number | null>(null);
-
   // Fetch user and their missions
   React.useEffect(() => {
     const fetchUserData = async () => {
-      if (!token) return;
+      if (!userId) return;
 
       try {
-        const user = await UserService.getCurrentUser(token);
-        setUserId(user.id);
-
-        const missions = await UserMissionService.getMissionsByUserId(user.id);
+        const missions = await UserMissionService.getMissionsByUserId(userId);
         setUserMissions(missions);
       } catch (err) {
         console.error("Error fetching user missions:", err);
@@ -51,7 +45,7 @@ export default function CatalogueScreen() {
     };
 
     fetchUserData();
-  }, [token]);
+  }, [userId]);
 
   const getMissionStatus = (missionId: number) => {
     const userMission = userMissions.find((um) => um.missionId === missionId);

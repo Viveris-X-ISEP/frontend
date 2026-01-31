@@ -66,7 +66,10 @@ describe("API Client", () => {
         return [200, { token: "test-token" }];
       });
 
-      await apiClient.post("/auth/login", { email: "test@test.com", password: "pass" });
+      await apiClient.post("/auth/login", {
+        email: "test@test.com",
+        password: "pass"
+      });
     });
 
     it("should NOT attach Authorization header to /auth/register", async () => {
@@ -75,12 +78,18 @@ describe("API Client", () => {
         return [200, { token: "test-token" }];
       });
 
-      await apiClient.post("/auth/register", { email: "test@test.com", password: "pass" });
+      await apiClient.post("/auth/register", {
+        email: "test@test.com",
+        password: "pass"
+      });
     });
 
-    it("should NOT attach Authorization header to /auth/refresh", async () => {
+    it("should attach Authorization header to /auth/refresh when token exists", async () => {
+      const validToken = createJwt(3600);
+      (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(validToken);
+
       mockApi.onPost("/auth/refresh").reply((config) => {
-        expect(config.headers?.Authorization).toBeUndefined();
+        expect(config.headers?.Authorization).toBe(`Bearer ${validToken}`);
         return [200, { token: "new-token" }];
       });
 
@@ -96,50 +105,52 @@ describe("API Client", () => {
       const validToken = createJwt(3600); // Expires in 1 hour
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(validToken);
 
-      mockApi.onGet("/users/me").reply((config) => {
+      mockApi.onGet("/users/1").reply((config) => {
         expect(config.headers?.Authorization).toBe(`Bearer ${validToken}`);
         return [200, { id: 1, email: "test@test.com" }];
       });
 
-      await apiClient.get("/users/me");
+      await apiClient.get("/users/1");
     });
 
     it("should make request without token if no token is stored", async () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(null);
 
-      mockApi.onGet("/users/me").reply((config) => {
+      mockApi.onGet("/users/1").reply((config) => {
         expect(config.headers?.Authorization).toBeUndefined();
         return [200, {}];
       });
 
-      await apiClient.get("/users/me");
+      await apiClient.get("/users/1");
     });
 
-    it("should proactively refresh expired token before request", async () => {
-      const expiredToken = createJwt(-60); // Expired 1 minute ago
+    it("should proactively refresh token within expiry buffer before request", async () => {
+      const almostExpiredToken = createJwt(5); // Expires in 5 seconds (within 10s buffer)
       const newToken = createJwt(3600);
       const refreshToken = "valid-refresh-token";
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
-        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "auth_token") return Promise.resolve(almostExpiredToken);
         if (key === "refresh_token") return Promise.resolve(refreshToken);
         return Promise.resolve(null);
       });
 
       // Mock the refresh endpoint with full URL
       axiosMock
-        .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh", { refreshToken })
-        .reply(200, {
-          token: newToken,
-          refreshToken: "new-refresh-token"
+        .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh", {
+          refreshToken
+        })
+        .reply((config) => {
+          expect(config.headers?.Authorization).toBe(`Bearer ${almostExpiredToken}`);
+          return [200, { token: newToken, refreshToken: "new-refresh-token" }];
         });
 
-      mockApi.onGet("/users/me").reply((config) => {
+      mockApi.onGet("/users/1").reply((config) => {
         expect(config.headers?.Authorization).toBe(`Bearer ${newToken}`);
         return [200, { id: 1 }];
       });
 
-      await apiClient.get("/users/me");
+      await apiClient.get("/users/1");
 
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith("auth_token", newToken);
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith("refresh_token", "new-refresh-token");
@@ -159,9 +170,9 @@ describe("API Client", () => {
         .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh")
         .reply(401, { message: "Invalid refresh token" });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow(
+      await expect(apiClient.get("/users/1")).rejects.toThrow(
         "Authentication failed: unable to refresh access token"
       );
 
@@ -178,7 +189,7 @@ describe("API Client", () => {
     });
 
     it("should refresh token expiring within 10 second buffer", async () => {
-      const almostExpiredToken = createJwt(5); // Expires in 5 seconds (within 10s buffer)
+      const almostExpiredToken = createJwt(9); // Expires in 9 seconds (within 10s buffer)
       const newToken = createJwt(3600);
       const refreshToken = "valid-refresh-token";
 
@@ -188,17 +199,19 @@ describe("API Client", () => {
         return Promise.resolve(null);
       });
 
-      axiosMock.onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh").reply(200, {
-        token: newToken,
-        refreshToken: "new-refresh-token"
-      });
+      axiosMock
+        .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh")
+        .reply((config) => {
+          expect(config.headers?.Authorization).toBe(`Bearer ${almostExpiredToken}`);
+          return [200, { token: newToken, refreshToken: "new-refresh-token" }];
+        });
 
-      mockApi.onGet("/users/me").reply((config) => {
+      mockApi.onGet("/users/1").reply((config) => {
         expect(config.headers?.Authorization).toBe(`Bearer ${newToken}`);
         return [200, { id: 1 }];
       });
 
-      await apiClient.get("/users/me");
+      await apiClient.get("/users/1");
 
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith("auth_token", newToken);
     });
@@ -206,7 +219,6 @@ describe("API Client", () => {
     it("should handle invalid JWT format by treating as expired", async () => {
       const invalidToken = createInvalidJwt();
       const refreshToken = "valid-refresh-token";
-      const newToken = createJwt(3600);
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
         if (key === "auth_token") return Promise.resolve(invalidToken);
@@ -214,17 +226,22 @@ describe("API Client", () => {
         return Promise.resolve(null);
       });
 
-      axiosMock.onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh").reply(200, {
-        token: newToken,
-        refreshToken: "new-refresh-token"
-      });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      mockApi.onGet("/users/me").reply((config) => {
-        expect(config.headers?.Authorization).toBe(`Bearer ${newToken}`);
-        return [200, { id: 1 }];
-      });
+      await expect(apiClient.get("/users/1")).rejects.toThrow(
+        "Authentication failed: unable to refresh access token"
+      );
 
-      await apiClient.get("/users/me");
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("auth_token");
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("refresh_token");
+      expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("user_id");
+      expect(useAuthStore.setState).toHaveBeenCalledWith({
+        isLoggedIn: false,
+        token: null,
+        refreshToken: null,
+        userId: null
+      });
+      expect(router.replace).toHaveBeenCalledWith("/auth/sign-in");
     });
   });
 
@@ -237,7 +254,7 @@ describe("API Client", () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(validToken);
 
       let requestCount = 0;
-      mockApi.onGet("/users/me").reply(() => {
+      mockApi.onGet("/users/1").reply(() => {
         requestCount++;
         if (requestCount === 1) {
           return [401, { message: "Unauthorized" }];
@@ -245,7 +262,7 @@ describe("API Client", () => {
         return [200, { id: 1 }];
       });
 
-      const result = await apiClient.get("/users/me");
+      const result = await apiClient.get("/users/1");
 
       expect(result.status).toBe(200);
       expect(requestCount).toBe(2);
@@ -256,7 +273,7 @@ describe("API Client", () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(validToken);
 
       let requestCount = 0;
-      mockApi.onGet("/users/me").reply(() => {
+      mockApi.onGet("/users/1").reply(() => {
         requestCount++;
         if (requestCount === 1) {
           return [403, { message: "Forbidden" }];
@@ -264,7 +281,7 @@ describe("API Client", () => {
         return [200, { id: 1 }];
       });
 
-      const result = await apiClient.get("/users/me");
+      const result = await apiClient.get("/users/1");
 
       expect(result.status).toBe(200);
       expect(requestCount).toBe(2);
@@ -274,9 +291,9 @@ describe("API Client", () => {
       const expiredToken = createJwt(-60);
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(expiredToken);
 
-      mockApi.onGet("/users/me").reply(401, { message: "Unauthorized" });
+      mockApi.onGet("/users/1").reply(401, { message: "Unauthorized" });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("auth_token");
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("refresh_token");
@@ -304,12 +321,12 @@ describe("API Client", () => {
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(validToken);
 
       let requestCount = 0;
-      mockApi.onGet("/users/me").reply(() => {
+      mockApi.onGet("/users/1").reply(() => {
         requestCount++;
         return [401, { message: "Unauthorized" }];
       });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       // First request + one retry = 2 total
       expect(requestCount).toBe(2);
@@ -319,9 +336,9 @@ describe("API Client", () => {
       const validToken = createJwt(3600);
       (SecureStore.getItemAsync as jest.Mock).mockResolvedValue(validToken);
 
-      mockApi.onGet("/users/me").reply(500, { message: "Server error" });
+      mockApi.onGet("/users/1").reply(500, { message: "Server error" });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(SecureStore.deleteItemAsync).not.toHaveBeenCalled();
       expect(router.replace).not.toHaveBeenCalled();
@@ -333,43 +350,45 @@ describe("API Client", () => {
   // =========================================
   describe("Token Refresh Logic", () => {
     it("should successfully refresh token and store new tokens", async () => {
-      const expiredToken = createJwt(-60);
+      const almostExpiredToken = createJwt(5);
       const refreshToken = "valid-refresh-token";
       const newToken = createJwt(3600);
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
-        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "auth_token") return Promise.resolve(almostExpiredToken);
         if (key === "refresh_token") return Promise.resolve(refreshToken);
         return Promise.resolve(null);
       });
 
       axiosMock
-        .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh", { refreshToken })
-        .reply(200, {
-          token: newToken,
-          refreshToken: "new-refresh-token"
+        .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh", {
+          refreshToken
+        })
+        .reply((config) => {
+          expect(config.headers?.Authorization).toBe(`Bearer ${almostExpiredToken}`);
+          return [200, { token: newToken, refreshToken: "new-refresh-token" }];
         });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await apiClient.get("/users/me");
+      await apiClient.get("/users/1");
 
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith("auth_token", newToken);
       expect(SecureStore.setItemAsync).toHaveBeenCalledWith("refresh_token", "new-refresh-token");
     });
 
     it("should clear auth and redirect when refresh token is missing", async () => {
-      const expiredToken = createJwt(-60);
+      const almostExpiredToken = createJwt(5);
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
-        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "auth_token") return Promise.resolve(almostExpiredToken);
         if (key === "refresh_token") return Promise.resolve(null);
         return Promise.resolve(null);
       });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("auth_token");
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("refresh_token");
@@ -378,11 +397,11 @@ describe("API Client", () => {
     });
 
     it("should clear auth and redirect when refresh API fails", async () => {
-      const expiredToken = createJwt(-60);
+      const almostExpiredToken = createJwt(5);
       const refreshToken = "invalid-refresh-token";
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
-        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "auth_token") return Promise.resolve(almostExpiredToken);
         if (key === "refresh_token") return Promise.resolve(refreshToken);
         return Promise.resolve(null);
       });
@@ -391,9 +410,9 @@ describe("API Client", () => {
         .onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh")
         .reply(401, { message: "Invalid refresh token" });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(SecureStore.deleteItemAsync).toHaveBeenCalled();
       expect(useAuthStore.setState).toHaveBeenCalledWith({
@@ -406,20 +425,20 @@ describe("API Client", () => {
     });
 
     it("should handle network errors during token refresh", async () => {
-      const expiredToken = createJwt(-60);
+      const almostExpiredToken = createJwt(5);
       const refreshToken = "valid-refresh-token";
 
       (SecureStore.getItemAsync as jest.Mock).mockImplementation((key: string) => {
-        if (key === "auth_token") return Promise.resolve(expiredToken);
+        if (key === "auth_token") return Promise.resolve(almostExpiredToken);
         if (key === "refresh_token") return Promise.resolve(refreshToken);
         return Promise.resolve(null);
       });
 
       axiosMock.onPost("http://localhost:8080/ProjetIndustrielBack/auth/refresh").networkError();
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(router.replace).toHaveBeenCalledWith("/auth/sign-in");
     });
@@ -438,9 +457,9 @@ describe("API Client", () => {
         return Promise.resolve(null);
       });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("auth_token");
       expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith("refresh_token");
@@ -456,9 +475,9 @@ describe("API Client", () => {
         return Promise.resolve(null);
       });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(useAuthStore.setState).toHaveBeenCalledWith({
         isLoggedIn: false,
@@ -477,9 +496,9 @@ describe("API Client", () => {
         return Promise.resolve(null);
       });
 
-      mockApi.onGet("/users/me").reply(200, { id: 1 });
+      mockApi.onGet("/users/1").reply(200, { id: 1 });
 
-      await expect(apiClient.get("/users/me")).rejects.toThrow();
+      await expect(apiClient.get("/users/1")).rejects.toThrow();
 
       expect(router.replace).toHaveBeenCalledWith("/auth/sign-in");
     });

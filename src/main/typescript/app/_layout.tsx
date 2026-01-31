@@ -2,15 +2,18 @@ import { Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
+import { AuthService } from "../features/auth/services/auth.service";
 import { SurveyPromptModal } from "../features/survey/components/survey-prompt-modal";
 import { SurveyService } from "../features/survey/services/survey.service";
+import { useTokenRefreshScheduler } from "../shared/api/useTokenRefreshScheduler";
 import { useTheme } from "../shared/theme";
 import { useAuthStore } from "../store";
 import { hasOneMonthPassed } from "../utility";
 
 export default function RootLayout() {
-  const { isLoggedIn, userId, signOut } = useAuthStore();
+  const { isLoggedIn, userId, signOut, updateTokens } = useAuthStore();
   const { isDark } = useTheme();
+  useTokenRefreshScheduler();
 
   // Handle rehydration state (wait for SecureStore to read data)
   const [isReady, setIsReady] = useState(false);
@@ -27,22 +30,30 @@ export default function RootLayout() {
       }
       hasValidatedAuth.current = true;
 
-      // If Zustand says we're logged in, verify tokens exist in SecureStore
-      if (isLoggedIn) {
-        const token = await SecureStore.getItemAsync("auth_token");
-        const refreshToken = await SecureStore.getItemAsync("refresh_token");
+      const storedRefreshToken = await SecureStore.getItemAsync("refresh_token");
 
-        // If tokens don't exist, the persisted state is stale - sign out
-        if (!token || !refreshToken) {
-          console.log("Stale auth state detected - tokens missing from SecureStore");
-          await signOut();
+      if (!storedRefreshToken) {
+        if (isLoggedIn) {
+          console.log("Stale auth state detected - refresh token missing from SecureStore");
         }
+        await signOut();
+        setIsReady(true);
+        return;
       }
+
+      try {
+        const refreshed = await AuthService.refreshToken(storedRefreshToken);
+        await updateTokens(refreshed.token, refreshed.refreshToken);
+      } catch (error) {
+        console.log("Unable to refresh access token on startup:", error);
+        await signOut();
+      }
+
       setIsReady(true);
     };
 
     validateAuthState();
-  }, [isLoggedIn, signOut]);
+  }, [isLoggedIn, signOut, updateTokens]);
 
   // Check if user needs to retake the survey
   useEffect(() => {

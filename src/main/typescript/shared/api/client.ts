@@ -4,7 +4,7 @@ import * as SecureStore from "expo-secure-store";
 import { useAuthStore } from "../../store/auth-store";
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL;
-const PUBLIC_ENDPOINTS = ["/auth/login", "/auth/register", "/auth/refresh"];
+const PUBLIC_ENDPOINTS = ["/auth/login", "/auth/register"];
 
 interface JwtPayload {
   exp: number;
@@ -27,6 +27,20 @@ const isTokenExpired = (token: string): boolean => {
   const payload = decodeJwt(token);
   if (!payload?.exp) return true;
   return Date.now() >= payload.exp * 1000 - 10000;
+};
+
+// Check if token is actually expired (no buffer)
+const isTokenExpiredStrict = (token: string): boolean => {
+  const payload = decodeJwt(token);
+  if (!payload?.exp) return true;
+  return Date.now() >= payload.exp * 1000;
+};
+
+// Check if token is near expiry (default 90s buffer)
+const isTokenNearExpiry = (token: string, thresholdMs = 90000): boolean => {
+  const payload = decodeJwt(token);
+  if (!payload?.exp) return true;
+  return Date.now() >= payload.exp * 1000 - thresholdMs;
 };
 
 // Clear auth data and redirect to sign-in
@@ -61,14 +75,29 @@ const refreshAccessToken = async (): Promise<string | null> => {
 
   refreshPromise = (async () => {
     try {
+      const accessToken = await SecureStore.getItemAsync("auth_token");
       const refreshToken = await SecureStore.getItemAsync("refresh_token");
+      if (!accessToken || isTokenExpiredStrict(accessToken)) {
+        await clearAuthAndRedirect();
+        return null;
+      }
       if (!refreshToken) throw new Error("No refresh token");
 
-      const response = await axios.post(`${API_BASE_URL}/auth/refresh`, { refreshToken });
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/refresh`,
+        { refreshToken },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
       const { token, refreshToken: newRefreshToken } = response.data;
 
       await SecureStore.setItemAsync("auth_token", token);
       await SecureStore.setItemAsync("refresh_token", newRefreshToken);
+
+      useAuthStore.setState({
+        token,
+        refreshToken: newRefreshToken,
+        isLoggedIn: true
+      });
 
       return token;
     } catch (error) {
@@ -81,6 +110,8 @@ const refreshAccessToken = async (): Promise<string | null> => {
 
   return refreshPromise;
 };
+
+export { clearAuthAndRedirect, isTokenExpired, isTokenNearExpiry, refreshAccessToken };
 
 // Request interceptor: Check token expiration and refresh if needed
 apiClient.interceptors.request.use(
@@ -118,7 +149,9 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const originalRequest = error.config as InternalAxiosRequestConfig & {
+      _retry?: boolean;
+    };
 
     // If error has no config, it was thrown from request interceptor - pass through
     if (!originalRequest) {

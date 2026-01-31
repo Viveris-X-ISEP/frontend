@@ -65,7 +65,7 @@ export const useAuthStore = create<AuthState>()(
         // Update tokens in SecureStore
         await SecureStore.setItemAsync("auth_token", token);
         await SecureStore.setItemAsync("refresh_token", refreshToken);
-        set({ token, refreshToken });
+        set({ token, refreshToken, isLoggedIn: true });
       }
     }),
     {

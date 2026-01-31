@@ -21,15 +21,11 @@ import { useDeleteUserMission } from "../../mission/hooks";
 import type { UserMission } from "../../mission/types";
 import { MissionStatus } from "../../mission/types/mission-status";
 import type { Mission as MissionsMission } from "../../missions/types";
-import { UserService } from "../../user/services/user.service";
 
 export default function ActiveScreen() {
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const token = useAuthStore((state) => state.token);
-
-  const [userId, setUserId] = useState<number | null>(null);
-  const [loadingUser, setLoadingUser] = useState(true);
+  const userId = useAuthStore((state) => state.userId);
   type EnrichedUserMission = UserMission & { mission?: MissionsMission };
   const [missions, setMissions] = useState<EnrichedUserMission[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
@@ -37,26 +33,6 @@ export default function ActiveScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   const { deleteUserMission, loading: deleteLoading } = useDeleteUserMission();
-
-  React.useEffect(() => {
-    const fetchUser = async () => {
-      if (!token) {
-        setLoadingUser(false);
-        return;
-      }
-
-      try {
-        const user = await UserService.getCurrentUser(token);
-        setUserId(user.id);
-      } catch (err) {
-        console.error("Error fetching user:", err);
-      } finally {
-        setLoadingUser(false);
-      }
-    };
-
-    fetchUser();
-  }, [token]);
 
   const fetchMissions = React.useCallback(
     async (isRefreshing = false) => {
@@ -161,7 +137,7 @@ export default function ActiveScreen() {
     router.push(`/mission/update/${missionId}`);
   };
 
-  if (loadingUser || missionsLoading) {
+  if (missionsLoading) {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -169,7 +145,7 @@ export default function ActiveScreen() {
     );
   }
 
-  if (!token) {
+  if (!userId) {
     return (
       <View style={styles.centered}>
         <Text style={styles.emptyText}>Veuillez vous connecter pour voir vos missions actives</Text>

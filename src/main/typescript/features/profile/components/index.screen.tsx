@@ -17,8 +17,8 @@ export default function ProfileScreen() {
   const { theme } = useTheme();
   const router = useRouter();
   const styles = createStyles(theme);
-  const { token, userId, signOut } = useAuthStore();
-  const { user, loading: userLoading } = useUser(undefined, token || undefined);
+  const { userId, signOut } = useAuthStore();
+  const { user, loading: userLoading } = useUser(userId ?? undefined);
   const { missions } = useActiveMissions(userId);
 
   // Calculate user stats

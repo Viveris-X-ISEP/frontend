@@ -16,7 +16,6 @@ import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
 import { getMissionById } from "../../../missions/services/missions.service";
 import type { Mission } from "../../../missions/types";
-import { UserService } from "../../../user/services/user.service";
 import { UserMissionService } from "../../services/user-mission.service";
 import type { UpdateUserMissionDto, UserMission } from "../../types";
 import { MissionStatus } from "../../types/mission-status";
@@ -26,9 +25,7 @@ export default function MissionUpdateScreen() {
   const missionId = Number.parseInt(id as string);
   const { theme } = useTheme();
   const styles = createStyles(theme);
-  const token = useAuthStore((state) => state.token);
-
-  const [userId, setUserId] = useState<number | null>(null);
+  const userId = useAuthStore((state) => state.userId);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [mission, setMission] = useState<Mission | null>(null);
@@ -37,18 +34,15 @@ export default function MissionUpdateScreen() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!token) {
+      if (!userId) {
         setLoading(false);
         return;
       }
 
       try {
-        const user = await UserService.getCurrentUser(token);
-        setUserId(user.id);
-
         const [missionData, userMissionData] = await Promise.all([
           getMissionById(missionId),
-          UserMissionService.getUserMission(user.id, missionId)
+          UserMissionService.getUserMission(userId, missionId)
         ]);
 
         setMission(missionData);
@@ -63,7 +57,7 @@ export default function MissionUpdateScreen() {
     };
 
     fetchData();
-  }, [token, missionId]);
+  }, [missionId, userId]);
 
   const handleIncrement = () => {
     if (mission && progress < mission.goal) {

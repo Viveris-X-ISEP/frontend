@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useAuthStore } from "../../../store";
+import { getUserIdFromToken } from "../../../utility/jwt.utils";
 import { AuthService } from "../services";
 import type { SignUpCredentials } from "../types";
 
@@ -28,12 +29,11 @@ export function useSignUp() {
 
     try {
       const response = await AuthService.signUp(credentials);
-      // Store tokens first so the Authorization header is set for /users/me request
-      await signIn(response.token, response.refreshToken, 0); // Temporary userId
-      // Now fetch the actual userId from /users/me
-      const userInfo = await AuthService.getUserInfo();
-      // Update the userId in the store
-      await signIn(response.token, response.refreshToken, userInfo.id);
+      const userId = getUserIdFromToken(response.token);
+      if (!userId) {
+        throw new Error("Unable to extract user id from token");
+      }
+      await signIn(response.token, response.refreshToken, userId);
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
       const error = err as {
