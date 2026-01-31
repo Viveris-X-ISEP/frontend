@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { AuthService } from "../features/auth/services/auth.service";
 import { SurveyPromptModal } from "../features/survey/components/survey-prompt-modal";
 import { SurveyService } from "../features/survey/services/survey.service";
+import { useTokenRefreshScheduler } from "../shared/api/useTokenRefreshScheduler";
 import { useTheme } from "../shared/theme";
 import { useAuthStore } from "../store";
 import { hasOneMonthPassed } from "../utility";
@@ -12,6 +13,7 @@ import { hasOneMonthPassed } from "../utility";
 export default function RootLayout() {
   const { isLoggedIn, userId, signOut, updateTokens } = useAuthStore();
   const { isDark } = useTheme();
+  useTokenRefreshScheduler();
 
   // Handle rehydration state (wait for SecureStore to read data)
   const [isReady, setIsReady] = useState(false);
