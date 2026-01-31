@@ -21,7 +21,7 @@ export default function MissionsLayoutScreen() {
             style={[
               styles.menuButtonText,
               activeTab === "active"
-                ? { color: theme.colors.text }            
+                ? { color: theme.colors.text }
                 : { color: theme.colors.primary }
             ]}
           >
