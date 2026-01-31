@@ -1,5 +1,22 @@
 import type { MissionStatus } from "./mission-status";
 
+// Re-export category DTOs from survey types for emission calculations
+export type {
+  Transport as TransportDto,
+  Food as FoodDto,
+  Housing as HousingDto,
+  Digital as DigitalDto,
+  Car,
+  PublicTransport,
+  AirTransport,
+  DigitalConsumption,
+  FuelType,
+  LowMediumHigh,
+  PublicTransportType,
+  EnergySource,
+  HousingType
+} from "../../survey/types";
+
 export interface Mission {
   id: number;
   title: string;

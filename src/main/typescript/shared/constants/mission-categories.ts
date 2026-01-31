@@ -13,10 +13,10 @@ export const MISSION_CATEGORY_DISPLAY_NAMES: Record<MissionCategory, string> = {
 };
 
 export const MISSION_CATEGORY_IMAGES: Record<MissionCategory, number> = {
-  [MissionCategory.LOGEMENT]: require("../../../resources/images/missions_categories/logement.png"),
-  [MissionCategory.ALIMENTATION]: require("../../../resources/images/missions_categories/alimentation.png"),
-  [MissionCategory.NUMERIQUE]: require("../../../resources/images/missions_categories/numerique.png"),
-  [MissionCategory.TRANSPORT]: require("../../../resources/images/missions_categories/transport.png")
+  [MissionCategory.LOGEMENT]: require("../../../resources/images/missions_categories/logement.jpg"),
+  [MissionCategory.ALIMENTATION]: require("../../../resources/images/missions_categories/alimentation.jpg"),
+  [MissionCategory.NUMERIQUE]: require("../../../resources/images/missions_categories/numerique.jpg"),
+  [MissionCategory.TRANSPORT]: require("../../../resources/images/missions_categories/transport.jpg")
 };
 
 export const ALL_CATEGORIES = "Tout";
