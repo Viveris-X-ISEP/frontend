@@ -115,18 +115,18 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* Emissions Chart */}
-        {emissionsLoading ? (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
-        ) : (
-          <EmissionsCard emissions={emissions} />
-        )}
-
         {/* Active Mission Card */}
         {missionsLoading ? (
           <ActivityIndicator size="small" color={theme.colors.primary} />
         ) : (
           <ActiveMissionCard userMission={activeMission} />
+        )}
+
+        {/* Emissions Chart */}
+        {emissionsLoading ? (
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        ) : (
+          <EmissionsCard emissions={emissions} />
         )}
       </ScrollView>
     </SafeAreaView>

@@ -2,10 +2,10 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { type Theme, useTheme } from "../../../shared/theme";
-import type { UserMission } from "../../mission/types";
+import type { EnrichedUserMission } from "../../mission/hooks/useActiveMissions";
 
 interface ActiveMissionCardProps {
-  userMission: UserMission | null;
+  userMission: EnrichedUserMission | null;
 }
 
 export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
@@ -27,19 +27,27 @@ export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
     );
   }
 
-  const { mission, completionRate, status } = userMission;
+  const { mission, completionRate: rawProgress, status } = userMission;
+
+  // Calculate completion percentage using mission.goal
+  const completionPercentage = mission.goal > 0 ? (rawProgress / mission.goal) * 100 : 0;
 
   const handlePress = () => {
-    router.push("/(tabs)/missions/active" as never);
+    router.push(`/mission/update/${mission.id}` as never);
   };
 
   return (
     <TouchableOpacity style={styles.container} onPress={handlePress}>
+      {/* Header */}
       <View style={styles.header}>
         <Text style={styles.title}>Mission en cours</Text>
         <FontAwesome5 name="trophy" size={20} color={theme.colors.primary} />
       </View>
+      <View style={styles.categoryBadge}>
+        <Text style={styles.categoryBadgeText}>{mission.category}</Text>
+      </View>
 
+      {/* Mission Title and Description */}
       <Text style={styles.missionTitle}>{mission.title}</Text>
       <Text style={styles.missionDescription} numberOfLines={2}>
         {mission.description}
@@ -48,17 +56,17 @@ export const ActiveMissionCard = ({ userMission }: ActiveMissionCardProps) => {
       {/* Progress Bar */}
       <View style={styles.progressContainer}>
         <View style={styles.progressBackground}>
-          <View style={[styles.progressFill, { width: `${Math.min(completionRate, 100)}%` }]} />
+          <View
+            style={[styles.progressFill, { width: `${Math.min(completionPercentage, 100)}%` }]}
+          />
         </View>
-        <Text style={styles.progressText}>{completionRate.toFixed(0)}%</Text>
+        <Text style={styles.progressText}>
+          {rawProgress} / {mission.goal} {mission.goalUnit ? mission.goalUnit.toLowerCase() : ""}
+        </Text>
       </View>
 
       {/* Mission Details */}
       <View style={styles.detailsContainer}>
-        <View style={styles.detailItem}>
-          <Text style={styles.detailLabel}>Catégorie</Text>
-          <Text style={styles.detailValue}>{mission.category}</Text>
-        </View>
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Points</Text>
           <Text style={styles.detailValue}>{mission.rewardPoints}</Text>
@@ -84,12 +92,24 @@ const createStyles = (theme: Theme) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: theme.spacing.md
+      marginBottom: theme.spacing.xs
     },
     title: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
       color: theme.colors.text
+    },
+    categoryBadge: {
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.full,
+      paddingHorizontal: theme.spacing.md,
+      alignSelf: "flex-start",
+      marginBottom: theme.spacing.lg
+    },
+    categoryBadgeText: {
+      color: theme.colors.background,
+      fontSize: theme.fontSizes.xs,
+      fontWeight: "600"
     },
     missionTitle: {
       fontSize: theme.fontSizes.xl,
@@ -107,11 +127,11 @@ const createStyles = (theme: Theme) =>
       marginBottom: theme.spacing.lg
     },
     progressBackground: {
-      height: 8,
-      backgroundColor: theme.colors.background,
+      width: "100%",
+      height: 12,
+      backgroundColor: theme.colors.outline,
       borderRadius: theme.borderRadius.full,
-      overflow: "hidden",
-      marginBottom: theme.spacing.xs
+      overflow: "hidden"
     },
     progressFill: {
       height: "100%",
@@ -119,9 +139,12 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full
     },
     progressText: {
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.xs,
       color: theme.colors.text,
-      textAlign: "right"
+      fontWeight: "600",
+      textAlign: "left",
+      paddingTop: theme.spacing.xs,
+      paddingLeft: theme.spacing.xs
     },
     detailsContainer: {
       flexDirection: "row",
@@ -132,13 +155,14 @@ const createStyles = (theme: Theme) =>
       alignItems: "center"
     },
     detailLabel: {
-      fontSize: theme.fontSizes.sm,
+      fontSize: theme.fontSizes.md,
+      fontWeight: "600",
       color: theme.colors.text,
       opacity: 0.6,
       marginBottom: theme.spacing.xs
     },
     detailValue: {
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.lg,
       fontWeight: "600",
       color: theme.colors.primary
     },
