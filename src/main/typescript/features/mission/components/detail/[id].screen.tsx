@@ -90,7 +90,7 @@ export default function MissionDetailScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.centered}>
-          <Text style={styles.errorText}>Mission not found</Text>
+          <Text style={styles.errorText}>Mission introuvable</Text>
         </View>
       </SafeAreaView>
     );
@@ -115,14 +115,14 @@ export default function MissionDetailScreen() {
           <Text style={styles.title}>{mission.title}</Text>
           <Text style={styles.description}>{mission.description}</Text>
 
-          <Text style={styles.sectionTitle}>Mission Details</Text>
+          <Text style={styles.sectionTitle}>Détails de la mission</Text>
 
           <View style={styles.detailRow}>
             <View style={styles.iconContainer}>
               <MaterialIcons name="card-giftcard" size={24} color={theme.colors.text} />
             </View>
             <View style={styles.detailContent}>
-              <Text style={styles.detailLabel}>Rewards</Text>
+              <Text style={styles.detailLabel}>Récompenses</Text>
               <Text style={styles.detailValue}>{mission.rewardPoints} Points</Text>
             </View>
           </View>
@@ -138,7 +138,7 @@ export default function MissionDetailScreen() {
           {isSubmitting ? (
             <ActivityIndicator color={theme.colors.background} />
           ) : (
-            <Text style={styles.startButtonText}>Embark!</Text>
+            <Text style={styles.startButtonText}>Commencer</Text>
           )}
         </TouchableOpacity>
       </View>

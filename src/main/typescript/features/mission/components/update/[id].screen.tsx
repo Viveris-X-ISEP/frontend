@@ -17,6 +17,8 @@ import { useAuthStore } from "../../../../store";
 import { getMissionById } from "../../../missions/services/missions.service";
 import type { Mission } from "../../../missions/types";
 import { UserMissionService } from "../../services/user-mission.service";
+import { RewardService, UserRewardService } from "../../../reward/services";
+import { calculateCompletedPoints } from "../../../../utility/user-level.utils";
 import type { UpdateUserMissionDto, UserMission } from "../../types";
 import { MissionStatus } from "../../types/mission-status";
 
@@ -93,7 +95,58 @@ export default function MissionUpdateScreen() {
         completedAt: mission && progress >= mission.goal ? new Date().toISOString() : undefined
       };
 
-      await UserMissionService.updateUserMission(userId, missionId, dto);
+      // Calcul du total de points AVANT la mise à jour (pour détecter les nouvelles paliers atteints)
+      let totalRewardPointsBefore = 0;
+      try {
+        const allUserMissionsBefore = await UserMissionService.getMissionsByUserId(userId);
+        totalRewardPointsBefore = calculateCompletedPoints(allUserMissionsBefore);
+      } catch (err) {
+        console.warn("Could not fetch user missions before update:", err);
+      }
+
+      const updated = await UserMissionService.updateUserMission(userId, missionId, dto);
+
+      // Si la mission vient d'être complétée, on tente d'attribuer les rewards correspondants
+      const justCompleted =
+        updated.status === MissionStatus.COMPLETED && userMission?.status !== MissionStatus.COMPLETED;
+
+      if (justCompleted) {
+        try {
+          // Récupère toutes les missions de l'utilisateur après la mise à jour et calcule les points acquis
+          const allUserMissionsAfter = await UserMissionService.getMissionsByUserId(userId);
+          const totalRewardPointsAfter = calculateCompletedPoints(allUserMissionsAfter);
+
+          // Récupère les rewards dont le coût en points est <= totalRewardPointsAfter
+          const affordableRewards = await RewardService.getRewardsByPointsCostLessThanEqual(totalRewardPointsAfter);
+
+          // On ne veut attribuer que les rewards nouvellement atteintes : cost > before && <= after
+          const newlyEligible = affordableRewards.filter(
+            (r) => (r.pointsCost ?? 0) > totalRewardPointsBefore && (r.pointsCost ?? 0) <= totalRewardPointsAfter
+          );
+
+          const granted: string[] = [];
+
+          for (const r of newlyEligible) {
+            // Vérifie si l'utilisateur possède déjà cette reward
+            const existing = await UserRewardService.getByIds(userId, r.id).catch(() => null);
+
+            if (!existing) {
+              await UserRewardService.create({ userId, rewardId: r.id, quantity: 1, obtainedAt: new Date().toISOString(), source: `mission_completion:${missionId}` });
+              granted.push(r.title);
+            } else {
+              // Ne pas attribuer plusieurs fois la même reward : on ignore
+              console.info(`User ${userId} already has reward ${r.id}, skipping`);
+            }
+          }
+
+          if (granted.length > 0) {
+            Alert.alert("Félicitations !", `Récompenses attribuées : ${granted.join(", ")}`);
+          }
+        } catch (err) {
+          console.error("Error while granting rewards:", err);
+          // Ne pas bloquer l'utilisateur si l'attribution échoue
+        }
+      }
 
       Alert.alert("Succès", "Progression mise à jour avec succès", [
         {
