@@ -27,8 +27,8 @@ export const calculateCompletedPoints = (
 export const calculateTotalPoints = (
   missions: Array<{
     status: string;
-    completionRate: number;
-    mission?: { points: number };
+    completionRate?: number;
+    mission?: { rewardPoints?: number; points?: number };
   }>
 ): number => {
   if (!missions || !Array.isArray(missions)) {
@@ -37,11 +37,17 @@ export const calculateTotalPoints = (
 
   return missions.reduce((total, userMission) => {
     if (userMission.status === "COMPLETED" && userMission.mission) {
-      return total + userMission.mission.points;
+      const points = userMission.mission.rewardPoints || userMission.mission.points || 0;
+      return total + points;
     }
     // Partial points for in-progress missions
-    if (userMission.status === "IN_PROGRESS" && userMission.mission) {
-      return total + Math.floor((userMission.mission.points * userMission.completionRate) / 100);
+    if (
+      userMission.status === "IN_PROGRESS" &&
+      userMission.mission &&
+      typeof userMission.completionRate === "number"
+    ) {
+      const points = userMission.mission.rewardPoints || userMission.mission.points || 0;
+      return total + Math.floor((points * userMission.completionRate) / 100);
     }
     return total;
   }, 0);
