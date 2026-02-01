@@ -1,6 +1,7 @@
 interface JwtPayload {
   exp?: number;
   sub?: string | number;
+  id?: string | number;
   userId?: number;
 }
 
@@ -30,5 +31,5 @@ export const getUserIdFromToken = (token: string): number | null => {
   const payload = decodeJwtPayload(token);
   if (!payload) return null;
 
-  return parseUserId(payload.userId ?? payload.sub);
+  return parseUserId(payload.userId ?? payload.sub ?? payload.id);
 };
