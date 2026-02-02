@@ -57,7 +57,7 @@ export default function HomeScreen() {
       let isActive = true;
 
       const checkInactiveStatus = async () => {
-        if (!userId || isLoading || hasCompleted !== false) {
+        if (!userId || isLoading) {
           if (isActive) {
             setShowSurveyPrompt(false);
           }
@@ -80,7 +80,7 @@ export default function HomeScreen() {
       return () => {
         isActive = false;
       };
-    }, [userId, isLoading, hasCompleted])
+    }, [userId, isLoading])
   );
 
   const surveyPromptModal = (
