@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store";
+import { getPasswordStrength } from "../../../utility";
 import { UserService } from "../../user/services/user.service";
 
 export default function PasswordScreen() {
@@ -27,6 +28,11 @@ export default function PasswordScreen() {
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const userId = useAuthStore((state) => state.userId);
+  const { unmetRules, isStrong } = getPasswordStrength(newPassword);
+  const showPasswordRules = newPassword.length > 0 && unmetRules.length > 0;
+  const passwordRulesText = showPasswordRules
+    ? `Le mot de passe doit contenir :\n- ${unmetRules.join("\n- ")}`
+    : "";
 
   const handleSubmit = async () => {
     setError(null);
@@ -42,8 +48,8 @@ export default function PasswordScreen() {
       return;
     }
 
-    if (newPassword.length < 12) {
-      setError("Le mot de passe doit contenir au moins 12 caractères");
+    if (!isStrong) {
+      setError("Le mot de passe est trop faible");
       return;
     }
 
@@ -113,6 +119,8 @@ export default function PasswordScreen() {
           />
         </TouchableOpacity>
       </View>
+
+      {showPasswordRules && <Text style={styles.passwordRules}>{passwordRulesText}</Text>}
 
       <View style={styles.passwordContainer}>
         <TextInput
@@ -208,5 +216,11 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.primary,
       marginBottom: theme.spacing.md,
       textAlign: "center"
+    },
+    passwordRules: {
+      color: theme.colors.text,
+      opacity: 0.7,
+      fontSize: theme.fontSizes.sm,
+      marginBottom: theme.spacing.md
     }
   });

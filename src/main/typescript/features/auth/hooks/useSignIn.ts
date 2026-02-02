@@ -25,12 +25,7 @@ export function useSignIn() {
       await signIn(response.token, response.refreshToken, userId);
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
-      const error = err as {
-        response?: { data?: { message?: string; error?: string } };
-      };
-      const message =
-        error.response?.data?.message || error.response?.data?.error || "Identifiants invalides";
-      setError(message);
+      setError("Email ou mot de passe incorrect");
     } finally {
       setIsLoading(false);
     }
