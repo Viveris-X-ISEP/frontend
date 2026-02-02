@@ -14,11 +14,11 @@ import {
 } from "react-native";
 import { type Theme, useTheme } from "../../../../shared/theme";
 import { useAuthStore } from "../../../../store";
+import { calculateCompletedPoints } from "../../../../utility/user-level.utils";
 import { getMissionById } from "../../../missions/services/missions.service";
 import type { Mission } from "../../../missions/types";
-import { UserMissionService } from "../../services/user-mission.service";
 import { RewardService, UserRewardService } from "../../../reward/services";
-import { calculateCompletedPoints } from "../../../../utility/user-level.utils";
+import { UserMissionService } from "../../services/user-mission.service";
 import type { UpdateUserMissionDto, UserMission } from "../../types";
 import { MissionStatus } from "../../types/mission-status";
 
@@ -108,7 +108,8 @@ export default function MissionUpdateScreen() {
 
       // Si la mission vient d'être complétée, on tente d'attribuer les rewards correspondants
       const justCompleted =
-        updated.status === MissionStatus.COMPLETED && userMission?.status !== MissionStatus.COMPLETED;
+        updated.status === MissionStatus.COMPLETED &&
+        userMission?.status !== MissionStatus.COMPLETED;
 
       if (justCompleted) {
         try {
@@ -117,11 +118,14 @@ export default function MissionUpdateScreen() {
           const totalRewardPointsAfter = calculateCompletedPoints(allUserMissionsAfter);
 
           // Récupère les rewards dont le coût en points est <= totalRewardPointsAfter
-          const affordableRewards = await RewardService.getRewardsByPointsCostLessThanEqual(totalRewardPointsAfter);
+          const affordableRewards =
+            await RewardService.getRewardsByPointsCostLessThanEqual(totalRewardPointsAfter);
 
           // On ne veut attribuer que les rewards nouvellement atteintes : cost > before && <= after
           const newlyEligible = affordableRewards.filter(
-            (r) => (r.pointsCost ?? 0) > totalRewardPointsBefore && (r.pointsCost ?? 0) <= totalRewardPointsAfter
+            (r) =>
+              (r.pointsCost ?? 0) > totalRewardPointsBefore &&
+              (r.pointsCost ?? 0) <= totalRewardPointsAfter
           );
 
           const granted: string[] = [];
@@ -131,7 +135,13 @@ export default function MissionUpdateScreen() {
             const existing = await UserRewardService.getByIds(userId, r.id).catch(() => null);
 
             if (!existing) {
-              await UserRewardService.create({ userId, rewardId: r.id, quantity: 1, obtainedAt: new Date().toISOString(), source: `mission_completion:${missionId}` });
+              await UserRewardService.create({
+                userId,
+                rewardId: r.id,
+                quantity: 1,
+                obtainedAt: new Date().toISOString(),
+                source: `mission_completion:${missionId}`
+              });
               granted.push(r.title);
             } else {
               // Ne pas attribuer plusieurs fois la même reward : on ignore

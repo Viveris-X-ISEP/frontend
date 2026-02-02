@@ -84,7 +84,7 @@ export const CommunityService = {
       profilePictureUrl: user.profilePictureUrl || null,
       totalPoints: missions
         .filter((m) => m.status === "COMPLETED")
-        .reduce((sum, m) => sum + (m.mission?.points ?? 0), 0),
+        .reduce((sum, m) => sum + (m.mission?.rewardPoints ?? 0), 0),
       missionsCompleted: missions.filter((m) => m.status === "COMPLETED").length,
       activeMissions: missions.filter((m) => m.status === "IN_PROGRESS").length,
       totalMissions: missions.length
