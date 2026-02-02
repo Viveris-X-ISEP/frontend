@@ -52,11 +52,13 @@ export default function SignInScreen() {
         </TouchableOpacity>
       </View>
 
+      {/*
       <Link href="/auth/forgot-password" asChild>
         <TouchableOpacity>
           <Text style={styles.link}>Oubli de mot de passe ?</Text>
         </TouchableOpacity>
       </Link>
+      */}
 
       <View style={styles.bottomContainer}>
         <Link href="/auth/sign-up" asChild>
@@ -75,9 +77,11 @@ export default function SignInScreen() {
           </Text>
         </TouchableOpacity>
 
+        {/*
         <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
           <Text style={styles.secondaryButtonText}>Se connecter avec Google</Text>
         </TouchableOpacity>
+        */}
       </View>
     </View>
   );

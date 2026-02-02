@@ -115,9 +115,9 @@ export default function SignUpScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
+          {/* <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
             <Text style={styles.secondaryButtonText}>S&apos;inscrire avec Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
