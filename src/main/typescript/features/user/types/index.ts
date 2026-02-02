@@ -16,3 +16,8 @@ export interface CreateUserDto {
   profilePictureUrl?: string;
   username: string;
 }
+
+export interface ChangePasswordRequestDto {
+  currentPassword: string;
+  newPassword: string;
+}

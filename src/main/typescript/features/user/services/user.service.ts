@@ -1,5 +1,5 @@
 import { apiClient } from "../../../shared/api/client";
-import type { CreateUserDto, User } from "../types";
+import type { ChangePasswordRequestDto, CreateUserDto, User } from "../types";
 
 export const UserService = {
   async findAll(): Promise<User[]> {
@@ -21,6 +21,11 @@ export const UserService = {
 
   async deleteUser(id: number): Promise<void> {
     await apiClient.delete(`/users/${id}`);
+  },
+
+  async changePassword(id: number, dto: ChangePasswordRequestDto): Promise<string> {
+    const response = await apiClient.put<string>(`/users/${id}`, dto);
+    return response.data;
   },
 
   async getUserById(id: number): Promise<User> {
