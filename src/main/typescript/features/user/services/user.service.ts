@@ -31,5 +31,10 @@ export const UserService = {
   async getUserById(id: number): Promise<User> {
     const response = await apiClient.get<User>(`/users/${id}`);
     return response.data;
+  },
+
+  async getMe(): Promise<User> {
+    const response = await apiClient.get<User>("/users/me");
+    return response.data;
   }
 };

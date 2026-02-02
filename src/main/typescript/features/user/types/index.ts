@@ -8,6 +8,7 @@ export interface User {
   updatedAt: string; // ISO string format
   role: string; // Adjust to use an enum if roles are predefined
   lastActive: string; // ISO string format
+  inactive?: boolean;
 }
 
 export interface CreateUserDto {

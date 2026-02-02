@@ -14,8 +14,10 @@ import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store/auth-store";
 import { calculateCompletedPoints, calculateLevel, calculateTotalPoints } from "../../../utility";
 import { useActiveMissions } from "../../mission/hooks/useActiveMissions";
+import { SurveyPromptModal } from "../../survey/components/survey-prompt-modal";
 import { useLatestEmissions, useSurveyStatus } from "../../survey/hooks";
 import { useUser } from "../../user/hooks/useUser";
+import { UserService } from "../../user/services/user.service";
 import { ActiveMissionCard } from "./active-mission-card";
 import { EmissionsCard } from "./emissions-card";
 
@@ -24,6 +26,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const styles = createStyles(theme);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [showSurveyPrompt, setShowSurveyPrompt] = useState(false);
   const { hasCompleted, isLoading } = useSurveyStatus();
   const { userId } = useAuthStore();
   const { user, loading: userLoading } = useUser(userId ?? undefined);
@@ -49,6 +52,41 @@ export default function HomeScreen() {
     }, [userId])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
+
+      const checkInactiveStatus = async () => {
+        if (!userId || isLoading || hasCompleted !== false) {
+          if (isActive) {
+            setShowSurveyPrompt(false);
+          }
+          return;
+        }
+
+        try {
+          const me = await UserService.getMe();
+
+          if (isActive) {
+            setShowSurveyPrompt(Boolean(me.inactive));
+          }
+        } catch (error) {
+          console.log("Unable to fetch current user status:", error);
+        }
+      };
+
+      checkInactiveStatus();
+
+      return () => {
+        isActive = false;
+      };
+    }, [userId, isLoading, hasCompleted])
+  );
+
+  const surveyPromptModal = (
+    <SurveyPromptModal visible={showSurveyPrompt} onClose={() => setShowSurveyPrompt(false)} />
+  );
+
   const AVATAR_PLACEHOLDER =
     user?.profilePictureUrl ||
     `https://api.dicebear.com/7.x/avataaars/png?seed=${user?.username || "User"}&backgroundColor=f0f0f0`;
@@ -61,75 +99,84 @@ export default function HomeScreen() {
   // Show loading state while checking survey status or user data
   if (isLoading || userLoading) {
     return (
-      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-      </SafeAreaView>
+      <>
+        {surveyPromptModal}
+        <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        </SafeAreaView>
+      </>
     );
   }
 
   // Survey not completed - show prompt to take survey
   if (!hasCompleted) {
     return (
-      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-        <Text style={styles.title}>Accueil</Text>
+      <>
+        {surveyPromptModal}
+        <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+          <Text style={styles.title}>Accueil</Text>
 
-        {/* User Profile Card - Figma Style */}
-        <View style={styles.profileCard}>
-          <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
-          <View style={styles.profileInfo}>
-            <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
-            <Text style={styles.level} />
-            <Text style={styles.points} />
+          {/* User Profile Card - Figma Style */}
+          <View style={styles.profileCard}>
+            <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
+            <View style={styles.profileInfo}>
+              <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
+              <Text style={styles.level} />
+              <Text style={styles.points} />
+            </View>
           </View>
-        </View>
 
-        {/* No Data Message with Survey Button */}
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataTitle}>Pas de données !</Text>
-          <Text style={styles.noDataSubtitle}>Calculons votre empreinte carbone.</Text>
+          {/* No Data Message with Survey Button */}
+          <View style={styles.noDataContainer}>
+            <Text style={styles.noDataTitle}>Pas de données !</Text>
+            <Text style={styles.noDataSubtitle}>Calculons votre empreinte carbone.</Text>
 
-          {/* Survey Button - Inside content area per Figma */}
-          <TouchableOpacity style={styles.surveyButton} onPress={handleStartSurvey}>
-            <Text style={styles.surveyButtonText}>Répondre au questionnaire</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+            {/* Survey Button - Inside content area per Figma */}
+            <TouchableOpacity style={styles.surveyButton} onPress={handleStartSurvey}>
+              <Text style={styles.surveyButtonText}>Répondre au questionnaire</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </>
     );
   }
 
   // Survey completed - show regular home screen
   return (
-    <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Accueil</Text>
+    <>
+      {surveyPromptModal}
+      <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Text style={styles.title}>Accueil</Text>
 
-        {/* User Profile Card - Figma Style */}
-        <View style={styles.profileCard}>
-          <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
-          <View style={styles.profileInfo}>
-            <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
-            {/* PAS DE SYSTEME DE NIVEAU POUR L'INSTANT
-            <Text style={styles.level}>Niveau {userLevel}</Text>
-            */}
-            <Text style={styles.points}>{completedPoints} Points</Text>
+          {/* User Profile Card - Figma Style */}
+          <View style={styles.profileCard}>
+            <Image source={{ uri: AVATAR_PLACEHOLDER }} style={styles.avatar} />
+            <View style={styles.profileInfo}>
+              <Text style={styles.username}>{user?.username || "Utilisateur"}</Text>
+              {/* PAS DE SYSTEME DE NIVEAU POUR L'INSTANT
+              <Text style={styles.level}>Niveau {userLevel}</Text>
+              */}
+              <Text style={styles.points}>{completedPoints} Points</Text>
+            </View>
           </View>
-        </View>
 
-        {/* Active Mission Card */}
-        {missionsLoading ? (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
-        ) : (
-          <ActiveMissionCard userMission={activeMission} />
-        )}
+          {/* Active Mission Card */}
+          {missionsLoading ? (
+            <ActivityIndicator size="small" color={theme.colors.primary} />
+          ) : (
+            <ActiveMissionCard userMission={activeMission} />
+          )}
 
-        {/* Emissions Chart */}
-        {emissionsLoading ? (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
-        ) : (
-          <EmissionsCard emissions={emissions} />
-        )}
-      </ScrollView>
-    </SafeAreaView>
+          {/* Emissions Chart */}
+          {emissionsLoading ? (
+            <ActivityIndicator size="small" color={theme.colors.primary} />
+          ) : (
+            <EmissionsCard emissions={emissions} />
+          )}
+        </ScrollView>
+      </SafeAreaView>
+    </>
   );
 }
 
