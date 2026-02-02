@@ -3,20 +3,14 @@ import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { router } from "expo-router";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
   ALL_CATEGORIES,
   MISSION_CATEGORY_DISPLAY_NAMES,
   MISSION_CATEGORY_IMAGES,
-  MissionCategory,
+  MissionCategory
 } from "../../../shared/constants/mission-categories";
 import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store";
@@ -67,9 +61,7 @@ export default function CatalogueScreen() {
   }, [userId]);
 
   // Determine which emission category is the highest
-  const determineMainEmissionCategory = (
-    emissions: UserEmissionDto,
-  ): MissionCategory | null => {
+  const determineMainEmissionCategory = (emissions: UserEmissionDto): MissionCategory | null => {
     const categories = [
       {
         category: MissionCategory.TRANSPORT,
@@ -87,7 +79,7 @@ export default function CatalogueScreen() {
     ];
 
     const maxCategory = categories.reduce((max, current) =>
-      current.value > max.value ? current : max,
+      current.value > max.value ? current : max
     );
 
     return maxCategory.value > 0 ? maxCategory.category : null;
@@ -132,11 +124,9 @@ export default function CatalogueScreen() {
   const { suggestedMissions, otherMissions } = useMemo(() => {
     const filtered = missions.filter((mission) => {
       const categoryMatch =
-        selectedCategory === ALL_CATEGORIES ||
-        mission.category === selectedCategory;
+        selectedCategory === ALL_CATEGORIES || mission.category === selectedCategory;
       const rewardMatch =
-        mission.rewardPoints >= sliderValues[0] &&
-        mission.rewardPoints <= sliderValues[1];
+        mission.rewardPoints >= sliderValues[0] && mission.rewardPoints <= sliderValues[1];
       return categoryMatch && rewardMatch;
     });
 
@@ -146,9 +136,7 @@ export default function CatalogueScreen() {
     }
 
     // Separate suggested (main category) from other missions
-    const suggested = filtered.filter(
-      (m) => m.category === mainEmissionCategory,
-    );
+    const suggested = filtered.filter((m) => m.category === mainEmissionCategory);
     const others = filtered.filter((m) => m.category !== mainEmissionCategory);
 
     return { suggestedMissions: suggested, otherMissions: others };
@@ -170,8 +158,7 @@ export default function CatalogueScreen() {
       >
         {/* text with filter icon outline */}
         <Text style={styles.filterButtonText}>
-          <FontAwesome5 name="filter" size={16} color={theme.colors.text} />{" "}
-          Filter
+          <FontAwesome5 name="filter" size={16} color={theme.colors.text} /> Filter
         </Text>
       </TouchableOpacity>
 
@@ -179,20 +166,12 @@ export default function CatalogueScreen() {
         data={[...suggestedMissions, ...otherMissions]}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={
-          <>
-            {suggestedMissions.length > 0 && (
-              <View style={styles.sectionHeader}>
-                <FontAwesome5
-                  name="star"
-                  size={20}
-                  color={theme.colors.primary}
-                />
-                <Text style={styles.sectionTitle}>
-                  Missions suggérées pour vous
-                </Text>
-              </View>
-            )}
-          </>
+          suggestedMissions.length > 0 && (
+            <View style={styles.sectionHeader}>
+              <FontAwesome5 name="star" size={20} color={theme.colors.primary} />
+              <Text style={styles.sectionTitle}>Missions suggérées pour vous</Text>
+            </View>
+          )
         }
         renderItem={({ item, index }) => {
           const status = getMissionStatus(item.id);
@@ -209,45 +188,31 @@ export default function CatalogueScreen() {
               )}
               <TouchableOpacity
                 style={styles.missionBlock}
-                onPress={() =>
-                  !isDisabled && router.push(`/mission/detail/${item.id}`)
-                }
+                onPress={() => !isDisabled && router.push(`/mission/detail/${item.id}`)}
                 disabled={isDisabled}
               >
                 <View style={styles.textContainer}>
                   <Text style={styles.points}>{item.rewardPoints} points</Text>
                   <Text style={styles.title}>{item.title}</Text>
-                  <Text style={styles.description}>
-                    {truncateDescription(item.description)}
-                  </Text>
+                  <Text style={styles.description}>{truncateDescription(item.description)}</Text>
                   <Text style={styles.category}>{item.category}</Text>
                 </View>
                 <Image
-                  source={
-                    MISSION_CATEGORY_IMAGES[item.category as MissionCategory]
-                  }
+                  source={MISSION_CATEGORY_IMAGES[item.category as MissionCategory]}
                   style={styles.categoryImage}
                   resizeMode="cover"
                 />
 
                 {isSuggested && (
                   <View style={styles.suggestedBadge}>
-                    <FontAwesome5
-                      name="star"
-                      size={12}
-                      color={theme.colors.background}
-                    />
+                    <FontAwesome5 name="star" size={12} color={theme.colors.background} />
                   </View>
                 )}
 
                 {status === "completed" && (
                   <View style={styles.overlay}>
                     <View style={styles.overlayContent}>
-                      <FontAwesome5
-                        name="check-circle"
-                        size={32}
-                        color={theme.colors.primary}
-                      />
+                      <FontAwesome5 name="check-circle" size={32} color={theme.colors.primary} />
                       <Text style={styles.overlayText}>Terminée</Text>
                     </View>
                   </View>
@@ -256,11 +221,7 @@ export default function CatalogueScreen() {
                 {status === "active" && (
                   <View style={styles.overlay}>
                     <View style={styles.overlayContent}>
-                      <FontAwesome5
-                        name="hourglass-half"
-                        size={32}
-                        color={theme.colors.primary}
-                      />
+                      <FontAwesome5 name="hourglass-half" size={32} color={theme.colors.primary} />
                       <Text style={styles.overlayText}>En cours</Text>
                     </View>
                   </View>
@@ -290,16 +251,14 @@ export default function CatalogueScreen() {
             <TouchableOpacity
               style={[
                 styles.categoryButton,
-                selectedCategory === ALL_CATEGORIES &&
-                  styles.selectedCategoryButton,
+                selectedCategory === ALL_CATEGORIES && styles.selectedCategoryButton
               ]}
               onPress={() => setSelectedCategory(ALL_CATEGORIES)}
             >
               <Text
                 style={[
                   styles.categoryButtonText,
-                  selectedCategory === ALL_CATEGORIES &&
-                    styles.selectedCategoryButtonText,
+                  selectedCategory === ALL_CATEGORIES && styles.selectedCategoryButtonText
                 ]}
               >
                 {ALL_CATEGORIES}
@@ -310,16 +269,14 @@ export default function CatalogueScreen() {
                 key={category}
                 style={[
                   styles.categoryButton,
-                  selectedCategory === category &&
-                    styles.selectedCategoryButton,
+                  selectedCategory === category && styles.selectedCategoryButton
                 ]}
                 onPress={() => setSelectedCategory(category)}
               >
                 <Text
                   style={[
                     styles.categoryButtonText,
-                    selectedCategory === category &&
-                      styles.selectedCategoryButtonText,
+                    selectedCategory === category && styles.selectedCategoryButtonText
                   ]}
                 >
                   {MISSION_CATEGORY_DISPLAY_NAMES[category]}
@@ -343,7 +300,7 @@ export default function CatalogueScreen() {
               backgroundColor: theme.colors.primary,
               width: 10,
               height: 10,
-              borderWidth: 0,
+              borderWidth: 0
             }}
           />
           <Text style={styles.sliderValue}>
@@ -359,17 +316,17 @@ const createStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     centered: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     loadingText: {
       color: theme.colors.text,
-      fontSize: theme.fontSizes.md,
+      fontSize: theme.fontSizes.md
     },
     listContainer: {
       padding: theme.spacing.lg,
@@ -383,25 +340,25 @@ const createStyles = (theme: Theme) =>
       elevation: 2,
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "space-between",
+      justifyContent: "space-between"
     },
     textContainer: {
       flex: 1,
-      marginRight: theme.spacing.md,
+      marginRight: theme.spacing.md
     },
     title: {
       fontSize: theme.fontSizes.md,
       fontWeight: "bold",
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     description: {
       fontSize: theme.fontSizes.sm,
-      color: theme.colors.primary,
+      color: theme.colors.primary
     },
     points: {
       fontSize: theme.fontSizes.md,
       fontWeight: "bold",
-      color: theme.colors.primary,
+      color: theme.colors.primary
     },
     filterButton: {
       backgroundColor: theme.colors.inputBackground,
@@ -409,39 +366,39 @@ const createStyles = (theme: Theme) =>
       borderRadius: theme.borderRadius.full,
       alignItems: "center",
       margin: theme.spacing.md,
-      alignSelf: "flex-start",
+      alignSelf: "flex-start"
     },
     filterButtonText: {
       color: theme.colors.text,
       fontSize: theme.fontSizes.md,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     bottomSheetContent: {
       flex: 1,
       padding: theme.spacing.lg,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.background
     },
     bottomSheetTitle: {
       fontSize: theme.fontSizes.xl,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginBottom: theme.spacing.md,
+      marginBottom: theme.spacing.md
     },
     sectionTitle: {
       fontSize: theme.fontSizes.lg,
       fontWeight: "bold",
       color: theme.colors.text,
-      marginVertical: theme.spacing.md,
+      marginVertical: theme.spacing.md
     },
     subsectionTitle: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
-      marginVertical: theme.spacing.md,
+      marginVertical: theme.spacing.md
     },
     categoryContainer: {
       flexDirection: "row",
       flexWrap: "wrap",
-      gap: theme.spacing.sm,
+      gap: theme.spacing.sm
     },
     categoryButton: {
       paddingVertical: theme.spacing.md,
@@ -450,40 +407,40 @@ const createStyles = (theme: Theme) =>
       borderWidth: 1,
       borderColor: theme.colors.outline,
       backgroundColor: theme.colors.background,
-      margin: theme.spacing.xs,
+      margin: theme.spacing.xs
     },
     selectedCategoryButton: {
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.primary
     },
     categoryButtonText: {
       fontSize: theme.fontSizes.md,
-      color: theme.colors.text,
+      color: theme.colors.text
     },
     selectedCategoryButtonText: {
-      color: theme.colors.background,
+      color: theme.colors.background
     },
     slider: {
       width: "100%",
-      height: 40,
+      height: 40
     },
     sliderValue: {
       fontSize: theme.fontSizes.md,
       color: theme.colors.text,
       textAlign: "center",
       marginVertical: theme.spacing.sm,
-      paddingBottom: theme.spacing.md,
+      paddingBottom: theme.spacing.md
     },
     categoryImage: {
       width: 120,
       height: 80,
       marginBottom: theme.spacing.sm,
       borderRadius: 8,
-      overflow: "hidden",
+      overflow: "hidden"
     },
     category: {
       fontSize: theme.fontSizes.sm,
       color: theme.colors.text,
-      marginTop: theme.spacing.sm,
+      marginTop: theme.spacing.sm
     },
     overlay: {
       position: "absolute",
@@ -494,16 +451,16 @@ const createStyles = (theme: Theme) =>
       backgroundColor: "rgba(0, 0, 0, 0.7)",
       borderRadius: theme.borderRadius.md,
       justifyContent: "center",
-      alignItems: "center",
+      alignItems: "center"
     },
     overlayContent: {
       alignItems: "center",
-      gap: theme.spacing.sm,
+      gap: theme.spacing.sm
     },
     overlayText: {
       color: "#ffffff",
       fontSize: theme.fontSizes.lg,
-      fontWeight: "bold",
+      fontWeight: "bold"
     },
     sectionHeader: {
       flexDirection: "row",
@@ -521,6 +478,6 @@ const createStyles = (theme: Theme) =>
       width: 28,
       height: 28,
       justifyContent: "center",
-      alignItems: "center",
-    },
+      alignItems: "center"
+    }
   });
