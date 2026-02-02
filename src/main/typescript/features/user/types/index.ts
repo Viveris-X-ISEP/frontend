@@ -8,6 +8,7 @@ export interface User {
   updatedAt: string; // ISO string format
   role: string; // Adjust to use an enum if roles are predefined
   lastActive: string; // ISO string format
+  inactive?: boolean;
 }
 
 export interface CreateUserDto {
@@ -15,4 +16,9 @@ export interface CreateUserDto {
   passwordHash: string;
   profilePictureUrl?: string;
   username: string;
+}
+
+export interface ChangePasswordRequestDto {
+  currentPassword: string;
+  newPassword: string;
 }

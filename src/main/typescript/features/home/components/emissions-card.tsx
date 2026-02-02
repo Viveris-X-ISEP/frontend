@@ -26,7 +26,7 @@ export const EmissionsCard = ({ emissions, historicalData }: EmissionsCardProps)
   if (!emissions) {
     return (
       <View style={styles.container}>
-        <Text style={styles.sectionTitle}>Empreinte Carbone Totale</Text>
+        <Text style={styles.sectionTitle}>Empreinte Carbone Annuelle</Text>
         <Text style={styles.noData}>Aucune donnée disponible</Text>
       </View>
     );
@@ -64,7 +64,7 @@ export const EmissionsCard = ({ emissions, historicalData }: EmissionsCardProps)
     <View style={styles.container}>
       {/* Total CO2 Section */}
       <View style={styles.topSection}>
-        <Text style={styles.sectionTitle}>Empreinte Carbone Totale</Text>
+        <Text style={styles.sectionTitle}>Empreinte Carbone Annuelle</Text>
         <Text style={styles.totalValue}>{totalTons.toFixed(1)} tonnes</Text>
       </View>
 

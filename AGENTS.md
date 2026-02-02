@@ -26,7 +26,7 @@
 
 - **Pre-commit Checks**: Before committing, ensure the following checks are performed:
   - **Formatting & Linting & Organising imports**: Format and Lint code and organise imports using by running `bun biome check`. Fix errors automatically using `bun biome check --fix` and manually address the remaining until there are no more errors.
-  - **Testing**: Run tests to ensure functionality.
+  - **Testing**: Run tests `bun run test` to ensure functionality.
   - **Git status check**: Run git status to logically organise files in atomic git commits.
 
 ## API Calls

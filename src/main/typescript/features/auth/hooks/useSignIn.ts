@@ -13,6 +13,16 @@ export function useSignIn() {
   const router = useRouter();
 
   const handleSignIn = async (credentials: SignInCredentials) => {
+    if (!credentials.email.trim()) {
+      setError("Email requis");
+      return;
+    }
+
+    if (!credentials.password.trim()) {
+      setError("Mot de passe requis");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
@@ -25,12 +35,7 @@ export function useSignIn() {
       await signIn(response.token, response.refreshToken, userId);
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
-      const error = err as {
-        response?: { data?: { message?: string; error?: string } };
-      };
-      const message =
-        error.response?.data?.message || error.response?.data?.error || "Identifiants invalides";
-      setError(message);
+      setError("Email ou mot de passe incorrect");
     } finally {
       setIsLoading(false);
     }

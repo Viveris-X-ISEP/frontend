@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { useAuthStore } from "../../../store";
+import { getPasswordStrength } from "../../../utility";
 import { getUserIdFromToken } from "../../../utility/jwt.utils";
 import { AuthService } from "../services";
 import type { SignUpCredentials } from "../types";
@@ -12,15 +13,70 @@ export function useSignUp() {
   const signIn = useAuthStore((state) => state.signIn);
   const router = useRouter();
 
+  const getSignUpErrorMessage = (message?: string, status?: number) => {
+    if (!message && status !== 409) {
+      return "Échec de l'inscription";
+    }
+
+    const normalized = message?.toLowerCase() ?? "";
+    const mentionsEmail = normalized.includes("email") || normalized.includes("e-mail");
+    const mentionsUsername =
+      normalized.includes("username") ||
+      normalized.includes("nom d'utilisateur") ||
+      normalized.includes("nom dutilisateur");
+    const indicatesExists =
+      normalized.includes("existe") ||
+      normalized.includes("already") ||
+      normalized.includes("exists") ||
+      normalized.includes("utilise") ||
+      normalized.includes("utilisé");
+
+    if (mentionsEmail && indicatesExists) {
+      return "Cet email est déjà utilisé";
+    }
+
+    if (mentionsUsername && indicatesExists) {
+      return "Ce nom d'utilisateur est déjà utilisé";
+    }
+
+    if (status === 409) {
+      return "Email ou nom d'utilisateur déjà utilisé";
+    }
+
+    return message ?? "Échec de l'inscription";
+  };
+
   const handleSignUp = async (credentials: SignUpCredentials) => {
     // Client-side validation
+    if (!credentials.username.trim()) {
+      setError("Nom d'utilisateur requis");
+      return;
+    }
+
+    if (!credentials.email.trim()) {
+      setError("Email requis");
+      return;
+    }
+
+    if (!credentials.password.trim()) {
+      setError("Mot de passe requis");
+      return;
+    }
+
+    if (!credentials.confirmPassword.trim()) {
+      setError("Confirmation du mot de passe requise");
+      return;
+    }
+
     if (credentials.password !== credentials.confirmPassword) {
       setError("Les mots de passe ne correspondent pas");
       return;
     }
 
-    if (credentials.password.length < 12) {
-      setError("Le mot de passe doit contenir au moins 12 caractères");
+    const { isStrong } = getPasswordStrength(credentials.password);
+
+    if (!isStrong) {
+      setError("Le mot de passe est trop faible");
       return;
     }
 
@@ -37,11 +93,13 @@ export function useSignUp() {
       router.replace("/(tabs)/(home)");
     } catch (err: unknown) {
       const error = err as {
-        response?: { data?: { message?: string; error?: string } };
+        response?: {
+          data?: { message?: string; error?: string };
+          status?: number;
+        };
       };
-      const message =
-        error.response?.data?.message || error.response?.data?.error || "Échec de l'inscription";
-      setError(message);
+      const apiMessage = error.response?.data?.message || error.response?.data?.error;
+      setError(getSignUpErrorMessage(apiMessage, error.response?.status));
     } finally {
       setIsLoading(false);
     }

@@ -12,6 +12,7 @@ import {
   View
 } from "react-native";
 import { type Theme, useTheme } from "../../../shared/theme";
+import { getPasswordStrength } from "../../../utility";
 import { useSignUp } from "../hooks";
 
 export default function SignUpScreen() {
@@ -29,6 +30,11 @@ export default function SignUpScreen() {
   };
 
   const styles = createStyles(theme);
+  const { unmetRules } = getPasswordStrength(password);
+  const showPasswordRules = password.length > 0 && unmetRules.length > 0;
+  const passwordRulesText = showPasswordRules
+    ? `Le mot de passe doit contenir :\n- ${unmetRules.join("\n- ")}`
+    : "";
 
   return (
     <KeyboardAvoidingView
@@ -77,6 +83,8 @@ export default function SignUpScreen() {
           </TouchableOpacity>
         </View>
 
+        {showPasswordRules && <Text style={styles.passwordRules}>{passwordRulesText}</Text>}
+
         <View style={styles.passwordContainer}>
           <TextInput
             style={styles.passwordInput}
@@ -115,9 +123,9 @@ export default function SignUpScreen() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
+          {/* <TouchableOpacity style={[styles.button, styles.secondaryButton]}>
             <Text style={styles.secondaryButtonText}>S&apos;inscrire avec Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -178,6 +186,12 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.error,
       marginBottom: theme.spacing.md,
       textAlign: "center"
+    },
+    passwordRules: {
+      color: theme.colors.text,
+      opacity: 0.7,
+      fontSize: theme.fontSizes.sm,
+      marginBottom: theme.spacing.md
     },
     bottomContainer: {
       flex: 1,

@@ -1,12 +1,17 @@
 import { useRouter } from "expo-router";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { type Theme, useTheme } from "../../../shared/theme";
+import { useAuthStore } from "../../../store";
 import { useSignOut } from "../../auth/hooks";
+import { UserService } from "../../user/services/user.service";
 
 export default function SettingsScreen() {
   const { handleSignOut } = useSignOut();
   const { theme, mode } = useTheme();
   const router = useRouter();
+  const userId = useAuthStore((state) => state.userId);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const styles = createStyles(theme);
 
@@ -22,8 +27,31 @@ export default function SettingsScreen() {
     }
   };
 
-  // TODO: Implement language store - placeholder for now
-  const languageDisplayValue = "Français";
+  const handleDeleteAccount = () => {
+    if (!userId) {
+      Alert.alert("Erreur", "Utilisateur non connecté");
+      return;
+    }
+
+    Alert.alert("Supprimer le compte", "Cette action est irreversible. Voulez-vous continuer ?", [
+      { text: "Annuler", style: "cancel" },
+      {
+        text: "Supprimer",
+        style: "destructive",
+        onPress: async () => {
+          setIsDeleting(true);
+          try {
+            await UserService.deleteUser(userId);
+            await handleSignOut();
+          } catch {
+            Alert.alert("Erreur", "Echec de la suppression du compte");
+          } finally {
+            setIsDeleting(false);
+          }
+        }
+      }
+    ]);
+  };
 
   return (
     <View style={styles.container}>
@@ -35,12 +63,19 @@ export default function SettingsScreen() {
         <Text style={styles.arrow}>→</Text>
       </TouchableOpacity>
 
+      {/*
       <TouchableOpacity
         style={styles.row}
         onPress={() => router.push("/(tabs)/settings/notifications")}
       >
         <Text style={styles.rowText}>Gérer les notifications</Text>
         <Text style={styles.arrow}>→</Text>
+      </TouchableOpacity>
+      */}
+
+      <TouchableOpacity style={styles.row} onPress={handleDeleteAccount} disabled={isDeleting}>
+        <Text style={styles.logoutText}>Supprimer le compte</Text>
+        <Text style={styles.logoutArrow}>→</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.row} onPress={handleSignOut}>
@@ -56,10 +91,12 @@ export default function SettingsScreen() {
         <Text style={styles.rowValue}>{getThemeDisplayValue()}</Text>
       </TouchableOpacity>
 
+      {/*
       <TouchableOpacity style={styles.row} onPress={() => router.push("/(tabs)/settings/language")}>
         <Text style={styles.rowText}>Langage</Text>
         <Text style={styles.rowValue}>{languageDisplayValue}</Text>
       </TouchableOpacity>
+      */}
     </View>
   );
 }
