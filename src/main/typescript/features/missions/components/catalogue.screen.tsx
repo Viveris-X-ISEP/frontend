@@ -73,17 +73,17 @@ export default function CatalogueScreen() {
     const categories = [
       {
         category: MissionCategory.TRANSPORT,
-        value: emissions.transportEmissions,
+        value: emissions.transportEmissions
       },
       {
         category: MissionCategory.ALIMENTATION,
-        value: emissions.foodEmissions,
+        value: emissions.foodEmissions
       },
       { category: MissionCategory.LOGEMENT, value: emissions.housingEmissions },
       {
         category: MissionCategory.NUMERIQUE,
-        value: emissions.digitalEmissions,
-      },
+        value: emissions.digitalEmissions
+      }
     ];
 
     const maxCategory = categories.reduce((max, current) =>
@@ -373,6 +373,7 @@ const createStyles = (theme: Theme) =>
     },
     listContainer: {
       padding: theme.spacing.lg,
+      paddingTop: 0
     },
     missionBlock: {
       backgroundColor: theme.colors.inputBackground,
@@ -509,7 +510,7 @@ const createStyles = (theme: Theme) =>
       alignItems: "center",
       gap: theme.spacing.sm,
       marginBottom: theme.spacing.md,
-      marginTop: theme.spacing.md,
+      marginTop: theme.spacing.md
     },
     suggestedBadge: {
       position: "absolute",
