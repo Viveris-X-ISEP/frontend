@@ -48,6 +48,26 @@ export function useSignUp() {
 
   const handleSignUp = async (credentials: SignUpCredentials) => {
     // Client-side validation
+    if (!credentials.username.trim()) {
+      setError("Nom d'utilisateur requis");
+      return;
+    }
+
+    if (!credentials.email.trim()) {
+      setError("Email requis");
+      return;
+    }
+
+    if (!credentials.password.trim()) {
+      setError("Mot de passe requis");
+      return;
+    }
+
+    if (!credentials.confirmPassword.trim()) {
+      setError("Confirmation du mot de passe requise");
+      return;
+    }
+
     if (credentials.password !== credentials.confirmPassword) {
       setError("Les mots de passe ne correspondent pas");
       return;

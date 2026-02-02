@@ -13,6 +13,16 @@ export function useSignIn() {
   const router = useRouter();
 
   const handleSignIn = async (credentials: SignInCredentials) => {
+    if (!credentials.email.trim()) {
+      setError("Email requis");
+      return;
+    }
+
+    if (!credentials.password.trim()) {
+      setError("Mot de passe requis");
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
 
