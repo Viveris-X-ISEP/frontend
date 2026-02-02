@@ -1,9 +1,17 @@
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, FlatList, Modal } from "react-native";
+import {
+  FlatList,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getRewardImage } from "../../reward/constants/reward-images";
 import { type Theme, useTheme } from "../../../shared/theme";
 import { useAuthStore } from "../../../store/auth-store";
 import {
@@ -13,6 +21,8 @@ import {
   getLevelProgress
 } from "../../../utility";
 import { useActiveMissions } from "../../mission/hooks/useActiveMissions";
+import { getRewardImage } from "../../reward/constants/reward-images";
+import type { RewardDto } from "../../reward/types";
 import { useUser } from "../../user/hooks/useUser";
 
 export default function ProfileScreen() {
@@ -42,9 +52,9 @@ export default function ProfileScreen() {
   const inProgressMissions = missions?.filter((m) => m.status === "IN_PROGRESS").length || 0;
 
   // Rewards
-  const [userRewards, setUserRewards] = useState<import("../../reward/types").UserRewardDto[] | null>(null);
+  const [availableRewards, setAvailableRewards] = useState<RewardDto[] | null>(null);
   const [rewardsLoading, setRewardsLoading] = useState(false);
-  const [selectedReward, setSelectedReward] = useState<import("../../reward/types").UserRewardDto | null>(null);
+  const [selectedReward, setSelectedReward] = useState<RewardDto | null>(null);
   const [rewardModalVisible, setRewardModalVisible] = useState(false);
 
   useEffect(() => {
@@ -52,18 +62,18 @@ export default function ProfileScreen() {
       if (!user?.id) return;
       setRewardsLoading(true);
       try {
-        const { UserRewardService } = await import("../../reward/services");
-        const res = await UserRewardService.getByUserId(user.id);
-        setUserRewards(res);
+        const { RewardService } = await import("../../reward/services");
+        const res = await RewardService.getRewardsByPointsCostLessThanEqual(totalPoints);
+        setAvailableRewards(res);
       } catch (err) {
-        console.error("Failed to load user rewards:", err);
+        console.error("Failed to load rewards by points:", err);
       } finally {
         setRewardsLoading(false);
       }
     };
 
     fetchRewards();
-  }, [user?.id]);
+  }, [user?.id, totalPoints]);
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
@@ -83,7 +93,7 @@ export default function ProfileScreen() {
         {/* Points Card - Large Display */}
         <View style={styles.pointsCard}>
           <FontAwesome5 name="star" size={32} color={theme.colors.primary} />
-          <Text style={styles.pointsValue}>{completedPoints}</Text>
+          <Text style={styles.pointsValue}>{totalPoints}</Text>
           <Text style={styles.pointsLabel}>Points totaux</Text>
         </View>
 
@@ -111,23 +121,26 @@ export default function ProfileScreen() {
         {/* Menu Options */}
         {/* Rewards */}
         <View style={{ marginBottom: theme.spacing.lg }}>
-          <Text style={[styles.title, { fontSize: theme.fontSizes.lg, marginBottom: theme.spacing.md }]}>Récompenses</Text>
+          <Text
+            style={[styles.title, { fontSize: theme.fontSizes.lg, marginBottom: theme.spacing.md }]}
+          >
+            Récompenses
+          </Text>
 
           {rewardsLoading ? (
             <Text>Chargement...</Text>
-          ) : !userRewards || userRewards.length === 0 ? (
+          ) : !availableRewards || availableRewards.length === 0 ? (
             <Text style={{ color: theme.colors.text, opacity: 0.7 }}>Aucune récompense</Text>
           ) : (
             <FlatList
-              data={userRewards}
+              data={availableRewards}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingVertical: theme.spacing.sm }}
-              keyExtractor={(i) => `${i.userId}-${i.rewardId}`}
+              keyExtractor={(i) => i.id.toString()}
               renderItem={({ item }) => {
                 // Compact badge: only image + title below
-                const title = item.reward?.title || `Récompense #${item.rewardId}`;
-                const imgSource = getRewardImage(item.reward?.title, item.rewardId);
+                const imgSource = getRewardImage(item.title, item.id);
 
                 return (
                   <TouchableOpacity
@@ -140,9 +153,6 @@ export default function ProfileScreen() {
                     <View style={styles.badgeImageWrapper}>
                       <Image source={imgSource} style={styles.badgeImage} />
                     </View>
-                    <Text style={styles.badgeTitle} numberOfLines={1}>
-                      {title}
-                    </Text>
                   </TouchableOpacity>
                 );
               }}
@@ -160,31 +170,87 @@ export default function ProfileScreen() {
           onRequestClose={() => setRewardModalVisible(false)}
         >
           <TouchableOpacity
-            style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", padding: theme.spacing.lg }}
+            style={{
+              flex: 1,
+              backgroundColor: "rgba(0,0,0,0.5)",
+              justifyContent: "center",
+              padding: theme.spacing.lg
+            }}
             activeOpacity={1}
             onPressOut={() => setRewardModalVisible(false)}
           >
-            <View style={{ backgroundColor: theme.colors.background, borderRadius: theme.borderRadius.lg, padding: theme.spacing.lg }}>
+            <View
+              style={{
+                backgroundColor: theme.colors.background,
+                borderRadius: theme.borderRadius.lg,
+                padding: theme.spacing.lg
+              }}
+            >
               {selectedReward ? (
                 <>
-                  <Image source={getRewardImage(selectedReward.reward?.title, selectedReward.rewardId)} style={{ width: 120, height: 120, alignSelf: "center", borderRadius: 12 }} />
-                  <Text style={{ fontSize: theme.fontSizes.lg, fontWeight: "bold", color: theme.colors.text, marginTop: theme.spacing.md, textAlign: "center" }}>
-                    {selectedReward.reward?.title || `Récompense #${selectedReward.rewardId}`}
+                  <Image
+                    source={getRewardImage(selectedReward.title, selectedReward.id)}
+                    style={{
+                      width: 120,
+                      height: 120,
+                      alignSelf: "center",
+                      borderRadius: 12
+                    }}
+                  />
+                  <Text
+                    style={{
+                      fontSize: theme.fontSizes.lg,
+                      fontWeight: "bold",
+                      color: theme.colors.text,
+                      marginTop: theme.spacing.md,
+                      textAlign: "center"
+                    }}
+                  >
+                    {selectedReward.title || `Récompense #${selectedReward.id}`}
                   </Text>
-                  {selectedReward.reward?.description ? (
-                    <Text style={{ color: theme.colors.text, opacity: 0.8, marginTop: theme.spacing.sm }}>{selectedReward.reward.description}</Text>
+                  {selectedReward.description ? (
+                    <Text
+                      style={{
+                        color: theme.colors.text,
+                        opacity: 0.8,
+                        marginTop: theme.spacing.sm
+                      }}
+                    >
+                      {selectedReward.description}
+                    </Text>
                   ) : null}
 
-                  <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: theme.spacing.md }}>
-                    <Text style={{ color: theme.colors.text }}>{selectedReward.quantity} x</Text>
-                    <Text style={{ color: theme.colors.text }}>{selectedReward.reward?.pointsCost ?? 0} pts</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginTop: theme.spacing.md
+                    }}
+                  >
+                    <Text style={{ color: theme.colors.text }}>Coût</Text>
+                    <Text style={{ color: theme.colors.text }}>
+                      {selectedReward.pointsCost ?? 0} pts
+                    </Text>
                   </View>
 
                   <TouchableOpacity
-                    style={{ marginTop: theme.spacing.md, backgroundColor: theme.colors.primary, padding: theme.spacing.md, borderRadius: theme.borderRadius.md, alignItems: "center" }}
+                    style={{
+                      marginTop: theme.spacing.md,
+                      backgroundColor: theme.colors.primary,
+                      padding: theme.spacing.md,
+                      borderRadius: theme.borderRadius.md,
+                      alignItems: "center"
+                    }}
                     onPress={() => setRewardModalVisible(false)}
                   >
-                    <Text style={{ color: theme.colors.background, fontWeight: "bold" }}>Fermer</Text>
+                    <Text
+                      style={{
+                        color: theme.colors.background,
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Fermer
+                    </Text>
                   </TouchableOpacity>
                 </>
               ) : null}
@@ -332,7 +398,7 @@ const createStyles = (theme: Theme) =>
       width: 80,
       height: 80,
       borderRadius: 12,
-      backgroundColor: theme.colors.inputBackground,
+      backgroundColor: theme.colors.background,
       justifyContent: "center",
       alignItems: "center",
       overflow: "hidden"
@@ -341,13 +407,6 @@ const createStyles = (theme: Theme) =>
       width: "100%",
       height: "100%",
       resizeMode: "cover"
-    },
-    badgeTitle: {
-      color: theme.colors.text,
-      marginTop: theme.spacing.xs,
-      fontSize: theme.fontSizes.xs,
-      textAlign: "center",
-      maxWidth: 80
     },
     logoutText: {
       color: "#EF4444"
