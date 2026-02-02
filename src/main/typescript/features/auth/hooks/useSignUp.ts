@@ -27,6 +27,7 @@ export function useSignUp() {
     const indicatesExists =
       normalized.includes("existe") ||
       normalized.includes("already") ||
+      normalized.includes("exists") ||
       normalized.includes("utilise") ||
       normalized.includes("utilisé");
 
