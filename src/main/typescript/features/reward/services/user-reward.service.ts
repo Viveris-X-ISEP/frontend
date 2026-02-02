@@ -3,7 +3,7 @@ import type { UserRewardDto } from "../types";
 
 export const UserRewardService = {
   getAll: async (): Promise<UserRewardDto[]> => {
-    const response = await apiClient.get<UserRewardDto[]>(`/user-rewards`);
+    const response = await apiClient.get<UserRewardDto[]>("/user-rewards");
     return response.data;
   },
 
@@ -19,7 +19,9 @@ export const UserRewardService = {
 
   getByIds: async (userId: number, rewardId: number): Promise<UserRewardDto | null> => {
     try {
-      const response = await apiClient.get<UserRewardDto>(`/user-rewards/user/${userId}/reward/${rewardId}`);
+      const response = await apiClient.get<UserRewardDto>(
+        `/user-rewards/user/${userId}/reward/${rewardId}`
+      );
       return response.data;
     } catch {
       return null;
@@ -27,12 +29,19 @@ export const UserRewardService = {
   },
 
   create: async (payload: Partial<UserRewardDto>): Promise<UserRewardDto> => {
-    const response = await apiClient.post<UserRewardDto>(`/user-rewards`, payload);
+    const response = await apiClient.post<UserRewardDto>("/user-rewards", payload);
     return response.data;
   },
 
-  update: async (userId: number, rewardId: number, payload: Partial<UserRewardDto>): Promise<UserRewardDto> => {
-    const response = await apiClient.put<UserRewardDto>(`/user-rewards/user/${userId}/reward/${rewardId}`, payload);
+  update: async (
+    userId: number,
+    rewardId: number,
+    payload: Partial<UserRewardDto>
+  ): Promise<UserRewardDto> => {
+    const response = await apiClient.put<UserRewardDto>(
+      `/user-rewards/user/${userId}/reward/${rewardId}`,
+      payload
+    );
     return response.data;
   },
 

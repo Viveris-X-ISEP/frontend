@@ -27,28 +27,28 @@ export const RewardService = {
   },
 
   getRewardsByPointsCostGreaterThanEqual: async (minPoints: number): Promise<RewardDto[]> => {
-    const response = await apiClient.get<RewardDto[]>(`/rewards/search/points-greater-equal`, {
+    const response = await apiClient.get<RewardDto[]>("/rewards/search/points-greater-equal", {
       params: { minPoints }
     });
     return response.data;
   },
 
   getRewardsByPointsCostLessThanEqual: async (maxPoints: number): Promise<RewardDto[]> => {
-    const response = await apiClient.get<RewardDto[]>(`/rewards/search/points-less-equal`, {
+    const response = await apiClient.get<RewardDto[]>("/rewards/search/points-less-equal", {
       params: { maxPoints }
     });
     return response.data;
   },
 
   getRewardsByTitleContainsIgnoreCase: async (titlePart: string): Promise<RewardDto[]> => {
-    const response = await apiClient.get<RewardDto[]>(`/rewards/search/title`, {
+    const response = await apiClient.get<RewardDto[]>("/rewards/search/title", {
       params: { titlePart }
     });
     return response.data;
   },
 
   getRewardsByDescriptionContainsIgnoreCase: async (descPart: string): Promise<RewardDto[]> => {
-    const response = await apiClient.get<RewardDto[]>(`/rewards/search/description`, {
+    const response = await apiClient.get<RewardDto[]>("/rewards/search/description", {
       params: { descPart }
     });
     return response.data;

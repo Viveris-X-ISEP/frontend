@@ -1,8 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { type Theme, useTheme } from "../../../shared/theme";
-import type { UserRewardDto } from "../types";
 import { getRewardImage } from "../constants/reward-images";
+import type { UserRewardDto } from "../types";
 
 interface Props {
   item: UserRewardDto;
